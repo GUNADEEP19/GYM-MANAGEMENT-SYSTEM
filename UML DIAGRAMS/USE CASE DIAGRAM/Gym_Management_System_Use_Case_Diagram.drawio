@@ -1,0 +1,181 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.8">
+  <diagram name="Use Case Diagram" id="gym-use-case">
+    <mxGraphModel dx="1018" dy="693" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="system-boundary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#000000;verticalAlign=top;align=center;fontSize=14;fontStyle=1;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;Gym Management System&lt;/font&gt;" vertex="1">
+          <mxGeometry height="700" width="640" x="280" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-admin" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Admin&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="160" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-trainer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Trainer&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="980" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-member" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;Member&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="140" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-payment-gateway" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;b&gt;Payment Gateway&lt;/b&gt;" vertex="1">
+          <mxGeometry height="80" width="40" x="960" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-admin-login" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Admin Login" vertex="1">
+          <mxGeometry height="60" width="130" x="350" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-manage-members" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Manage Members" vertex="1">
+          <mxGeometry height="60" width="140" x="340" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-manage-trainers" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Manage Trainers" vertex="1">
+          <mxGeometry height="60" width="140" x="340" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-manage-packages" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Manage Packages" vertex="1">
+          <mxGeometry height="60" width="140" x="340" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-view-reports" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="View Reports" vertex="1">
+          <mxGeometry height="60" width="140" x="340" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-trainer-login" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Trainer Login" vertex="1">
+          <mxGeometry height="60" width="140" x="730" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-create-workout" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Create Workout Plan" vertex="1">
+          <mxGeometry height="60" width="140" x="730" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-update-workout" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Update Workout Plan" vertex="1">
+          <mxGeometry height="60" width="140" x="730" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-assign-exercises" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Assign Exercises" vertex="1">
+          <mxGeometry height="60" width="140" x="730" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-register" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Register" vertex="1">
+          <mxGeometry height="50" width="120" x="360" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-login" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Login" vertex="1">
+          <mxGeometry height="50" width="120" x="360" y="550" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-update-profile" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Update Profile" vertex="1">
+          <mxGeometry height="50" width="120" x="340" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-view-workout" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="View Workout Plan" vertex="1">
+          <mxGeometry height="50" width="120" x="340" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-mark-attendance" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Mark Attendance" vertex="1">
+          <mxGeometry height="50" width="120" x="490" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-make-payment" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="Make Payment" vertex="1">
+          <mxGeometry height="50" width="120" x="475" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="uc-view-package" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;" value="View Package Details" vertex="1">
+          <mxGeometry height="50" width="120" x="475" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="assoc-admin-login" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-admin-login" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-admin-manage-members" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-manage-members" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-admin-manage-trainers" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-manage-trainers" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-admin-manage-packages" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-manage-packages" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-admin-view-reports" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-view-reports" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="450" as="sourcePoint" />
+            <mxPoint x="450" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-trainer-login" edge="1" parent="1" source="actor-trainer" style="endArrow=none;html=1;strokeColor=#000000;exitX=0;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-trainer-login" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-trainer-create-workout" edge="1" parent="1" source="actor-trainer" style="endArrow=none;html=1;strokeColor=#000000;exitX=0;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-create-workout" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-trainer-update-workout" edge="1" parent="1" source="actor-trainer" style="endArrow=none;html=1;strokeColor=#000000;exitX=0;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-update-workout" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-trainer-assign-exercises" edge="1" parent="1" source="actor-trainer" style="endArrow=none;html=1;strokeColor=#000000;exitX=0;exitY=0.3;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-assign-exercises" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="450" as="sourcePoint" />
+            <mxPoint x="650" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-member-login" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-login" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="650" as="sourcePoint" />
+            <mxPoint x="650" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-member-update-profile" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=0.9;exitY=0.327;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="uc-update-profile" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="170" y="610" as="sourcePoint" />
+            <mxPoint x="360" y="655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-member-view-workout" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.212;entryY=0.053;entryDx=0;entryDy=0;entryPerimeter=0;" target="uc-view-workout" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="650" as="sourcePoint" />
+            <mxPoint x="650" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-member-make-payment" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-make-payment" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="650" as="sourcePoint" />
+            <mxPoint x="650" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-member-view-package" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="uc-view-package" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="600" y="650" as="sourcePoint" />
+            <mxPoint x="650" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2" edge="1" parent="1" source="actor-admin" style="endArrow=none;html=1;strokeColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-admin-login" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="270" as="sourcePoint" />
+            <mxPoint x="350" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-register" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="100" y="510" as="sourcePoint" />
+            <mxPoint x="360" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4" edge="1" parent="1" source="actor-member" style="endArrow=none;html=1;strokeColor=#000000;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="uc-mark-attendance" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="200" y="560" as="sourcePoint" />
+            <mxPoint x="640" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="assoc-payment-gateway" edge="1" parent="1" source="actor-payment-gateway" style="endArrow=none;html=1;strokeColor=#000000;exitX=0;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="uc-make-payment" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="800" y="650" as="sourcePoint" />
+            <mxPoint x="850" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
