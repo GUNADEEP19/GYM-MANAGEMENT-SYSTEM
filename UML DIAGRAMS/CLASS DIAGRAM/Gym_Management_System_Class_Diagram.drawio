@@ -1,0 +1,554 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0" version="24.0.0">
+  <diagram name="Class Diagram" id="gym-class-diagram">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Abstract User Class -->
+        <mxCell id="user-class" value="&lt;&lt;abstract&gt;&gt;&#xa;User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="680" y="40" width="240" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="user-attrs" value="# userId: int&#xa;# username: string&#xa;# password: string&#xa;# email: string&#xa;# phoneNumber: string&#xa;# address: string&#xa;# registrationDate: DateTime&#xa;# isActive: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="user-class" vertex="1">
+          <mxGeometry y="40" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="user-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="user-class" vertex="1">
+          <mxGeometry y="160" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="user-methods" value="+ login(): void&#xa;+ logout(): void&#xa;+ updateProfile(): void&#xa;+ validateCredentials(): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="user-class" vertex="1">
+          <mxGeometry y="168" width="240" height="72" as="geometry" />
+        </mxCell>
+
+        <!-- Admin Class -->
+        <mxCell id="admin-class" value="Admin" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="120" y="380" width="240" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-attrs" value="- adminId: string&#xa;- department: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="admin-class" vertex="1">
+          <mxGeometry y="26" width="240" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="admin-class" vertex="1">
+          <mxGeometry y="60" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-methods" value="+ manageMembers(): void&#xa;+ manageTrainers(): void&#xa;+ managePackages(): void&#xa;+ viewReports(): void&#xa;+ generateReport(): Report&#xa;+ deleteUser(userId: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="admin-class" vertex="1">
+          <mxGeometry y="68" width="240" height="132" as="geometry" />
+        </mxCell>
+
+        <!-- Trainer Class -->
+        <mxCell id="trainer-class" value="Trainer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="680" y="380" width="240" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-attrs" value="- trainerId: string&#xa;- specialization: string&#xa;- experience: int&#xa;- rating: decimal&#xa;- certification: string&#xa;- isAvailable: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="trainer-class" vertex="1">
+          <mxGeometry y="26" width="240" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="trainer-class" vertex="1">
+          <mxGeometry y="120" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-methods" value="+ createWorkoutPlan(): void&#xa;+ updateWorkoutPlan(): void&#xa;+ assignExercises(): void&#xa;+ viewAssignedMembers(): List&#xa;+ updateAvailability(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="trainer-class" vertex="1">
+          <mxGeometry y="128" width="240" height="112" as="geometry" />
+        </mxCell>
+
+        <!-- Member Class -->
+        <mxCell id="member-class" value="Member" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="1240" y="380" width="240" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="member-attrs" value="- memberId: string&#xa;- age: int&#xa;- gender: string&#xa;- weight: decimal&#xa;- height: decimal&#xa;- healthConditions: string&#xa;- membershipStartDate: DateTime&#xa;- membershipEndDate: DateTime&#xa;- isActive: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="member-class" vertex="1">
+          <mxGeometry y="26" width="240" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="member-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="member-class" vertex="1">
+          <mxGeometry y="160" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="member-methods" value="+ register(): void&#xa;+ viewWorkoutPlan(): void&#xa;+ markAttendance(): void&#xa;+ makePayment(): void&#xa;+ viewPackageDetails(): void&#xa;+ renewMembership(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="member-class" vertex="1">
+          <mxGeometry y="168" width="240" height="112" as="geometry" />
+        </mxCell>
+
+        <!-- Package Class -->
+        <mxCell id="package-class" value="Package" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="120" y="720" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="package-attrs" value="- packageId: int&#xa;- packageName: string&#xa;- description: string&#xa;- price: decimal&#xa;- durationInMonths: int&#xa;- features: string&#xa;- isActive: boolean&#xa;- createdDate: DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="package-class" vertex="1">
+          <mxGeometry y="26" width="240" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="package-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="package-class" vertex="1">
+          <mxGeometry y="140" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="package-methods" value="+ getPackageDetails(): void&#xa;+ updatePrice(price: decimal): void&#xa;+ activatePackage(): void&#xa;+ deactivatePackage(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="package-class" vertex="1">
+          <mxGeometry y="148" width="240" height="72" as="geometry" />
+        </mxCell>
+
+        <!-- Subscription Class -->
+        <mxCell id="subscription-class" value="Subscription" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="440" y="720" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="subscription-attrs" value="- subscriptionId: int&#xa;- startDate: DateTime&#xa;- endDate: DateTime&#xa;- status: string&#xa;- autoRenew: boolean&#xa;- lastPaymentDate: DateTime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="subscription-class" vertex="1">
+          <mxGeometry y="26" width="240" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="subscription-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="subscription-class" vertex="1">
+          <mxGeometry y="120" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="subscription-methods" value="+ activateSubscription(): void&#xa;+ renewSubscription(): void&#xa;+ cancelSubscription(): void&#xa;+ getSubscriptionStatus(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="subscription-class" vertex="1">
+          <mxGeometry y="128" width="240" height="92" as="geometry" />
+        </mxCell>
+
+        <!-- WorkoutPlan Class -->
+        <mxCell id="workoutplan-class" value="WorkoutPlan" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="760" y="720" width="240" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="workoutplan-attrs" value="- planId: int&#xa;- planName: string&#xa;- description: string&#xa;- fitnessGoal: string&#xa;- difficultyLevel: string&#xa;- startDate: DateTime&#xa;- endDate: DateTime&#xa;- durationWeeks: int&#xa;- isActive: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="workoutplan-class" vertex="1">
+          <mxGeometry y="26" width="240" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="workoutplan-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="workoutplan-class" vertex="1">
+          <mxGeometry y="160" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="workoutplan-methods" value="+ createPlan(): void&#xa;+ updatePlan(): void&#xa;+ addExercise(ex: Exercise): void&#xa;+ removeExercise(exId: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="workoutplan-class" vertex="1">
+          <mxGeometry y="168" width="240" height="72" as="geometry" />
+        </mxCell>
+
+        <!-- Exercise Class -->
+        <mxCell id="exercise-class" value="Exercise" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="1080" y="720" width="240" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="exercise-attrs" value="- exerciseId: int&#xa;- exerciseName: string&#xa;- bodyPart: string&#xa;- equipmentRequired: string&#xa;- sets: int&#xa;- reps: int&#xa;- durationMinutes: int&#xa;- instructions: string&#xa;- videoUrl: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="exercise-class" vertex="1">
+          <mxGeometry y="26" width="240" height="134" as="geometry" />
+        </mxCell>
+        <mxCell id="exercise-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="exercise-class" vertex="1">
+          <mxGeometry y="160" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="exercise-methods" value="+ getExerciseDetails(): void&#xa;+ updateExercise(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="exercise-class" vertex="1">
+          <mxGeometry y="168" width="240" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Attendance Class -->
+        <mxCell id="attendance-class" value="Attendance" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="1360" y="720" width="240" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="attendance-attrs" value="- attendanceId: int&#xa;- checkInTime: DateTime&#xa;- checkOutTime: DateTime&#xa;- attendanceDate: DateTime&#xa;- status: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="attendance-class" vertex="1">
+          <mxGeometry y="26" width="240" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="attendance-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="attendance-class" vertex="1">
+          <mxGeometry y="110" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="attendance-methods" value="+ markCheckIn(): void&#xa;+ markCheckOut(): void&#xa;+ getAttendanceHistory(): List&#xa;+ calculateTotalHours(): decimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="attendance-class" vertex="1">
+          <mxGeometry y="118" width="240" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Payment Class -->
+        <mxCell id="payment-class" value="Payment" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="120" y="1000" width="240" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-attrs" value="- paymentId: int&#xa;- amount: decimal&#xa;- paymentDate: DateTime&#xa;- paymentMethod: string&#xa;- transactionId: string&#xa;- paymentStatus: string&#xa;- invoiceNumber: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="payment-class" vertex="1">
+          <mxGeometry y="26" width="240" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="payment-class" vertex="1">
+          <mxGeometry y="130" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-methods" value="+ processPayment(): void&#xa;+ generateInvoice(): void&#xa;+ refundPayment(): void&#xa;+ verifyPayment(): boolean&#xa;+ getPaymentHistory(): List" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="payment-class" vertex="1">
+          <mxGeometry y="138" width="240" height="92" as="geometry" />
+        </mxCell>
+
+        <!-- PaymentGateway Class -->
+        <mxCell id="gateway-class" value="PaymentGateway" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="440" y="1000" width="240" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="gateway-attrs" value="- gatewayId: string&#xa;- gatewayName: string&#xa;- apiKey: string&#xa;- merchantId: string&#xa;- isActive: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="gateway-class" vertex="1">
+          <mxGeometry y="26" width="240" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="gateway-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="gateway-class" vertex="1">
+          <mxGeometry y="110" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="gateway-methods" value="+ processTransaction(): void&#xa;+ verifyTransaction(): boolean&#xa;+ initiateRefund(): void&#xa;+ getTransactionStatus(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="gateway-class" vertex="1">
+          <mxGeometry y="118" width="240" height="82" as="geometry" />
+        </mxCell>
+
+        <!-- Report Class -->
+        <mxCell id="report-class" value="Report" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;" parent="1" vertex="1">
+          <mxGeometry x="760" y="1000" width="260" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="report-attrs" value="- reportId: int&#xa;- reportType: string&#xa;- generatedDate: DateTime&#xa;- startDate: DateTime&#xa;- endDate: DateTime&#xa;- generatedBy: string&#xa;- reportData: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="report-class" vertex="1">
+          <mxGeometry y="26" width="260" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="report-divider" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="report-class" vertex="1">
+          <mxGeometry y="130" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="report-methods" value="+ generateMembershipReport(): void&#xa;+ generateRevenueReport(): void&#xa;+ generateAttendanceReport(): void&#xa;+ generateTrainerPerformanceReport(): void&#xa;+ exportToPDF(): void&#xa;+ exportToExcel(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=11;" parent="report-class" vertex="1">
+          <mxGeometry y="138" width="260" height="102" as="geometry" />
+        </mxCell>
+
+        <!-- INHERITANCE RELATIONSHIPS -->
+        
+        <!-- Admin inherits from User -->
+        <mxCell id="inherit-admin" value="" style="endArrow=block;endSize=16;endFill=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" source="admin-class" target="user-class" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="560" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Trainer inherits from User -->
+        <mxCell id="inherit-trainer" value="" style="endArrow=block;endSize=16;endFill=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" source="trainer-class" target="user-class" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="560" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member inherits from User -->
+        <mxCell id="inherit-member" value="" style="endArrow=block;endSize=16;endFill=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" source="member-class" target="user-class" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="400" y="400" as="sourcePoint" />
+            <mxPoint x="560" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ASSOCIATION RELATIONSHIPS -->
+
+        <!-- Admin manages Members -->
+        <mxCell id="assoc-admin-member" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="admin-class" target="member-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="600" as="sourcePoint" />
+            <mxPoint x="750" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="600" y="480" />
+              <mxPoint x="600" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-member-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-member" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="2" relative="1" as="geometry">
+            <mxPoint x="5" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-member-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-member" vertex="1" connectable="0">
+          <mxGeometry x="0.82" y="-1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-member-rel" value="manages" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-admin-member" vertex="1" connectable="0">
+          <mxGeometry x="0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="30" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin manages Trainers -->
+        <mxCell id="assoc-admin-trainer" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="admin-class" target="trainer-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="500" as="sourcePoint" />
+            <mxPoint x="450" y="450" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="520" y="430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-trainer-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-trainer" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-trainer-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-trainer" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-8" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-trainer-rel" value="manages" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-admin-trainer" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="5" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin manages Packages -->
+        <mxCell id="assoc-admin-package" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="admin-class" target="package-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="650" as="sourcePoint" />
+            <mxPoint x="450" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-package-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-package" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-package-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-package" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-package-rel" value="manages" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-admin-package" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="20" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Admin generates Reports -->
+        <mxCell id="assoc-admin-report" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="admin-class" target="report-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="800" as="sourcePoint" />
+            <mxPoint x="450" y="750" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="180" y="1060" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-report-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-report" vertex="1" connectable="0">
+          <mxGeometry x="-0.9" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-report-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-admin-report" vertex="1" connectable="0">
+          <mxGeometry x="0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-admin-report-rel" value="generates" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-admin-report" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="40" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Trainer creates WorkoutPlan -->
+        <mxCell id="assoc-trainer-workout" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="trainer-class" target="workoutplan-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="750" as="sourcePoint" />
+            <mxPoint x="750" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-trainer-workout-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-trainer-workout" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-trainer-workout-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-trainer-workout" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-trainer-workout-rel" value="creates" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-trainer-workout" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="20" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member assigned to Trainer -->
+        <mxCell id="assoc-member-trainer" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="member-class" target="trainer-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="550" as="sourcePoint" />
+            <mxPoint x="1050" y="500" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1100" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-trainer-1" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-trainer" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-trainer-2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-trainer" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-trainer-rel" value="assigned to" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-member-trainer" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="-35" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member has Subscription -->
+        <mxCell id="assoc-member-subscription" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="member-class" target="subscription-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="800" as="sourcePoint" />
+            <mxPoint x="1050" y="750" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1360" y="775" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-subscription-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-subscription" vertex="1" connectable="0">
+          <mxGeometry x="-0.9" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-subscription-2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-subscription" vertex="1" connectable="0">
+          <mxGeometry x="0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-subscription-rel" value="has" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-member-subscription" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="-85" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member has Attendance -->
+        <mxCell id="assoc-member-attendance" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="member-class" target="attendance-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1300" y="800" as="sourcePoint" />
+            <mxPoint x="1350" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-attendance-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-attendance" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-attendance-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-attendance" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-attendance-rel" value="has" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-member-attendance" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="10" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member makes Payment -->
+        <mxCell id="assoc-member-payment" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="member-class" target="payment-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700" y="900" as="sourcePoint" />
+            <mxPoint x="750" y="850" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1100" y="590" />
+              <mxPoint x="1100" y="960" />
+              <mxPoint x="500" y="960" />
+              <mxPoint x="500" y="1050" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-payment-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-payment" vertex="1" connectable="0">
+          <mxGeometry x="-0.95" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-payment-2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-payment" vertex="1" connectable="0">
+          <mxGeometry x="0.92" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-payment-rel" value="makes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-member-payment" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="420" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Member follows WorkoutPlan -->
+        <mxCell id="assoc-member-workoutplan" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="member-class" target="workoutplan-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="900" as="sourcePoint" />
+            <mxPoint x="1050" y="850" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1300" y="840" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-workoutplan-1" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-workoutplan" vertex="1" connectable="0">
+          <mxGeometry x="-0.9" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-workoutplan-2" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-member-workoutplan" vertex="1" connectable="0">
+          <mxGeometry x="0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-member-workoutplan-rel" value="follows" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-member-workoutplan" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="-130" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Subscription subscribes to Package -->
+        <mxCell id="assoc-subscription-package" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="subscription-class" target="package-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="900" as="sourcePoint" />
+            <mxPoint x="350" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-subscription-package-1" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-subscription-package" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-subscription-package-2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-subscription-package" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-subscription-package-rel" value="subscribes to" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-subscription-package" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- WorkoutPlan contains Exercise (Composition) -->
+        <mxCell id="assoc-workout-exercise" value="" style="endArrow=diamond;endFill=1;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;endSize=12;" parent="1" source="workoutplan-class" target="exercise-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="900" y="900" as="sourcePoint" />
+            <mxPoint x="950" y="850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-workout-exercise-1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-workout-exercise" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-5" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-workout-exercise-2" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-workout-exercise" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-workout-exercise-rel" value="contains" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-workout-exercise" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Payment processed by PaymentGateway -->
+        <mxCell id="assoc-payment-gateway" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="payment-class" target="gateway-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="1150" as="sourcePoint" />
+            <mxPoint x="350" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-gateway-1" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-payment-gateway" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-gateway-2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-payment-gateway" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-gateway-rel" value="processed by" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-payment-gateway" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Payment pays for Subscription -->
+        <mxCell id="assoc-payment-subscription" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeWidth=1.5;" parent="1" source="payment-class" target="subscription-class" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="1050" as="sourcePoint" />
+            <mxPoint x="350" y="1000" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-subscription-1" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-payment-subscription" vertex="1" connectable="0">
+          <mxGeometry x="-0.85" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-subscription-2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;fontStyle=1" parent="assoc-payment-subscription" vertex="1" connectable="0">
+          <mxGeometry x="0.75" y="1" relative="1" as="geometry">
+            <mxPoint x="-10" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label-payment-subscription-rel" value="pays for" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2" parent="assoc-payment-subscription" vertex="1" connectable="0">
+          <mxGeometry x="0.05" y="2" relative="1" as="geometry">
+            <mxPoint x="20" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
