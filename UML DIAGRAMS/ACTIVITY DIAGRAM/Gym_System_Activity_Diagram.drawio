@@ -1,0 +1,240 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.3.8">
+  <diagram id="activity-diagram-gym" name="GYM MANAGEMENT SYSTEM - COMPLETE ACTIVITY WORKFLOW">
+    <mxGraphModel dx="2246" dy="1323" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="swimlane-user" parent="1" style="swimlane;html=1;startSize=40;horizontal=1;swimlaneFillColor=#ffffff;rounded=1;fontSize=13;fontStyle=1;strokeWidth=2" value="USER INTERACTIONS" vertex="1">
+          <mxGeometry height="1450" width="360" x="10" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="swimlane-user" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#000000" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="165" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="login" parent="swimlane-user" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=11;fillColor=#fff9e6" value="User Login" vertex="1">
+          <mxGeometry height="60" width="160" x="100" y="435" as="geometry" />
+        </mxCell>
+        <mxCell id="loop-point" parent="swimlane-user" style="ellipse;html=1;shape=ellipse;whiteSpace=wrap;strokeWidth=2;fillColor=#ffffff;strokeColor=#ff9900;strokeWidth=3;dashed=1" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="165" y="1270" as="geometry" />
+        </mxCell>
+        <mxCell id="label-loop" parent="swimlane-user" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontStyle=1;fontColor=#ff9900" value="CONTINUOUS DAILY LOOP" vertex="1">
+          <mxGeometry height="18" width="160" x="100" y="1305" as="geometry" />
+        </mxCell>
+        <mxCell id="end" parent="swimlane-user" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="165" y="1350" as="geometry" />
+        </mxCell>
+        <mxCell id="swimlane-system" parent="1" style="swimlane;html=1;startSize=40;horizontal=1;swimlaneFillColor=#f5f5f5;rounded=1;fontSize=13;fontStyle=1;strokeWidth=2" value="SYSTEM PROCESSING" vertex="1">
+          <mxGeometry height="1450" width="700" x="370" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="auth-decision" parent="swimlane-system" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;fontSize=12;fontStyle=1" value="User Registered?" vertex="1">
+          <mxGeometry height="100" width="120" x="500" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="register" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=11;fillColor=#ffe6e6" value="Register User Account" vertex="1">
+          <mxGeometry height="60" width="120" x="500" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="save-user" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=11;fillColor=#ffe6e6" value="Save User Data" vertex="1">
+          <mxGeometry height="60" width="120" x="500" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="merge1" parent="swimlane-system" style="ellipse;html=1;shape=ellipse;whiteSpace=wrap;strokeWidth=2;fillColor=#ffffff;strokeColor=#000000" value="" vertex="1">
+          <mxGeometry height="20" width="50" x="535" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="role-decision" parent="swimlane-system" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;fontSize=12;fontStyle=1" value="User Role?" vertex="1">
+          <mxGeometry height="100" width="120" x="500" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-manage" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9d9ff" value="Manage Members" vertex="1">
+          <mxGeometry height="50" width="110" x="290" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-assign" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9d9ff" value="Assign Trainer" vertex="1">
+          <mxGeometry height="50" width="110" x="290" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="admin-reports" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9d9ff" value="Generate Reports" vertex="1">
+          <mxGeometry height="50" width="110" x="290" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-view" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#fff4e6" value="View Members" vertex="1">
+          <mxGeometry height="50" width="110" x="433" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-progress" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#fff4e6" value="View Progress" vertex="1">
+          <mxGeometry height="50" width="110" x="433" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-plan" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#fff4e6" value="Create Plan" vertex="1">
+          <mxGeometry height="50" width="110" x="433" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="trainer-exercises" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#fff4e6" value="Assign Exercises" vertex="1">
+          <mxGeometry height="50" width="110" x="433" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="member-view" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9f5ff" value="View Workout" vertex="1">
+          <mxGeometry height="50" width="110" x="576" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="member-attendance" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9f5ff" value="Mark Attendance" vertex="1">
+          <mxGeometry height="50" width="110" x="576" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="member-check" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9f5ff" value="Check Membership" vertex="1">
+          <mxGeometry height="50" width="110" x="576" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="member-progress" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9f5ff" value="Update Progress" vertex="1">
+          <mxGeometry height="50" width="110" x="576" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="member-view-report" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9f5ff" value="View Report" vertex="1">
+          <mxGeometry height="50" width="110" x="576" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="recommend" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#f0e6ff" value="Analyze &amp;&#xa;Recommend Plan" vertex="1">
+          <mxGeometry height="60" width="110" x="290" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="swimlane-payment" parent="1" style="swimlane;html=1;startSize=40;horizontal=1;swimlaneFillColor=#e6f3ff;rounded=1;fontSize=13;fontStyle=1;strokeWidth=2" value="PAYMENT GATEWAY" vertex="1">
+          <mxGeometry height="1450" width="530" x="1070" y="41" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-init" parent="swimlane-payment" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#ccffcc" value="Initiate Payment" vertex="1">
+          <mxGeometry height="50" width="120" x="211" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-decision" parent="swimlane-payment" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;fontSize=11;fontStyle=1;fillColor=#ffe6e6" value="Payment Success?" vertex="1">
+          <mxGeometry height="90" width="110" x="218" y="696" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-receipt" parent="swimlane-payment" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#ccffcc" value="Generate Receipt" vertex="1">
+          <mxGeometry height="50" width="110" x="220" y="863" as="geometry" />
+        </mxCell>
+        <mxCell id="payment-fail" parent="swimlane-payment" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#ffcccc;arcSize=50;" value="Log Failure" vertex="1">
+          <mxGeometry height="50" width="110" x="379" y="645" as="geometry" />
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-2" edge="1" parent="swimlane-payment" source="payment-init" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="payment-decision" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="310" y="880" as="sourcePoint" />
+            <mxPoint x="360" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="auth-decision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-reg-no" edge="1" parent="1" source="auth-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="register">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="200" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-reg" edge="1" parent="1" source="register" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="save-user">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-save-merge" edge="1" parent="1" source="save-user" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="merge1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-auth-yes" edge="1" parent="1" source="auth-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="merge1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="150" />
+              <mxPoint x="760" y="455" />
+              <mxPoint x="560" y="455" />
+            </Array>
+            <mxPoint x="620" y="150" as="sourcePoint" />
+            <mxPoint x="760" y="455" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-admin1" edge="1" parent="1" source="admin-manage" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="admin-assign">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-admin2" edge="1" parent="1" source="admin-assign" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="admin-reports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-trainer" edge="1" parent="1" source="role-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-view">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="660" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-trainer1" edge="1" parent="1" source="trainer-view" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-progress">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-trainer2" edge="1" parent="1" source="trainer-progress" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-plan">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-trainer3" edge="1" parent="1" source="trainer-plan" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-exercises">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-member" edge="1" parent="1" source="role-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-view">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="660" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-member1" edge="1" parent="1" source="member-view" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-attendance">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-member2" edge="1" parent="1" source="member-attendance" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-member3" edge="1" parent="1" source="member-check" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-progress">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-member4" edge="1" parent="1" source="member-progress" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-view-report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow-fail" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1395" y="792" as="sourcePoint" />
+            <mxPoint x="1505" y="737" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-rec" edge="1" parent="1" source="admin-reports" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="recommend">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="345" y="930" as="sourcePoint" />
+            <mxPoint x="345" y="1070" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-loop" edge="1" parent="1" source="payment-receipt" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2;dashed=1;strokeColor=#ff9900" target="loop-point">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="1374" />
+              <mxPoint x="190" y="1270" />
+              <mxPoint x="180" y="1270" />
+            </Array>
+            <mxPoint x="1345" y="1060" as="sourcePoint" />
+            <mxPoint x="180" y="1270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-loop-back" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2;dashed=1;strokeColor=#ff9900">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="1272" />
+              <mxPoint x="180" y="1272" />
+              <mxPoint x="180" y="872" />
+              <mxPoint x="576" y="872" />
+              <mxPoint x="576" y="867" />
+            </Array>
+            <mxPoint x="190" y="1312" as="sourcePoint" />
+            <mxPoint x="945.9999999999995" y="867" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-end" edge="1" parent="1" source="loop-point" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="end">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="180" y="1300" as="sourcePoint" />
+            <mxPoint x="180" y="1350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-3" edge="1" parent="1" source="member-view-report" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="payment-init" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1380" y="1120" as="sourcePoint" />
+            <mxPoint x="1430" y="1070" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-4" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="login" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="920" y="460" as="sourcePoint" />
+            <mxPoint x="1280" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-6" edge="1" parent="1" source="payment-decision" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1220" y="600" as="sourcePoint" />
+            <mxPoint x="1340" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-7" edge="1" parent="1" source="login" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" target="role-decision" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="1025" y="650" as="sourcePoint" />
+            <mxPoint x="405" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-8" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="admin-manage" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="870" y="650" as="sourcePoint" />
+            <mxPoint x="710" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
