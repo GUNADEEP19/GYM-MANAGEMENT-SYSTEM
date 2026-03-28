@@ -50,7 +50,7 @@
         </mxCell>
 
         <mxCell id="end" value="" style="shape=endState;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="1060" y="170" width="34" height="34" as="geometry" />
+          <mxGeometry x="1490" y="170" width="34" height="34" as="geometry" />
         </mxCell>
 
         <mxCell id="t1" edge="1" parent="1" source="start" target="registered" value="account created" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
@@ -65,11 +65,11 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="t4" edge="1" parent="1" source="active" target="services" value="use gym services" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
+        <mxCell id="t4" edge="1" parent="1" source="active" target="services" value="access services" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="t5" edge="1" parent="1" source="services" target="active" value="session completed" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
+        <mxCell id="t5" edge="1" parent="1" source="services" target="active" value="continue usage (loop)" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;dashed=1;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="640" y="370" />
@@ -78,11 +78,11 @@
           </mxGeometry>
         </mxCell>
 
-        <mxCell id="t6" edge="1" parent="1" source="active" target="inactive" value="membership expires / unpaid" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
+        <mxCell id="t6" edge="1" parent="1" source="active" target="paymentPending" value="membership expires" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="t6b" edge="1" parent="1" source="inactive" target="paymentPending" value="renewal required" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
+        <mxCell id="t6b" edge="1" parent="1" source="paymentPending" target="inactive" value="not renewed in time" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
@@ -122,6 +122,15 @@
 
         <mxCell id="t13" edge="1" parent="1" source="inactive" target="end" value="membership terminated" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t14" edge="1" parent="1" source="inactive" target="paymentPending" value="reactivation request" style="endArrow=classic;html=1;rounded=0;strokeWidth=2;fontSize=12;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1090" y="265" />
+              <mxPoint x="1090" y="300" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
