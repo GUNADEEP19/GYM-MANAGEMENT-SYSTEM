@@ -37,6 +37,16 @@ This diagram models the lifecycle of one core object: **Member**.
 4. Suspended -> Active Member (`issue resolved`)
 5. Inactive Member -> End (`membership terminated`)
 
+## Payment Status Alignment (with Class Diagram)
+
+Use enum values from `PaymentStatus`:
+
+1. `Payment Pending` corresponds to `PENDING`
+2. `Payment Processing -> Membership Renewed` corresponds to `SUCCESS`
+3. `Payment Processing -> Payment Pending` corresponds to `FAILED`
+
+This keeps state transitions and class-level payment status consistent.
+
 ## UML Notation Used
 
 1. Rounded rectangles for states

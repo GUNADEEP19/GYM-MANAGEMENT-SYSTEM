@@ -124,7 +124,7 @@ Handles membership/payment transactions.
 Attributes:
 1. `paymentId: String`
 2. `amount: double`
-3. `status: String`
+3. `status: PaymentStatus`
 4. `date: Date`
 
 Operations:
@@ -147,6 +147,15 @@ Defines a contract for payment processing.
 
 Operation:
 1. `processPayment(): void`
+
+### `PaymentStatus` (Enumeration)
+
+Defines valid payment outcomes and prevents free-text status errors.
+
+Values:
+1. `PENDING`
+2. `SUCCESS`
+3. `FAILED`
 
 ## Major Relationships
 
@@ -173,6 +182,10 @@ Operation:
 
 8. Payment-PaymentService:
    - `Payment` behavior aligns with `PaymentService` processing contract.
+
+9. Payment-PaymentStatus:
+   - `Payment` uses `PaymentStatus` as an enum type for the `status` attribute.
+   - Optional in UML: a dashed dependency from `Payment` to `PaymentStatus` (line label is not required).
 
 ## Notes
 
