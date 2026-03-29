@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.3.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
   <diagram id="activity-diagram-gym" name="GYM MANAGEMENT SYSTEM - COMPLETE ACTIVITY WORKFLOW">
-    <mxGraphModel dx="2246" dy="1323" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1500" math="0" shadow="0">
+    <mxGraphModel dx="582" dy="396" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1500" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -38,7 +38,7 @@
           <mxGeometry height="20" width="50" x="535" y="445" as="geometry" />
         </mxCell>
         <mxCell id="role-decision" parent="swimlane-system" style="rhombus;whiteSpace=wrap;html=1;rounded=1;strokeWidth=2;fontSize=12;fontStyle=1" value="User Role?" vertex="1">
-          <mxGeometry height="100" width="120" x="500" y="560" as="geometry" />
+          <mxGeometry height="100" width="120" x="500" y="550" as="geometry" />
         </mxCell>
         <mxCell id="admin-manage" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#d9d9ff" value="Manage Members" vertex="1">
           <mxGeometry height="50" width="110" x="290" y="720" as="geometry" />
@@ -78,6 +78,23 @@
         </mxCell>
         <mxCell id="recommend" parent="swimlane-system" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=10;fillColor=#f0e6ff" value="Analyze &amp;&#xa;Recommend Plan" vertex="1">
           <mxGeometry height="60" width="110" x="290" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="kJSlGyDddvGupL7r2cJm-8" edge="1" parent="swimlane-system" source="role-decision" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.174;exitY=0.674;exitDx=0;exitDy=0;exitPerimeter=0;strokeWidth=2;" target="admin-manage" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="500" y="610" as="sourcePoint" />
+            <mxPoint x="340" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="B-jguuWw6TmL7jvcCgUg-1" connectable="0" parent="kJSlGyDddvGupL7r2cJm-8" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="[role == Admin]" vertex="1">
+          <mxGeometry relative="1" x="0.1676" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow-member" edge="1" parent="swimlane-system" source="role-decision" style="html=1;rounded=1;strokeWidth=2;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.449;entryY=0.006;entryDx=0;entryDy=0;entryPerimeter=0;" target="member-view">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250" y="620" as="sourcePoint" />
+            <mxPoint x="610" y="720" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="swimlane-payment" parent="1" style="swimlane;html=1;startSize=40;horizontal=1;swimlaneFillColor=#e6f3ff;rounded=1;fontSize=13;fontStyle=1;strokeWidth=2" value="PAYMENT GATEWAY" vertex="1">
           <mxGeometry height="1450" width="530" x="1070" y="41" as="geometry" />
@@ -131,9 +148,14 @@
         <mxCell id="arrow-admin2" edge="1" parent="1" source="admin-assign" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="admin-reports">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="arrow-trainer" edge="1" parent="1" source="role-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-view">
+        <mxCell id="arrow-trainer" edge="1" parent="1" source="role-decision" style="html=1;rounded=0;strokeWidth=2" target="trainer-view">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="560" y="660" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="B-jguuWw6TmL7jvcCgUg-2" connectable="0" parent="arrow-trainer" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="[role == Trainer]" vertex="1">
+          <mxGeometry relative="1" x="0.0331" y="1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="arrow-trainer1" edge="1" parent="1" source="trainer-view" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-progress">
@@ -144,11 +166,6 @@
         </mxCell>
         <mxCell id="arrow-trainer3" edge="1" parent="1" source="trainer-plan" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="trainer-exercises">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="arrow-member" edge="1" parent="1" source="role-decision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-view">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="620" y="660" as="sourcePoint" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="arrow-member1" edge="1" parent="1" source="member-view" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;strokeWidth=2" target="member-attendance">
           <mxGeometry relative="1" as="geometry" />
@@ -228,10 +245,9 @@
             <mxPoint x="405" y="535" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kJSlGyDddvGupL7r2cJm-8" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="admin-manage" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="870" y="650" as="sourcePoint" />
-            <mxPoint x="710" y="780" as="targetPoint" />
+        <mxCell id="B-jguuWw6TmL7jvcCgUg-3" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="[role == Member]" vertex="1">
+          <mxGeometry x="970" y="710" as="geometry">
+            <mxPoint x="19" y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
       </root>
