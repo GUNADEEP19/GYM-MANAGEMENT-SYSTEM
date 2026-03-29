@@ -13,5 +13,6 @@
             "environmentVariable": "JAVA_HOME",
             "value": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home"
         }
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }
