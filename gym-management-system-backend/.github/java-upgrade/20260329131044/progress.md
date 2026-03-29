@@ -109,28 +109,30 @@
     - Result: ❗ FAILURE - `maven-compiler-plugin` failed with `TypeTag :: UNKNOWN` during compilation.
     - Notes: Test phase was blocked by compilation failure; baseline pass rate is 0/0 executed.
   - **Deferred Work**: Resolve JDK 25 compilation issue in upgrade/final validation steps.
-  - **Commit**: Pending
+  - **Commit**: 0960992 - Step 2: Setup Baseline - Compile: FAILURE, Tests: 0/0 passed
 
 - **Step 3: Upgrade to Spring Framework 6.2 via Spring Boot BOM**
-  - **Status**: 🔘 Not Started
+  - **Status**: ✅ Completed
   - **Changes Made**:
-    - None
+    - Upgraded Spring Boot parent from 3.3.10 to 3.4.0.
+    - Added lombok.version 1.18.40 for JDK 25 compiler compatibility.
+    - Revalidated test-compile after dependency updates.
   - **Review Code Changes**:
     - Sufficiency: ✅ All required changes present
     - Necessity: ✅ All changes necessary
       - Functional Behavior: ✅ Preserved
       - Security Controls: ✅ Preserved
   - **Verification**:
-    - Command: Pending
+    - Command: `./mvnw clean test-compile -q`
     - JDK: /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/bin
     - Build tool: ./mvnw
-    - Result: Pending
-    - Notes: Pending
+    - Result: ✅ SUCCESS - Compilation completed for main and test sources.
+    - Notes: Lombok still emits JDK 25 unsafe warnings but compilation succeeds.
   - **Deferred Work**: None
   - **Commit**: Pending
 
 - **Step 4: Final Validation**
-  - **Status**: 🔘 Not Started
+  - **Status**: ⏳ In Progress
   - **Changes Made**:
     - None
   - **Review Code Changes**:
