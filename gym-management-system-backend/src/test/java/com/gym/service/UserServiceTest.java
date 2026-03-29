@@ -3,7 +3,6 @@ package com.gym.service;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -121,7 +120,6 @@ class UserServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> userService.loginUser(request));
 
-        assertInstanceOf(ResponseStatusException.class, exception);
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
         assertEquals("401 UNAUTHORIZED \"Invalid credentials\"", exception.getMessage());
     }
