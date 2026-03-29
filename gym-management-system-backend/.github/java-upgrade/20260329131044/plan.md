@@ -22,8 +22,8 @@
 
 ## Options
 
-- Working branch: appmod/java-upgrade-<SESSION_ID> <!-- user specified, NEVER remove it -->
-- Run tests before and after the upgrade: true <!-- user specified, NEVER remove it -->
+- Working branch: appmod/java-upgrade-20260329131044
+- Run tests before and after the upgrade: true
 
 ## Upgrade Goals
 
