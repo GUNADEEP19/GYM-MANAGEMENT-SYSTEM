@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
   <diagram id="gym-management-system-v2" name="Gym Management System UML">
-    <mxGraphModel dx="485" dy="330" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" background="none" math="0" shadow="0">
+    <mxGraphModel dx="783" dy="533" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -103,7 +103,7 @@
         <mxCell id="Payment" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=1;strokeWidth=2;strokeColor=#000000;fillColor=#E8F5E9;" value="Payment" vertex="1">
           <mxGeometry height="140" width="280" x="30" y="900" as="geometry" />
         </mxCell>
-        <mxCell id="PaymentAttr" parent="Payment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" value="- paymentId: String&#xa;- amount: double&#xa;- status: String&#xa;- date: Date" vertex="1">
+        <mxCell id="PaymentAttr" parent="Payment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=10;" value="- paymentId: String&#xa;- amount: double&#xa;- status: PaymentStatus&#xa;- date: Date" vertex="1">
           <mxGeometry height="65" width="280" y="26" as="geometry" />
         </mxCell>
         <mxCell id="PaymentDiv" parent="Payment" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=top;spacingTop=-1;spacingLeft=4;spacingRight=4;rotatable=0;deletable=0;editable=0;connectable=0;" value="" vertex="1">
@@ -301,6 +301,18 @@
         </mxCell>
         <mxCell id="GMbYj8EVbbMNsGZPOhEQ-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;b&gt;1&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="110" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="2" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontColor=#ffffff;" value="&lt;span style=&quot;font-family: -apple-system, &amp;quot;system-ui&amp;quot;, sans-serif; font-size: 13px; text-align: start;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;lt;&amp;lt;&lt;i&gt;enumeration&lt;/i&gt;&amp;gt;&amp;gt; PaymentStatus&lt;/font&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="110" width="160" x="35" y="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;b&gt;PENDING&lt;/b&gt;&lt;div&gt;&lt;b&gt;SUCCESS&lt;br&gt;FAILED&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="160" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="-mOgnZcYodr1g715ye6c-5" edge="1" parent="1" source="PaymentMeth" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;exitX=0.18;exitY=1.005;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.281;entryY=0.012;entryDx=0;entryDy=0;entryPerimeter=0;" target="2" value="&lt;b&gt;&amp;lt;&amp;lt;uses&amp;gt;&amp;gt;&lt;/b&gt;">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="40" y="1080" as="sourcePoint" />
+            <mxPoint x="71" y="1110" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
