@@ -90,24 +90,25 @@
     - Result: ✅ SUCCESS - JDK 25.0.1 and Maven Wrapper 3.9.14 are available.
     - Notes: No installations required.
   - **Deferred Work**: None
-  - **Commit**: Pending
+  - **Commit**: 06fe898 - Step 1: Setup Environment - Compile: SUCCESS
 
 - **Step 2: Setup Baseline**
-  - **Status**: 🔘 Not Started
+  - **Status**: ✅ Completed
   - **Changes Made**:
-    - None
+    - Captured baseline compile failure on JDK 25.
+    - Captured baseline test execution failure due to compile error.
   - **Review Code Changes**:
     - Sufficiency: ✅ All required changes present
     - Necessity: ✅ All changes necessary
       - Functional Behavior: ✅ Preserved
       - Security Controls: ✅ Preserved
   - **Verification**:
-    - Command: Pending
+    - Command: `./mvnw clean test-compile -q && ./mvnw clean test -q`
     - JDK: /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/bin
     - Build tool: ./mvnw
-    - Result: Pending
-    - Notes: Pending
-  - **Deferred Work**: None
+    - Result: ❗ FAILURE - `maven-compiler-plugin` failed with `TypeTag :: UNKNOWN` during compilation.
+    - Notes: Test phase was blocked by compilation failure; baseline pass rate is 0/0 executed.
+  - **Deferred Work**: Resolve JDK 25 compilation issue in upgrade/final validation steps.
   - **Commit**: Pending
 
 - **Step 3: Upgrade to Spring Framework 6.2 via Spring Boot BOM**
