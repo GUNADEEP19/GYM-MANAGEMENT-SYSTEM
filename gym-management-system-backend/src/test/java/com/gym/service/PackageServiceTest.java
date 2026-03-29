@@ -156,8 +156,14 @@ public class PackageServiceTest {
     @DisplayName("Should update package successfully")
     void testUpdatePackageSuccess() {
         // Arrange
-        Package updatePackage = new Package(testPackage);
+        Package updatePackage = new Package();
+        updatePackage.setPackageId("pkg-1");
+        updatePackage.setPackageName("Premium Package");
+        updatePackage.setDescription("Premium membership");
         updatePackage.setPrice(3999.0);
+        updatePackage.setDurationMonths(3);
+        updatePackage.setBenefits("Gym access, Personal training");
+        updatePackage.setIsActive(true);
         
         when(packageRepository.findById("pkg-1")).thenReturn(Optional.of(testPackage));
         when(packageRepository.save(any(Package.class))).thenReturn(updatePackage);
