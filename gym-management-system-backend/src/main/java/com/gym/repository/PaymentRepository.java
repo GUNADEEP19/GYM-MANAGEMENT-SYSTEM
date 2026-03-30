@@ -17,7 +17,7 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
      * @return List of payments
      */
     @Query("SELECT p FROM Payment p WHERE p.member.userId = :memberId")
-    List<Payment> findByMemberId(@Param("memberId") String memberId);
+    List<Payment> findByMemberUserId(@Param("memberId") String memberId);
 
     /**
      * Find payments by member and status
@@ -27,7 +27,7 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
      * @return List of payments with specified status
      */
     @Query("SELECT p FROM Payment p WHERE p.member.userId = :memberId AND p.status = :status")
-    List<Payment> findByMemberIdAndStatus(@Param("memberId") String memberId, @Param("status") PaymentStatus status);
+    List<Payment> findByMemberUserIdAndStatus(@Param("memberId") String memberId, @Param("status") PaymentStatus status);
 
     /**
      * Find payments by status

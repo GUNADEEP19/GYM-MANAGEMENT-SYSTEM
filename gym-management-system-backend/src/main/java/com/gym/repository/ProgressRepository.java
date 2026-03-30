@@ -11,9 +11,10 @@ import com.gym.model.Progress;
 
 public interface ProgressRepository extends JpaRepository<Progress, String> {
     
-    List<Progress> findByMemberId(String memberId);
+    List<Progress> findByMemberUserId(String memberId);
     
-    List<Progress> findByMemberIdAndWorkoutPlanId(String memberId, String workoutPlanId);
+    // Derived query: Progress.workoutPlan.planId (WorkoutPlan has `planId`, not `id`)
+    List<Progress> findByMemberUserIdAndWorkoutPlanPlanId(String memberId, String planId);
     
     @Query("SELECT p FROM Progress p WHERE p.member.userId = :memberId ORDER BY p.recordedDate DESC")
     List<Progress> findProgressByMemberOrderByDateDesc(@Param("memberId") String memberId);

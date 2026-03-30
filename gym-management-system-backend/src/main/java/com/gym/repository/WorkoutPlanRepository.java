@@ -9,11 +9,12 @@ import com.gym.model.WorkoutPlan;
 
 public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlan, String> {
 
-    List<WorkoutPlan> findByMemberId(String memberId);
+    List<WorkoutPlan> findByMemberUserId(String memberId);
 
-    List<WorkoutPlan> findByTrainerId(String trainerId);
+    // Derived query: WorkoutPlan.trainer.userId (Trainer has `userId`, not `id`)
+    List<WorkoutPlan> findByTrainerUserId(String trainerId);
 
-    List<WorkoutPlan> findByMemberIdAndIsActiveTrue(String memberId);
+    List<WorkoutPlan> findByMemberUserIdAndIsActiveTrue(String memberId);
 
     @Query("SELECT wp FROM WorkoutPlan wp WHERE wp.member.userId = :memberId AND wp.isActive = true")
     List<WorkoutPlan> findActiveWorkoutPlansByMember(@Param("memberId") String memberId);

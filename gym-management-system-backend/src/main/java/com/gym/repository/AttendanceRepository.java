@@ -11,9 +11,9 @@ import com.gym.model.Attendance;
 
 public interface AttendanceRepository extends JpaRepository<Attendance, String> {
 
-    List<Attendance> findByMemberId(String memberId);
+    List<Attendance> findByMemberUserId(String memberId);
 
-    List<Attendance> findByMemberIdAndAttendanceDateBetween(String memberId, LocalDate startDate, LocalDate endDate);
+    List<Attendance> findByMemberUserIdAndAttendanceDateBetween(String memberId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT a FROM Attendance a WHERE a.member.userId = :memberId AND a.attendanceDate = :date")
     List<Attendance> findAttendanceByMemberAndDate(@Param("memberId") String memberId, @Param("date") LocalDate date);

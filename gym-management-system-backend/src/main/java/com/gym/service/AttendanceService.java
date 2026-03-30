@@ -65,12 +65,12 @@ public class AttendanceService {
     }
 
     public List<AttendanceResponse> getAttendanceByMember(String memberId) {
-        List<Attendance> records = attendanceRepository.findByMemberId(memberId);
+        List<Attendance> records = attendanceRepository.findByMemberUserId(memberId);
         return records.stream().map(this::toAttendanceResponse).collect(Collectors.toList());
     }
 
     public List<AttendanceResponse> getAttendanceByDateRange(String memberId, LocalDate startDate, LocalDate endDate) {
-        List<Attendance> records = attendanceRepository.findByMemberIdAndAttendanceDateBetween(memberId, startDate,
+        List<Attendance> records = attendanceRepository.findByMemberUserIdAndAttendanceDateBetween(memberId, startDate,
                 endDate);
         return records.stream().map(this::toAttendanceResponse).collect(Collectors.toList());
     }

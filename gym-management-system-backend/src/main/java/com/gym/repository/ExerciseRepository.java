@@ -10,9 +10,10 @@ import com.gym.model.Exercise;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, String> {
     
-    List<Exercise> findByWorkoutPlanId(String workoutPlanId);
+    // Derived query: Exercise.workoutPlan.planId (WorkoutPlan has `planId`, not `id`)
+    List<Exercise> findByWorkoutPlanPlanId(String workoutPlanId);
     
-    List<Exercise> findByWorkoutPlanIdAndIsActiveTrue(String workoutPlanId);
+    List<Exercise> findByWorkoutPlanPlanIdAndIsActiveTrue(String workoutPlanId);
     
     @Query("SELECT e FROM Exercise e WHERE e.workoutPlan.planId = :planId AND e.isActive = true")
     List<Exercise> findActiveExercisesByWorkoutPlan(@Param("planId") String planId);
