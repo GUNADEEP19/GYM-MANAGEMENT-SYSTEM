@@ -24,6 +24,12 @@ public class ProgressRequest {
     @PositiveOrZero(message = "Exercises done cannot be negative")
     private Integer exercisesDone;
 
+    @Positive(message = "Weight must be positive")
+    private Double weight;
+
+    @Positive(message = "BMI must be positive")
+    private Double bmi;
+
     private String progressNotes;
 
     @NotBlank(message = "Member ID is required")

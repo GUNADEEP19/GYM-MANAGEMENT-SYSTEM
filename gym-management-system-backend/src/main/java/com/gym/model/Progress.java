@@ -30,6 +30,12 @@ public class Progress {
     @Column(nullable = false)
     private Integer exercisesDone;
 
+    @Column
+    private Double weight;
+
+    @Column
+    private Double bmi;
+
     @Column(columnDefinition = "TEXT")
     private String progressNotes;
 

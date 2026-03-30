@@ -24,4 +24,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, String> 
     @Query("SELECT COUNT(a) FROM Attendance a WHERE a.member.userId = :memberId AND a.status = 'CHECKED_OUT' AND a.attendanceDate BETWEEN :startDate AND :endDate")
     Integer countAttendanceInDateRange(@Param("memberId") String memberId, @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+    long countByAttendanceDate(LocalDate attendanceDate);
 }

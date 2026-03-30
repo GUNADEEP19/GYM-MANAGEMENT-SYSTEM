@@ -17,6 +17,8 @@ public class ProgressResponse {
     private String progressId;
     private Integer weekNumber;
     private Integer exercisesDone;
+    private Double weight;
+    private Double bmi;
     private String progressNotes;
     private LocalDateTime recordedDate;
     private LocalDateTime createdAt;
