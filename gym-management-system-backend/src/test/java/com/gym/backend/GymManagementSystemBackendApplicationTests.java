@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.dto.LoginUserRequest;
 import com.gym.dto.RegisterUserRequest;
+import com.gym.dto.UserResponse;
 import com.gym.dto.UserType;
 import com.gym.model.Member;
 import com.gym.model.User;
@@ -44,12 +45,12 @@ class GymManagementSystemBackendApplicationTests {
 
 		when(userRepository.findByEmail("deepak@example.com")).thenReturn(Optional.empty());
 		when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-			Member member = (Member) invocation.getArgument(0);
+			Member member = invocation.getArgument(0);
 			member.setUserId("u-123");
 			return member;
 		});
 
-		var response = userService.registerUser(request);
+		UserResponse response = userService.registerUser(request);
 
 		assertEquals("u-123", response.getUserId());
 		assertEquals("Member", response.getRole());
@@ -72,7 +73,7 @@ class GymManagementSystemBackendApplicationTests {
 				.thenReturn(Optional.of(member));
 		when(jwtService.generateToken("deepak@example.com")).thenReturn("jwt-token");
 
-		var response = userService.loginUser(request);
+		UserResponse response = userService.loginUser(request);
 
 		assertEquals("deepak@example.com", response.getEmail());
 		assertEquals("Member", response.getRole());

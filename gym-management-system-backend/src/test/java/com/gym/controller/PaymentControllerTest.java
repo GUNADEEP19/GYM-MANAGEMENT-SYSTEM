@@ -13,9 +13,9 @@ import com.gym.service.payment.PaymentManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,8 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
 @DisplayName("Payment Controller Tests")
-public class PaymentControllerTest {
+class PaymentControllerTest {
     
     @Mock
     private PaymentManager paymentManager;
@@ -51,7 +52,6 @@ public class PaymentControllerTest {
     
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         
         // Setup test member
         testMember = new Member();
