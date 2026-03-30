@@ -10,7 +10,9 @@ import com.gym.repository.AttendanceRepository;
 import com.gym.repository.MemberRepository;
 import com.gym.repository.PaymentRepository;
 import com.gym.repository.TrainerRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ReportService {
 
@@ -30,6 +32,7 @@ public class ReportService {
     }
 
     public DashboardReportResponse generateDashboardReport() {
+        log.info("Admin generated system diagnostic dashboard report.");
         long totalMembers = memberRepository.count();
         long activeTrainers = trainerRepository.count();
         

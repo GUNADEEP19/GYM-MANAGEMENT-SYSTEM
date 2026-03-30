@@ -14,7 +14,9 @@ import com.gym.model.Trainer;
 import com.gym.model.User;
 import com.gym.repository.UserRepository;
 import com.gym.security.JwtService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -28,10 +30,12 @@ public class UserService {
 
     public UserResponse registerUser(RegisterUserRequest request) {
         if (request.getUserType() == null) {
+            log.error("Registration failed: userType is required");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "userType is required");
         }
 
         userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+            log.warn("Registration failed: Email already registered - {}", request.getEmail());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         });
 
@@ -41,15 +45,21 @@ public class UserService {
         user.setPhone(request.getPhone());
 
         User saved = userRepository.save(user);
+        log.info("User registered successfully with email: {} as role: {}", saved.getEmail(), request.getUserType());
         return toResponse(saved);
     }
 
     public UserResponse loginUser(LoginUserRequest request) {
+        log.info("Attempting login for email: {}", request.getEmail());
         User user = userRepository
                 .findByEmailAndPhone(request.getEmail(), request.getPhone())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
+                .orElseThrow(() -> {
+                    log.error("Login attempt failed for email: {} - Invalid credentials", request.getEmail());
+                    return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+                });
 
         String token = jwtService.generateToken(user.getEmail());
+        log.info("User logged in successfully: {}", request.getEmail());
         return toResponse(user, token);
     }
 

@@ -15,7 +15,9 @@ import com.gym.model.Attendance;
 import com.gym.model.Member;
 import com.gym.repository.AttendanceRepository;
 import com.gym.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class AttendanceService {
 
@@ -29,7 +31,10 @@ public class AttendanceService {
 
     public AttendanceResponse markCheckIn(AttendanceRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+                .orElseThrow(() -> {
+                    log.error("Check-in failed: Member not found based on ID {}", request.getMemberId());
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found");
+                });
 
         Attendance attendance = new Attendance();
         attendance.setMember(member);
@@ -38,14 +43,17 @@ public class AttendanceService {
         attendance.setStatus("CHECKED_IN");
 
         Attendance saved = attendanceRepository.save(attendance);
+        log.info("Member {} successfully checked in.", member.getUserId());
         return toAttendanceResponse(saved);
     }
 
     public AttendanceResponse markCheckOut(String attendanceId) {
+        log.info("Processing check-out for attendance ID {}", attendanceId);
         Attendance attendance = attendanceRepository.findById(attendanceId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Attendance record not found"));
 
         if (!attendance.getStatus().equals("CHECKED_IN")) {
+            log.warn("Check-out failed for {} - Current status is {}", attendanceId, attendance.getStatus());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can only check out from checked-in status");
         }
 
