@@ -214,12 +214,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
    ```sql
    CREATE DATABASE IF NOT EXISTS gymdb;
    CREATE USER IF NOT EXISTS 'gymuser'@'localhost' IDENTIFIED BY 'change-me';
-  ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
+    ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
    GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'localhost';
    GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'%';
    FLUSH PRIVILEGES;
    ```
-   *Note: The application uses `spring.jpa.hibernate.ddl-auto=update`, so tables are automatically created on the first run. Ensure the credentials match your `src/main/resources/application.properties`.*
+  *Important:* In the SQL above, `change-me` is the MySQL password for user `gymuser`.
+  It is used by the backend datasource config in `gym-management-system-backend/src/main/resources/application.properties`:
+  - `spring.datasource.username=${DB_USERNAME:gymuser}`
+  - `spring.datasource.password=${DB_PASSWORD:change-me}`
+  If you change the password in MySQL, update `DB_PASSWORD` (or the default value) to the same password.
+  *Note: The application uses `spring.jpa.hibernate.ddl-auto=update`, so tables are automatically created on the first run.*
 3. Boot the application:
 ```bash
 # MacOS / Linux
