@@ -13,14 +13,17 @@ import com.gym.model.Member;
 import com.gym.model.Trainer;
 import com.gym.model.User;
 import com.gym.repository.UserRepository;
+import com.gym.security.JwtService;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public UserResponse registerUser(RegisterUserRequest request) {
@@ -46,7 +49,8 @@ public class UserService {
                 .findByEmailAndPhone(request.getEmail(), request.getPhone())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
-        return toResponse(user);
+        String token = jwtService.generateToken(user.getEmail());
+        return toResponse(user, token);
     }
 
     private User createUserByType(UserType userType) {
@@ -58,12 +62,17 @@ public class UserService {
     }
 
     private UserResponse toResponse(User user) {
+        return toResponse(user, null);
+    }
+
+    private UserResponse toResponse(User user, String token) {
         return UserResponse.builder()
                 .userId(user.getUserId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getClass().getSimpleName())
+                .token(token)
                 .build();
     }
 }

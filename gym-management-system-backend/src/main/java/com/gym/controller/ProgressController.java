@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.gym.dto.ProgressRequest;
 import com.gym.dto.ProgressResponse;
 import com.gym.service.ProgressService;
@@ -30,7 +32,7 @@ public class ProgressController {
 
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProgressResponse updateProgress(@RequestBody ProgressRequest request) {
+    public ProgressResponse updateProgress(@Valid @RequestBody ProgressRequest request) {
         return progressService.updateProgress(request);
     }
 

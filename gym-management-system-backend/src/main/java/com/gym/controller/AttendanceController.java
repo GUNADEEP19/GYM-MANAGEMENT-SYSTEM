@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.gym.dto.AttendanceRequest;
 import com.gym.dto.AttendanceResponse;
 import com.gym.service.AttendanceService;
@@ -30,7 +32,7 @@ public class AttendanceController {
 
     @PostMapping("/checkin")
     @ResponseStatus(HttpStatus.CREATED)
-    public AttendanceResponse markCheckIn(@RequestBody AttendanceRequest request) {
+    public AttendanceResponse markCheckIn(@Valid @RequestBody AttendanceRequest request) {
         return attendanceService.markCheckIn(request);
     }
 
