@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gym.dto.ApiResponse;
+import com.gym.dto.ForgotPasswordRequest;
 import com.gym.dto.LoginUserRequest;
 import com.gym.dto.RegisterUserRequest;
 import com.gym.dto.UserResponse;
@@ -32,5 +33,11 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse<UserResponse> login(@Valid @RequestBody LoginUserRequest request) {
         return ApiResponse.success("Login successful", userService.loginUser(request));
+    }
+
+    @PostMapping("/password/forgot")
+    public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.forgotPassword(request);
+        return ApiResponse.success("Password reset successful", null);
     }
 }

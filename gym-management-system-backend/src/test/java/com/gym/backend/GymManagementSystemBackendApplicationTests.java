@@ -22,6 +22,7 @@ import com.gym.model.Member;
 import com.gym.repository.UserRepository;
 import com.gym.security.JwtService;
 import com.gym.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class GymManagementSystemBackendApplicationTests {
@@ -31,6 +32,9 @@ class GymManagementSystemBackendApplicationTests {
 
 	@Mock
 	private JwtService jwtService;
+
+	@Mock
+	private PasswordEncoder passwordEncoder;
 
 	@InjectMocks
 	private UserService userService;
@@ -42,6 +46,7 @@ class GymManagementSystemBackendApplicationTests {
 		request.setEmail("deepak@example.com");
 		request.setPhone("9876543210");
 		request.setUserType(UserType.MEMBER);
+		request.setPassword("pw");
 
 		when(userRepository.findByEmail("deepak@example.com")).thenReturn(Optional.empty());
 		when(userRepository.save(any())).thenAnswer(invocation -> {
@@ -61,16 +66,18 @@ class GymManagementSystemBackendApplicationTests {
 	void loginUserReturnsExistingUser() {
 		LoginUserRequest request = new LoginUserRequest();
 		request.setEmail("deepak@example.com");
-		request.setPhone("9876543210");
+		request.setPassword("pw");
 
 		Member member = new Member();
 		member.setUserId("u-123");
 		member.setName("Deepak");
 		member.setEmail("deepak@example.com");
 		member.setPhone("9876543210");
+		member.setPasswordHash("hash");
 
-		when(userRepository.findByEmailAndPhone("deepak@example.com", "9876543210"))
+		when(userRepository.findByEmail("deepak@example.com"))
 				.thenReturn(Optional.of(member));
+		when(passwordEncoder.matches("pw", "hash")).thenReturn(true);
 		when(jwtService.generateToken("deepak@example.com")).thenReturn("jwt-token");
 
 		UserResponse response = userService.loginUser(request);
@@ -83,9 +90,9 @@ class GymManagementSystemBackendApplicationTests {
 	void loginUserThrowsOnInvalidCredentials() {
 		LoginUserRequest request = new LoginUserRequest();
 		request.setEmail("wrong@example.com");
-		request.setPhone("0000");
+		request.setPassword("bad");
 
-		when(userRepository.findByEmailAndPhone("wrong@example.com", "0000"))
+		when(userRepository.findByEmail("wrong@example.com"))
 				.thenReturn(Optional.empty());
 
 		ResponseStatusException exception =

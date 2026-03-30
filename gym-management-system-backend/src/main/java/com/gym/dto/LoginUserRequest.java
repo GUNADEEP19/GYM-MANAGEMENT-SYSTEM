@@ -12,6 +12,6 @@ public class LoginUserRequest {
     @Email(message = "Email format is invalid")
     private String email;
 
-    @NotBlank(message = "Phone is required")
-    private String phone;
+    @NotBlank(message = "Password is required")
+    private String password;
 }

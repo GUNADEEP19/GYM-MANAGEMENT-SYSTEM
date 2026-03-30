@@ -40,9 +40,14 @@ export default function AppLayout() {
           </NavLink>
 
           {role === 'ADMIN' ? (
-            <NavLink to="/admin/report" className={linkClass}>
-              Admin Report
-            </NavLink>
+            <>
+              <NavLink to="/admin/create-user" className={linkClass}>
+                Create User
+              </NavLink>
+              <NavLink to="/admin/report" className={linkClass}>
+                Admin Report
+              </NavLink>
+            </>
           ) : null}
         </nav>
 
