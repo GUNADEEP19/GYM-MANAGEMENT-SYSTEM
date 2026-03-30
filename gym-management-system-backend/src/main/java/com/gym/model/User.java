@@ -35,6 +35,9 @@ public abstract class User {
     @Column(nullable = false)
     private String phone;
 
+    @Column(name = "password_hash")
+    private String passwordHash;
+
     @PrePersist
     public void prePersist() {
         if (this.userId == null || this.userId.isBlank()) {

@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         String role = "ROLE_" + user.getClass().getSimpleName().toUpperCase();
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
-                .password("{noop}N/A")
+                .password(user.getPasswordHash() == null ? "" : user.getPasswordHash())
                 .authorities(List.of(new SimpleGrantedAuthority(role)))
                 .accountExpired(false)
                 .accountLocked(false)

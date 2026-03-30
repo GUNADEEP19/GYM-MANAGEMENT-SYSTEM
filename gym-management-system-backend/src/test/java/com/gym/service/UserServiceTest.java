@@ -24,6 +24,7 @@ import com.gym.model.Trainer;
 import com.gym.model.User;
 import com.gym.repository.UserRepository;
 import com.gym.security.JwtService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -34,6 +35,9 @@ class UserServiceTest {
     @Mock
     private JwtService jwtService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
@@ -43,6 +47,7 @@ class UserServiceTest {
         request.setName("Alex");
         request.setEmail("alex@gym.com");
         request.setPhone("1111111111");
+        request.setPassword("pw");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> userService.registerUser(request));
@@ -92,16 +97,18 @@ class UserServiceTest {
     void loginUserReturnsMappedResponseWhenCredentialsAreValid() {
         LoginUserRequest request = new LoginUserRequest();
         request.setEmail("member@gym.com");
-        request.setPhone("9999999999");
+        request.setPassword("pw");
 
         Member member = new Member();
         member.setUserId("member-1");
         member.setName("Jordan");
         member.setEmail(request.getEmail());
-        member.setPhone(request.getPhone());
+        member.setPhone("9999999999");
+        member.setPasswordHash("hash");
 
-        when(userRepository.findByEmailAndPhone(request.getEmail(), request.getPhone()))
+        when(userRepository.findByEmail(request.getEmail()))
                 .thenReturn(Optional.of(member));
+        when(passwordEncoder.matches("pw", "hash")).thenReturn(true);
         when(jwtService.generateToken(request.getEmail())).thenReturn("jwt-token");
 
         UserResponse response = userService.loginUser(request);
@@ -118,9 +125,9 @@ class UserServiceTest {
     void loginUserThrowsUnauthorizedWhenCredentialsAreInvalid() {
         LoginUserRequest request = new LoginUserRequest();
         request.setEmail("unknown@gym.com");
-        request.setPhone("0000000000");
+        request.setPassword("bad");
 
-        when(userRepository.findByEmailAndPhone(request.getEmail(), request.getPhone()))
+        when(userRepository.findByEmail(request.getEmail()))
                 .thenReturn(Optional.empty());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -136,6 +143,7 @@ class UserServiceTest {
         request.setEmail("ari@gym.com");
         request.setPhone("9876543210");
         request.setUserType(userType);
+        request.setPassword("pw");
         return request;
     }
 }

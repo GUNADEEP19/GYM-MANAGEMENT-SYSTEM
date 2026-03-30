@@ -1,15 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { api, unwrapApi } from '../app/apiClient';
-import { useAuth } from '../app/AuthContext';
+import { api } from '../app/apiClient';
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-  const { login } = useAuth();
-
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,14 +14,11 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const res = await api.post('/login', { email, password });
-      const userResponse = unwrapApi(res.data);
-      if (!userResponse?.token) throw new Error('Token missing in response');
-      login(userResponse);
-      toast.success('Login successful');
-      navigate('/packages', { replace: true });
+      await api.post('/password/forgot', { email, phone, newPassword });
+      toast.success('Password reset successful. Please login.');
+      setNewPassword('');
     } catch (err) {
-      const msg = err?.response?.data?.message || err?.message || 'Login failed';
+      const msg = err?.response?.data?.message || err?.message || 'Reset failed';
       setError(msg);
     } finally {
       setLoading(false);
@@ -35,8 +28,12 @@ export default function LoginPage() {
   return (
     <div className="page">
       <div className="card page-card">
-        <h1 className="page-title">Login</h1>
-        <form onSubmit={onSubmit} className="form">
+        <h1 className="page-title">Forgot Password</h1>
+        <div className="muted mt-8">
+          Enter your registered email + phone, then set a new password.
+        </div>
+
+        <form onSubmit={onSubmit} className="form mt-12">
           <label className="label">
             Email
             <input
@@ -48,12 +45,22 @@ export default function LoginPage() {
             />
           </label>
           <label className="label">
-            Password
+            Phone
+            <input
+              className="input"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="9999999999"
+              required
+            />
+          </label>
+          <label className="label">
+            New Password
             <input
               className="input"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               placeholder="••••••••"
               required
             />
@@ -62,13 +69,13 @@ export default function LoginPage() {
           {error ? <div className="alert alert-error">{error}</div> : null}
 
           <button className="btn btn-primary" type="submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Login'}
+            {loading ? 'Resetting...' : 'Reset Password'}
           </button>
         </form>
 
         <div className="muted mt-12">
-          <a className="link" href="/forgot-password">
-            Forgot password?
+          <a className="link" href="/login">
+            Back to login
           </a>
         </div>
       </div>

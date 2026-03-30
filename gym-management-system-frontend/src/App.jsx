@@ -7,13 +7,14 @@ import AppLayout from './layout/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import PackagesPage from './pages/PackagesPage';
 import WorkoutsPage from './pages/WorkoutsPage';
 import ProgressPage from './pages/ProgressPage';
 import AttendancePage from './pages/AttendancePage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import AdminReportPage from './pages/AdminReportPage';
+import AdminCreateUserPage from './pages/AdminCreateUserPage';
 
 function PublicOnly({ children }) {
   const { isAuthenticated } = useAuth();
@@ -43,10 +44,10 @@ export default function App() {
             }
           />
           <Route
-            path="/register"
+            path="/forgot-password"
             element={
               <PublicOnly>
-                <RegisterPage />
+                <ForgotPasswordPage />
               </PublicOnly>
             }
           />
@@ -58,6 +59,15 @@ export default function App() {
             <Route path="progress" element={<ProgressPage />} />
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="recommendation" element={<RecommendationsPage />} />
+
+            <Route
+              path="admin/create-user"
+              element={
+                <ProtectedRoute requiredRoles={['ADMIN']}>
+                  <AdminCreateUserPage />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="admin/report"
