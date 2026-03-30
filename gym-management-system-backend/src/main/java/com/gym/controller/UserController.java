@@ -1,6 +1,9 @@
 package com.gym.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,5 +42,10 @@ public class UserController {
     public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         userService.forgotPassword(request);
         return ApiResponse.success("Password reset successful", null);
+    }
+
+    @GetMapping("/api/trainers")
+    public ApiResponse<List<UserResponse>> getAllTrainers() {
+        return ApiResponse.success("Trainers retrieved", userService.getAllTrainers());
     }
 }

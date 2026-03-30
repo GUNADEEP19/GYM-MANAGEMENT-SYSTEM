@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.gym.dto.CreateWorkoutPlanRequest;
 import com.gym.dto.ExerciseRequest;
 import com.gym.dto.ExerciseResponse;
+import com.gym.dto.UserResponse;
 import com.gym.dto.WorkoutPlanResponse;
 import com.gym.model.Exercise;
 import com.gym.model.Member;
@@ -93,6 +94,27 @@ public class WorkoutService {
         WorkoutPlan plan = workoutPlanRepository.findById(planId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout plan not found"));
         return toWorkoutPlanResponse(plan);
+    }
+
+    public List<UserResponse> getTrainerAssignedMembers(String trainerId) {
+        // Verify trainer exists
+        trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trainer not found"));
+
+        // Get all workout plans for this trainer and extract unique members
+        List<WorkoutPlan> workoutPlans = workoutPlanRepository.findByTrainerUserId(trainerId);
+        
+        return workoutPlans.stream()
+                .map(WorkoutPlan::getMember)
+                .distinct()
+                .map(member -> UserResponse.builder()
+                        .userId(member.getUserId())
+                        .name(member.getName())
+                        .email(member.getEmail())
+                        .phone(member.getPhone())
+                        .role("MEMBER")
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private WorkoutPlanResponse toWorkoutPlanResponse(WorkoutPlan plan) {

@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
-
 import com.gym.dto.ApiResponse;
 import com.gym.dto.CreateWorkoutPlanRequest;
 import com.gym.dto.ExerciseRequest;
 import com.gym.dto.ExerciseResponse;
+import com.gym.dto.UserResponse;
 import com.gym.dto.WorkoutPlanResponse;
 import com.gym.service.WorkoutService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/workout")
@@ -55,5 +56,10 @@ public class WorkoutController {
     @GetMapping("/{planId}/exercises")
     public ApiResponse<List<ExerciseResponse>> getExercisesByPlan(@PathVariable String planId) {
         return ApiResponse.success("Exercises retrieved", workoutService.getExercisesByPlan(planId));
+    }
+
+    @GetMapping("/trainer/{trainerId}/members")
+    public ApiResponse<List<UserResponse>> getTrainerAssignedMembers(@PathVariable String trainerId) {
+        return ApiResponse.success("Assigned members retrieved", workoutService.getTrainerAssignedMembers(trainerId));
     }
 }

@@ -24,4 +24,7 @@ public class RegisterUserRequest {
 
     @NotBlank(message = "Password is required")
     private String password;
+
+    // Optional: Trainer assigned to this member (only used if userType == MEMBER)
+    private String trainerUserId;
 }

@@ -181,22 +181,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ## REST API Reference
 
 ### User APIs
-- `POST /api/users/register`
-- `POST /api/users/login`
+- `POST /register` - Register user (ADMIN only for admins; MEMBER/TRAINER open)
+- `POST /login` - Login user
+- `GET  /api/trainers` - List all trainers (for admin member creation)
+
+### Trainer Assignment (Admin Only)
+- **Feature**: Admin can assign trainers to members during registration
+- **Usage**: When creating a MEMBER user, optionally provide `trainerUserId`
+- **Result**: Creates initial `WorkoutPlan` linking member to trainer
 
 ### Workout & Progress APIs
-- `POST /api/workout/create`
-- `GET  /api/workout/member/{memberId}`
-- `POST /api/progress/update`
-- `GET  /api/progress/member/{memberId}`
+- `POST /workout/create` - Create workout plan
+- `GET  /workout/member/{memberId}` - Get member's workout plans
+- `GET  /workout/trainer/{trainerId}/members` - Get trainer's assigned members (NEW)
+- `POST /progress/update` - Update member progress
+- `GET  /progress/member/{memberId}` - Get member's progress
 
 ### Attendance APIs
-- `POST /api/attendance/checkin`
-- `POST /api/attendance/checkout/{attendanceId}`
+- `POST /attendance/checkin` - Member check-in
+- `POST /attendance/checkout/{attendanceId}` - Member check-out
 
 ### Recommendations & Reports (Power Features)
-- `GET /api/recommendation/{memberId}` (Strategy Pattern Generation)
-- `GET /api/report/dashboard` (Admin Analytics Dashboard)
+- `GET /recommendation/{memberId}` (Strategy Pattern Generation)
+- `GET /report/dashboard` (Admin Analytics Dashboard)
 
 ---
 
@@ -214,7 +221,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
    ```sql
    CREATE DATABASE IF NOT EXISTS gymdb;
    CREATE USER IF NOT EXISTS 'gymuser'@'localhost' IDENTIFIED BY 'change-me';
-    ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
+   ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
    GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'localhost';
    GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'%';
    FLUSH PRIVILEGES;
@@ -225,15 +232,49 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
   - `spring.datasource.password=${DB_PASSWORD:change-me}`
   If you change the password in MySQL, update `DB_PASSWORD` (or the default value) to the same password.
   *Note: The application uses `spring.jpa.hibernate.ddl-auto=update`, so tables are automatically created on the first run.*
-3. Boot the application:
+3. **Free required ports** before starting (if previous runs are still active):
 ```bash
-# MacOS / Linux
-./mvnw clean spring-boot:run
+# Show processes using backend/frontend ports
+lsof -nP -iTCP -sTCP:LISTEN | grep -E ":(8080|5173)\\b"
 
-# Windows
-.\mvnw.cmd clean spring-boot:run
+# Optional: force kill processes on those ports
+kill -9 $(lsof -t -i:8080) 2>/dev/null || true
+kill -9 $(lsof -t -i:5173) 2>/dev/null || true
 ```
-4. Access the **Interactive Swagger Documentation** at: `http://localhost:8080/swagger-ui.html`
+
+4. **Start Backend** (Terminal 1):
+```bash
+cd gym-management-system-backend
+
+# macOS / Linux
+DB_URL="jdbc:mysql://localhost:3306/gymdb" DB_USERNAME="gymuser" DB_PASSWORD="change-me" ./mvnw spring-boot:run
+
+# Windows (PowerShell)
+$env:DB_URL="jdbc:mysql://localhost:3306/gymdb"; $env:DB_USERNAME="gymuser"; $env:DB_PASSWORD="change-me"; .\mvnw.cmd spring-boot:run
+```
+
+5. **Start Frontend** (Terminal 2):
+```bash
+cd gym-management-system-frontend
+npm install
+npm run dev
+```
+
+6. **Open the app**:
+- Frontend: `http://localhost:5173`
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+7. **Quick health check** (optional):
+```bash
+curl -I http://localhost:8080/swagger-ui.html
+curl -I http://localhost:5173
+```
+
+### Common Startup Issues
+- **Port 8080 already in use**: stop the existing Java process and restart backend.
+- **Port 5173 already in use**: stop existing Vite/Node process and restart frontend.
+- **Blank frontend page**: open browser devtools console, fix import/runtime errors, then hard refresh (`Cmd+Shift+R`).
+- **DB auth error**: verify MySQL credentials and ensure `gymuser` has access to `gymdb`.
 
 ---
 

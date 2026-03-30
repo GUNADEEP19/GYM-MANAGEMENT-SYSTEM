@@ -15,10 +15,16 @@ import AttendancePage from './pages/AttendancePage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import AdminReportPage from './pages/AdminReportPage';
 import AdminCreateUserPage from './pages/AdminCreateUserPage';
+import TrainerMembersPage from './pages/TrainerMembersPage';
 
 function PublicOnly({ children }) {
-  const { isAuthenticated } = useAuth();
-  if (isAuthenticated) return <Navigate to="/packages" replace />;
+  const { isAuthenticated, role } = useAuth();
+  if (isAuthenticated) {
+    // Redirect to role-specific landing page
+    if (role === 'ADMIN') return <Navigate to="/admin/create-user" replace />;
+    if (role === 'TRAINER') return <Navigate to="/trainer/members" replace />;
+    return <Navigate to="/packages" replace />;
+  }
   return children;
 }
 
@@ -54,12 +60,68 @@ export default function App() {
 
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route index element={<Navigate to="/packages" replace />} />
-            <Route path="packages" element={<PackagesPage />} />
-            <Route path="workouts" element={<WorkoutsPage />} />
-            <Route path="progress" element={<ProgressPage />} />
-            <Route path="attendance" element={<AttendancePage />} />
-            <Route path="recommendation" element={<RecommendationsPage />} />
+            
+            {/* Member-only routes */}
+            <Route
+              path="packages"
+              element={
+                <ProtectedRoute requiredRoles={['MEMBER']}>
+                  <PackagesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="workouts"
+              element={
+                <ProtectedRoute requiredRoles={['MEMBER']}>
+                  <WorkoutsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="progress"
+              element={
+                <ProtectedRoute requiredRoles={['MEMBER']}>
+                  <ProgressPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="attendance"
+              element={
+                <ProtectedRoute requiredRoles={['MEMBER']}>
+                  <AttendancePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="recommendation"
+              element={
+                <ProtectedRoute requiredRoles={['MEMBER']}>
+                  <RecommendationsPage />
+                </ProtectedRoute>
+              }
+            />
 
+            {/* Trainer-only routes */}
+            <Route
+              path="trainer/members"
+              element={
+                <ProtectedRoute requiredRoles={['TRAINER']}>
+                  <TrainerMembersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="trainer/workouts"
+              element={
+                <ProtectedRoute requiredRoles={['TRAINER']}>
+                  <WorkoutsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin-only routes */}
             <Route
               path="admin/create-user"
               element={
@@ -68,7 +130,6 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="admin/report"
               element={
@@ -86,7 +147,7 @@ export default function App() {
                 <div className="card page-card">
                   <h1 className="page-title">Page not found</h1>
                   <div className="muted">
-                    Go back to <a className="link" href="/packages">Packages</a>
+                    Go back to <a className="link" href="/packages">home</a>
                   </div>
                 </div>
               </div>

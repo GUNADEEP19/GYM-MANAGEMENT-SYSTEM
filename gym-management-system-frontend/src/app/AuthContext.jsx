@@ -4,13 +4,21 @@ import { clearAuth, getUser, saveAuth } from './tokenStorage';
 
 const AuthContext = createContext(null);
 
+function normalizeAuth(user) {
+  if (!user) return null;
+  return {
+    ...user,
+    role: user.role ? String(user.role).toUpperCase() : null,
+  };
+}
+
 export function AuthProvider({ children }) {
-  const [auth, setAuth] = useState(() => getUser());
+  const [auth, setAuth] = useState(() => normalizeAuth(getUser()));
 
   useEffect(() => {
     const AUTH_EVENT = 'gymAuthUpdated';
     // Keep state in sync if another tab changes localStorage.
-    const onStorage = () => setAuth(getUser());
+    const onStorage = () => setAuth(normalizeAuth(getUser()));
     window.addEventListener('storage', onStorage);
     window.addEventListener(AUTH_EVENT, onStorage);
     return () => {
@@ -28,8 +36,9 @@ export function AuthProvider({ children }) {
       token: auth?.token ?? null,
       login: (userResponse) => {
         // UserResponse: { userId, name, email, phone, role, token }
-        saveAuth(userResponse);
-        setAuth(userResponse);
+        const normalized = normalizeAuth(userResponse);
+        saveAuth(normalized);
+        setAuth(normalized);
       },
       logout: () => {
         clearAuth();
