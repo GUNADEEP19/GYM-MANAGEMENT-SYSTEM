@@ -11,6 +11,8 @@ import com.gym.dto.RegisterUserRequest;
 import com.gym.dto.UserResponse;
 import com.gym.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class UserController {
 
@@ -22,12 +24,12 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse register(@RequestBody RegisterUserRequest request) {
+    public UserResponse register(@Valid @RequestBody RegisterUserRequest request) {
         return userService.registerUser(request);
     }
 
     @PostMapping("/login")
-    public UserResponse login(@RequestBody LoginUserRequest request) {
+    public UserResponse login(@Valid @RequestBody LoginUserRequest request) {
         return userService.loginUser(request);
     }
 }

@@ -1,30 +1,35 @@
 package com.gym.backend;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.gym.dto.LoginUserRequest;
 import com.gym.dto.RegisterUserRequest;
 import com.gym.dto.UserType;
 import com.gym.model.Member;
 import com.gym.model.User;
 import com.gym.repository.UserRepository;
+import com.gym.security.JwtService;
 import com.gym.service.UserService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GymManagementSystemBackendApplicationTests {
 
 	@Mock
 	private UserRepository userRepository;
+
+	@Mock
+	private JwtService jwtService;
 
 	@InjectMocks
 	private UserService userService;
@@ -65,6 +70,7 @@ class GymManagementSystemBackendApplicationTests {
 
 		when(userRepository.findByEmailAndPhone("deepak@example.com", "9876543210"))
 				.thenReturn(Optional.of(member));
+		when(jwtService.generateToken("deepak@example.com")).thenReturn("jwt-token");
 
 		var response = userService.loginUser(request);
 
@@ -81,6 +87,8 @@ class GymManagementSystemBackendApplicationTests {
 		when(userRepository.findByEmailAndPhone("wrong@example.com", "0000"))
 				.thenReturn(Optional.empty());
 
-		assertThrows(RuntimeException.class, () -> userService.loginUser(request));
+		ResponseStatusException exception =
+				assertThrows(ResponseStatusException.class, () -> userService.loginUser(request));
+		assertEquals("401 UNAUTHORIZED \"Invalid credentials\"", exception.getMessage());
 	}
 }

@@ -23,12 +23,16 @@ import com.gym.model.Member;
 import com.gym.model.Trainer;
 import com.gym.model.User;
 import com.gym.repository.UserRepository;
+import com.gym.security.JwtService;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private JwtService jwtService;
 
     @InjectMocks
     private UserService userService;
@@ -98,6 +102,7 @@ class UserServiceTest {
 
         when(userRepository.findByEmailAndPhone(request.getEmail(), request.getPhone()))
                 .thenReturn(Optional.of(member));
+        when(jwtService.generateToken(request.getEmail())).thenReturn("jwt-token");
 
         UserResponse response = userService.loginUser(request);
 
@@ -106,6 +111,7 @@ class UserServiceTest {
         assertEquals("member@gym.com", response.getEmail());
         assertEquals("9999999999", response.getPhone());
         assertEquals("Member", response.getRole());
+        assertEquals("jwt-token", response.getToken());
     }
 
     @Test

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.gym.dto.CreateWorkoutPlanRequest;
 import com.gym.dto.ExerciseRequest;
 import com.gym.dto.ExerciseResponse;
@@ -29,7 +31,7 @@ public class WorkoutController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkoutPlanResponse createWorkoutPlan(@RequestBody CreateWorkoutPlanRequest request) {
+    public WorkoutPlanResponse createWorkoutPlan(@Valid @RequestBody CreateWorkoutPlanRequest request) {
         return workoutService.createWorkoutPlan(request);
     }
 
@@ -45,7 +47,7 @@ public class WorkoutController {
 
     @PostMapping("/exercise/assign")
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseResponse assignExercise(@RequestBody ExerciseRequest request) {
+    public ExerciseResponse assignExercise(@Valid @RequestBody ExerciseRequest request) {
         return workoutService.assignExercise(request);
     }
 

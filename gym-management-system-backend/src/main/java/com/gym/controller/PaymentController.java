@@ -1,22 +1,29 @@
 package com.gym.controller;
 
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.gym.dto.PaymentRequest;
 import com.gym.dto.PaymentResponse;
-import com.gym.dto.PaymentStatus;
 import com.gym.model.Member;
 import com.gym.model.Package;
 import com.gym.model.Payment;
 import com.gym.repository.MemberRepository;
 import com.gym.repository.PackageRepository;
-import com.gym.service.payment.PaymentManager;
 import com.gym.repository.PaymentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import com.gym.service.payment.PaymentManager;
 
-import java.time.LocalDateTime;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -45,20 +52,23 @@ public class PaymentController {
      * @return PaymentResponse with transaction status
      */
     @PostMapping("/pay")
-    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
         
         // Validate request
         if (paymentRequest == null || paymentRequest.getMemberId() == null || 
             paymentRequest.getPackageId() == null || paymentRequest.getPaymentMethod() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required payment fields");
         }
+
+        String memberId = Objects.requireNonNull(paymentRequest.getMemberId());
+        String packageId = Objects.requireNonNull(paymentRequest.getPackageId());
         
         // Fetch member
-        Member member = memberRepository.findById(paymentRequest.getMemberId())
+        Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
         
         // Fetch package
-        Package package_ = packageRepository.findById(paymentRequest.getPackageId())
+        Package package_ = packageRepository.findById(packageId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Package not found"));
         
         // Create payment object

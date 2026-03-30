@@ -1,21 +1,18 @@
 package com.gym.service;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.dto.ProgressRequest;
@@ -49,7 +46,9 @@ class ProgressServiceTest {
 
         when(memberRepository.findById("invalid-member")).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> progressService.updateProgress(request));
+        ResponseStatusException exception =
+            assertThrows(ResponseStatusException.class, () -> progressService.updateProgress(request));
+        assertNotNull(exception);
     }
 
     @Test
@@ -64,7 +63,9 @@ class ProgressServiceTest {
         when(memberRepository.findById("member-1")).thenReturn(Optional.of(member));
         when(workoutPlanRepository.findById("invalid-plan")).thenReturn(Optional.empty());
 
-        assertThrows(ResponseStatusException.class, () -> progressService.updateProgress(request));
+        ResponseStatusException exception =
+            assertThrows(ResponseStatusException.class, () -> progressService.updateProgress(request));
+        assertNotNull(exception);
     }
 
     @Test
@@ -87,6 +88,7 @@ class ProgressServiceTest {
         savedProgress.setProgressId("progress-1");
         savedProgress.setWeekNumber(1);
         savedProgress.setExercisesDone(5);
+        savedProgress.setWorkoutPlan(plan);
 
         when(memberRepository.findById("member-1")).thenReturn(Optional.of(member));
         when(workoutPlanRepository.findById("plan-1")).thenReturn(Optional.of(plan));

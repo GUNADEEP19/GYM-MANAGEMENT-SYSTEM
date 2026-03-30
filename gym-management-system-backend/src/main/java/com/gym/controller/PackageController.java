@@ -3,6 +3,7 @@ package com.gym.controller;
 import com.gym.dto.PackageRequest;
 import com.gym.dto.PackageResponse;
 import com.gym.service.PackageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class PackageController {
      * @return PackageResponse
      */
     @PostMapping("/create")
-    public ResponseEntity<PackageResponse> createPackage(@RequestBody PackageRequest packageRequest) {
+    public ResponseEntity<PackageResponse> createPackage(@Valid @RequestBody PackageRequest packageRequest) {
         PackageResponse response = packageService.createPackage(packageRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -80,7 +81,7 @@ public class PackageController {
     @PutMapping("/{id}")
     public ResponseEntity<PackageResponse> updatePackage(
         @PathVariable("id") String packageId,
-        @RequestBody PackageRequest packageRequest) {
+        @Valid @RequestBody PackageRequest packageRequest) {
         PackageResponse response = packageService.updatePackage(packageId, packageRequest);
         return ResponseEntity.ok(response);
     }
