@@ -45,7 +45,18 @@ We've utilized native Spring Boot mechanisms to catch Edge Case behavior automat
 
 ---
 
-## 📖 4. API Documentation Delivery (OpenAPI/Swagger)
+## 🗄️ 4. Scalability Polish (Logs & Database)
+To prove production readiness and system observability beyond just code compilation.
+
+### Professional SLF4J Logic Tracing
+*   Instead of unreliable `System.out.print` trails, the service modules (`PaymentManager`, `UserService`, `AttendanceService`) use `@Slf4j`. Core operations are appropriately flagged via `log.info`, `log.warn`, and `log.error`, guaranteeing that system behaviors are trackable in scaled environments.
+
+### JPA Database Indexed Annotations (`@Index`)
+*   Database tables have native indexing injected into Hibernate ORM modeling (`@Table(indexes = ...)`). High cardinality mapping parameters like `email` across Users, and `member_id` tracking across Payments and Attendances, resolve query speeds natively on the DB Engine ensuring O(log N) searches.
+
+---
+
+## 📖 5. API Documentation Delivery (OpenAPI/Swagger)
 We fully integrated `springdoc-openapi`. When running the server, evaluators and UI/UX frontend developers simply navigate directly to:
 **`http://localhost:8080/swagger-ui.html`**
 

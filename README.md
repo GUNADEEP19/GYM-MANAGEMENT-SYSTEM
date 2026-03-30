@@ -1,10 +1,88 @@
 # Gym Management System - OOAD Mini-Project
 
-A comprehensive, pure Java/Spring Boot based Gym Management System engineered strictly using Object-Oriented Analysis and Design (OOAD) principles and UML-driven architecture.
+A comprehensive, Java/Spring Boot based Gym Management System engineered strictly using Object-Oriented Analysis and Design (OOAD) principles and UML-driven architecture.
+
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [UML Diagrams and Design Documentation](#uml-diagrams-and-design-documentation)
+- [Architecture Diagram (Mermaid)](#architecture-diagram-mermaid)
+- [OOAD Design Patterns Used (Bonus Marks)](#ooad-design-patterns-used-bonus-marks)
+- [Technology Stack](#technology-stack)
+- [Domain Model](#domain-model)
+- [REST API Reference](#rest-api-reference)
+- [API Flow Example (Subscription)](#api-flow-example-subscription)
+- [Sample JWT Usage](#sample-jwt-usage)
+- [Database Polish & Logging](#database-polish--logging)
+- [Setup and Run Guide](#setup-and-run-guide)
+- [Testing](#testing)
 
 ---
 
-## 🏗️ Architecture Diagram
+## Project Overview
+This project models and implements core gym operations such as:
+- User registration and login (Admin, Trainer, Member)
+- Workout plan creation and exercise assignment
+- Progress tracking
+- Attendance check-in and check-out
+- Dynamic reporting and strategy-based recommendations.
+
+The implementation follows a layered architecture and aligns strictly with the UML analysis artifacts available in the repository.
+
+---
+
+## Project Structure
+
+```text
+GYM-MANAGEMENT-SYSTEM/
+|-- UML DIAGRAMS/
+|   |-- ACTIVITY DIAGRAM/
+|   |-- CLASS DIAGRAM/
+|   |-- STATE DIAGRAM/
+|   |-- USE CASE DIAGRAM/
+|-- gym-management-system-backend/
+|   |-- pom.xml
+|   |-- src/main/java/com/gym/
+|   |   |-- config/
+|   |   |-- controller/
+|   |   |-- dto/
+|   |   |-- model/
+|   |   |-- repository/
+|   |   |-- service/
+|   |-- src/main/resources/
+|   |-- src/test/java/com/gym/
+|-- Gym_OOAD_Project_Documentation.pdf
+|-- Mini Project Guidelines.pdf
+|-- ARCHITECTURE.md
+|-- VIVA_DEMO_SCRIPT.md
+```
+
+---
+
+## UML Diagrams and Design Documentation
+
+### 1) Use Case Diagram
+Path: `UML DIAGRAMS/USE CASE DIAGRAM/`
+- Actor hierarchy with `User` as generalized actor and specialized `Admin`, `Trainer`, `Member`
+- External actor: `Payment Gateway`
+
+### 2) Class Diagram
+Path: `UML DIAGRAMS/CLASS DIAGRAM/`
+- Core classes: `User`, `Member`, `Trainer`, `Admin`, `WorkoutPlan`, `Exercise`, `Progress`, `Attendance`, `Payment`, `Package`
+- Inheritance: `Member`, `Trainer`, `Admin` extend abstract `User`
+- Composition: `WorkoutPlan` contains `Exercise`
+
+### 3) State Diagram
+Path: `UML DIAGRAMS/STATE DIAGRAM/`
+- Models member lifecycle from registration to active/inactive/end states
+
+### 4) Activity Diagram
+Path: `UML DIAGRAMS/ACTIVITY DIAGRAM/`
+- Activity-level flow of major user/system interactions
+
+---
+
+## 🏗️ Architecture Diagram (Mermaid)
 
 ```mermaid
 graph TD
@@ -33,21 +111,39 @@ This application heavily utilizes classic Gang of Four (GoF) design patterns to 
 
 ### 1. The Strategy Pattern (Behavioral)
 **Location:** `com.gym.service.recommendation`
-Instead of rigid if/else statements for dynamic business logic, we rely on the `WorkoutRecommendationStrategy` interface. Based on a `Progress` entity's `BMI`, the `RecommendationService` polymorphically injects `WeightLossStrategy`, `MuscleGainStrategy`, or `GeneralFitnessStrategy` at runtime.
+Based on a `Progress` entity's `BMI`, the `RecommendationService` polymorphically injects `WeightLossStrategy`, `MuscleGainStrategy`, or `GeneralFitnessStrategy` at runtime.
 
 ### 2. The Factory Method Pattern (Creational)
 **Location:** `com.gym.service.payment.PaymentFactory`
-The API receives abstract representations of a transaction. The `PaymentFactory` abstracts the initialization of decoupled, distinct transaction environments (`UpiPaymentService`, `CreditCardPaymentService`).
+The `PaymentFactory` abstracts the initialization of decoupled, distinct transaction environments (`UpiPaymentService`, `CreditCardPaymentService`).
 
 ### 3. Decorator / Wrapper Concept (Structural)
 **Location:** `com.gym.dto.ApiResponse<T>`
-Every RestController method uniformly routes its response through the `ApiResponse<T>` generic layer, applying a standard data envelope to all outward bounds payloads.
+Every RestController method uniformly routes its response through the `ApiResponse<T>` generic layer, applying a standard data envelope.
 
 ---
 
-## 🔀 API Flow Example
+## Technology Stack
+- Java 25 & Spring Boot 3.4.0
+- Spring Web, Spring Security, Spring Data JPA
+- MySQL DB + `mysql-connector-j`
+- Swagger UI (OpenAPI 3)
+- Lombok, JUnit 5, Mockito
 
-To understand how the system components interact, consider the critical **Subscription Flow**:
+---
+
+## Domain Model
+- `User` (abstract): `userId`, `name`, `email`, `phone` -> (Inherited by `Admin`, `Trainer`, `Member`)
+- `WorkoutPlan` (Member, Trainer) -> Many `Exercise`
+- `Progress` (Member)
+- `Attendance` (Member)
+- `Payment` & `Package` (Member)
+
+---
+
+## 🔀 API Flow Example (Subscription)
+
+Consider the critical **Subscription Flow**:
 
 1. **User `POST /api/users/login`**: Client swaps credentials for a JWT token.
 2. **Client injects JWT in Authorization Header `Bearer {token}`**.
@@ -55,37 +151,7 @@ To understand how the system components interact, consider the critical **Subscr
 4. **Member `POST /api/payments/process`**: Submits a payload to trigger the `PaymentFactory`.
 5. **System Response `200 OK`**: Returns wrapped uniform JSON confirming `SUCCESS`.
 
----
-
-## 🚀 Setup and Run Guide
-
-### 1. Prerequisites
-- JDK 25 installed
-- Maven 3.9+
-- MySQL Server
-
-### 2. Database Setup
-Create an empty schematic inside MySQL before booting Spring Boot:
-```sql
-CREATE DATABASE gymdb;
-```
-
-### 3. Application Config
-Edit `src/main/resources/application.properties` to map correctly to your local environment:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/gymdb
-spring.datasource.username=root
-spring.datasource.password=root
-```
-
-### 4. Boot Application
-```bash
-# MacOS / Linux
-./mvnw clean spring-boot:run
-
-# Windows
-.\mvnw.cmd clean spring-boot:run
-```
+*(Take a look at `VIVA_DEMO_SCRIPT.md` in this repository for a comprehensive end-to-end presentation script.)*
 
 ---
 
@@ -112,14 +178,53 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 
 ---
 
+## REST API Reference
+
+### User APIs
+- `POST /api/users/register`
+- `POST /api/users/login`
+
+### Workout & Progress APIs
+- `POST /api/workout/create`
+- `GET  /api/workout/member/{memberId}`
+- `POST /api/progress/update`
+- `GET  /api/progress/member/{memberId}`
+
+### Attendance APIs
+- `POST /api/attendance/checkin`
+- `POST /api/attendance/checkout/{attendanceId}`
+
+### Recommendations & Reports (Power Features)
+- `GET /api/recommendation/{memberId}` (Strategy Pattern Generation)
+- `GET /api/report/dashboard` (Admin Analytics Dashboard)
+
+---
+
 ## 🗄️ Database Polish & Logging
-- **JPA Context Indexes**: Heavily queried parameters (`user.email`, `attendance.date`) are directly annotated with `@Index` to force optimized B-Tree lookups on MySQL.
-- **SLF4J Console Logging**: All core `.service` files leverage `@Slf4j` tags emitting diagnostic operational statuses rather than rudimentary IDE traces. 
+
+- **JPA Context Indexes**: Heavily queried parameters (`user.email`, `attendance.date`, `payment.status`) are directly annotated with `@Index`. This forces optimized B-Tree lookups on the MySQL database, guaranteeing enterprise scaling.
+- **SLF4J Console Logging**: All core `.service` files utilize Lombok `@Slf4j` annotations. Operations emit diagnostic console audit trails (INFO/WARN/ERROR) instead of rudimentary `System.out.println` traces.
+
+---
+
+## 🚀 Setup and Run Guide
+
+1. Clone the repository.
+2. Update `src/main/resources/application.properties` with valid standard MySQL credentials (`gymdb`).
+3. Boot the application:
+```bash
+# MacOS / Linux
+./mvnw clean spring-boot:run
+
+# Windows
+.\mvnw.cmd clean spring-boot:run
+```
+4. Access the **Interactive Swagger Documentation** at: `http://localhost:8080/swagger-ui.html`
 
 ---
 
 ## 🔬 Testing
-64 native JUnit/Mockito tests verifying edge-case conditions ranging from `PaymentServices` to `AttendanceCheckIns`. Run them natively:
+There are **64 native JUnit/Mockito unit tests** verifying edge-case conditions ranging from `PaymentServices` routing to `AttendanceCheckIns`. Run them natively:
 ```bash
 ./mvnw clean test
 ```
