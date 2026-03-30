@@ -210,8 +210,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ## 🚀 Setup and Run Guide
 
 1. Clone the repository.
-2. Update `src/main/resources/application.properties` with valid standard MySQL credentials (`gymdb`).
-3. Boot the application:
+2. Database Setup:
+   - Log into your MySQL server as root: `mysql -u root -p`
+   - Run the following SQL commands to create the database and user:
+     ```sql
+     CREATE DATABASE IF NOT EXISTS gymdb;
+     CREATE USER IF NOT EXISTS 'gymuser'@'localhost' IDENTIFIED BY 'change-me';
+     ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
+     GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'localhost';
+     GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'%';
+     FLUSH PRIVILEGES;
+     ```
+   - Exit the MySQL monitor.
+3. Update `src/main/resources/application.properties` with the MySQL credentials if you changed them from the defaults (`gymuser` / `change-me`).
+4. Boot the application:
 ```bash
 # MacOS / Linux
 ./mvnw clean spring-boot:run
