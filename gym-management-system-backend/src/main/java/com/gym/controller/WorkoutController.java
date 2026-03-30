@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.CreateWorkoutPlanRequest;
 import com.gym.dto.ExerciseRequest;
 import com.gym.dto.ExerciseResponse;
@@ -31,28 +32,28 @@ public class WorkoutController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkoutPlanResponse createWorkoutPlan(@Valid @RequestBody CreateWorkoutPlanRequest request) {
-        return workoutService.createWorkoutPlan(request);
+    public ApiResponse<WorkoutPlanResponse> createWorkoutPlan(@Valid @RequestBody CreateWorkoutPlanRequest request) {
+        return ApiResponse.success("Workout plan created successfully", workoutService.createWorkoutPlan(request));
     }
 
     @GetMapping("/{planId}")
-    public WorkoutPlanResponse getWorkoutPlan(@PathVariable String planId) {
-        return workoutService.getWorkoutPlanById(planId);
+    public ApiResponse<WorkoutPlanResponse> getWorkoutPlan(@PathVariable String planId) {
+        return ApiResponse.success("Workout plan retrieved", workoutService.getWorkoutPlanById(planId));
     }
 
     @GetMapping("/member/{memberId}")
-    public List<WorkoutPlanResponse> getWorkoutPlansByMember(@PathVariable String memberId) {
-        return workoutService.getWorkoutPlansByMember(memberId);
+    public ApiResponse<List<WorkoutPlanResponse>> getWorkoutPlansByMember(@PathVariable String memberId) {
+        return ApiResponse.success("Workout plans retrieved", workoutService.getWorkoutPlansByMember(memberId));
     }
 
     @PostMapping("/exercise/assign")
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseResponse assignExercise(@Valid @RequestBody ExerciseRequest request) {
-        return workoutService.assignExercise(request);
+    public ApiResponse<ExerciseResponse> assignExercise(@Valid @RequestBody ExerciseRequest request) {
+        return ApiResponse.success("Exercise assigned successfully", workoutService.assignExercise(request));
     }
 
     @GetMapping("/{planId}/exercises")
-    public List<ExerciseResponse> getExercisesByPlan(@PathVariable String planId) {
-        return workoutService.getExercisesByPlan(planId);
+    public ApiResponse<List<ExerciseResponse>> getExercisesByPlan(@PathVariable String planId) {
+        return ApiResponse.success("Exercises retrieved", workoutService.getExercisesByPlan(planId));
     }
 }
