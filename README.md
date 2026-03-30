@@ -210,7 +210,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 ## 🚀 Setup and Run Guide
 
 1. Clone the repository.
-2. Update `src/main/resources/application.properties` with valid standard MySQL credentials (`gymdb`).
+2. **Database Setup**: You must first create the `gymdb` database and assign a local user before booting. Open your local MySQL instance (`mysql -u root -p`) and run:
+   ```sql
+   CREATE DATABASE IF NOT EXISTS gymdb;
+   CREATE USER IF NOT EXISTS 'gymuser'@'localhost' IDENTIFIED BY 'change-me';
+  ALTER USER 'gymuser'@'%' IDENTIFIED BY 'change-me';
+   GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'localhost';
+   GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'%';
+   FLUSH PRIVILEGES;
+   ```
+   *Note: The application uses `spring.jpa.hibernate.ddl-auto=update`, so tables are automatically created on the first run. Ensure the credentials match your `src/main/resources/application.properties`.*
 3. Boot the application:
 ```bash
 # MacOS / Linux
