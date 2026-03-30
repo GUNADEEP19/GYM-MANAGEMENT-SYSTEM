@@ -98,9 +98,10 @@ class PaymentControllerTest {
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("pay-123", response.getBody().getPaymentId());
-        assertEquals(PaymentStatus.SUCCESS, response.getBody().getStatus());
+        PaymentResponse body = response.getBody();
+        assertNotNull(body);
+        assertEquals("pay-123", body.getPaymentId());
+        assertEquals(PaymentStatus.SUCCESS, body.getStatus());
         verify(memberRepository, times(1)).findById("member-123");
         verify(packageRepository, times(1)).findById("pkg-123");
         verify(paymentManager, times(1)).processPayment(any(Payment.class));
@@ -181,9 +182,10 @@ class PaymentControllerTest {
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("pay-123", response.getBody().getPaymentId());
-        assertEquals(PaymentStatus.SUCCESS, response.getBody().getStatus());
+        PaymentResponse body = response.getBody();
+        assertNotNull(body);
+        assertEquals("pay-123", body.getPaymentId());
+        assertEquals(PaymentStatus.SUCCESS, body.getStatus());
         verify(paymentRepository, times(1)).findById("pay-123");
     }
     
@@ -219,7 +221,9 @@ class PaymentControllerTest {
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(PaymentStatus.FAILED, response.getBody().getStatus());
-        assertEquals("Card declined", response.getBody().getFailureReason());
+        PaymentResponse body = response.getBody();
+        assertNotNull(body);
+        assertEquals(PaymentStatus.FAILED, body.getStatus());
+        assertEquals("Card declined", body.getFailureReason());
     }
 }

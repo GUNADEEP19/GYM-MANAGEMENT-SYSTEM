@@ -1,8 +1,6 @@
 package com.gym.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

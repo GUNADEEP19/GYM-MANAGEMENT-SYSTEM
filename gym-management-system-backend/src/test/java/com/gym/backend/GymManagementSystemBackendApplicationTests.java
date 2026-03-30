@@ -18,7 +18,7 @@ import com.gym.dto.RegisterUserRequest;
 import com.gym.dto.UserResponse;
 import com.gym.dto.UserType;
 import com.gym.model.Member;
-import com.gym.model.User;
+
 import com.gym.repository.UserRepository;
 import com.gym.security.JwtService;
 import com.gym.service.UserService;
@@ -44,7 +44,7 @@ class GymManagementSystemBackendApplicationTests {
 		request.setUserType(UserType.MEMBER);
 
 		when(userRepository.findByEmail("deepak@example.com")).thenReturn(Optional.empty());
-		when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
+		when(userRepository.save(any())).thenAnswer(invocation -> {
 			Member member = invocation.getArgument(0);
 			member.setUserId("u-123");
 			return member;
