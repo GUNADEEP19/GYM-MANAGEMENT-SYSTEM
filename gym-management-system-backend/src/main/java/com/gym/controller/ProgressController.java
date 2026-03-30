@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.ProgressRequest;
 import com.gym.dto.ProgressResponse;
 import com.gym.service.ProgressService;
@@ -32,25 +33,25 @@ public class ProgressController {
 
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProgressResponse updateProgress(@Valid @RequestBody ProgressRequest request) {
-        return progressService.updateProgress(request);
+    public ApiResponse<ProgressResponse> updateProgress(@Valid @RequestBody ProgressRequest request) {
+        return ApiResponse.success("Progress updated successfully", progressService.updateProgress(request));
     }
 
     @GetMapping("/member/{memberId}")
-    public List<ProgressResponse> getProgressByMember(@PathVariable String memberId) {
-        return progressService.getProgressByMember(memberId);
+    public ApiResponse<List<ProgressResponse>> getProgressByMember(@PathVariable String memberId) {
+        return ApiResponse.success("Progress retrieved", progressService.getProgressByMember(memberId));
     }
 
     @GetMapping("/member/{memberId}/plan/{planId}")
-    public List<ProgressResponse> getProgressByMemberAndPlan(@PathVariable String memberId,
+    public ApiResponse<List<ProgressResponse>> getProgressByMemberAndPlan(@PathVariable String memberId,
             @PathVariable String planId) {
-        return progressService.getProgressByMemberAndPlan(memberId, planId);
+        return ApiResponse.success("Progress retrieved", progressService.getProgressByMemberAndPlan(memberId, planId));
     }
 
     @GetMapping("/member/{memberId}/range")
-    public List<ProgressResponse> getProgressInDateRange(@PathVariable String memberId,
+    public ApiResponse<List<ProgressResponse>> getProgressInDateRange(@PathVariable String memberId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return progressService.getProgressInDateRange(memberId, startDate, endDate);
+        return ApiResponse.success("Progress retrieved", progressService.getProgressInDateRange(memberId, startDate, endDate));
     }
 }

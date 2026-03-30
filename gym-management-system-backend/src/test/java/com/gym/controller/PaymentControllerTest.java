@@ -1,5 +1,6 @@
 package com.gym.controller;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.PaymentRequest;
 import com.gym.dto.PaymentResponse;
 import com.gym.dto.PaymentStatus;
@@ -94,11 +95,11 @@ class PaymentControllerTest {
         when(paymentManager.processPayment(any(Payment.class))).thenReturn(testPayment);
         
         // Act
-        ResponseEntity<PaymentResponse> response = paymentController.processPayment(paymentRequest);
+        ResponseEntity<ApiResponse<PaymentResponse>> response = paymentController.processPayment(paymentRequest);
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        PaymentResponse body = response.getBody();
+        PaymentResponse body = response.getBody() != null ? response.getBody().getData() : null;
         assertNotNull(body);
         assertEquals("pay-123", body.getPaymentId());
         assertEquals(PaymentStatus.SUCCESS, body.getStatus());
@@ -178,11 +179,11 @@ class PaymentControllerTest {
         when(paymentRepository.findById("pay-123")).thenReturn(Optional.of(testPayment));
         
         // Act
-        ResponseEntity<PaymentResponse> response = paymentController.getPaymentStatus("pay-123");
+        ResponseEntity<ApiResponse<PaymentResponse>> response = paymentController.getPaymentStatus("pay-123");
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        PaymentResponse body = response.getBody();
+        PaymentResponse body = response.getBody() != null ? response.getBody().getData() : null;
         assertNotNull(body);
         assertEquals("pay-123", body.getPaymentId());
         assertEquals(PaymentStatus.SUCCESS, body.getStatus());
@@ -217,11 +218,11 @@ class PaymentControllerTest {
         when(paymentRepository.findById("pay-fail")).thenReturn(Optional.of(failedPayment));
         
         // Act
-        ResponseEntity<PaymentResponse> response = paymentController.getPaymentStatus("pay-fail");
+        ResponseEntity<ApiResponse<PaymentResponse>> response = paymentController.getPaymentStatus("pay-fail");
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        PaymentResponse body = response.getBody();
+        PaymentResponse body = response.getBody() != null ? response.getBody().getData() : null;
         assertNotNull(body);
         assertEquals(PaymentStatus.FAILED, body.getStatus());
         assertEquals("Card declined", body.getFailureReason());

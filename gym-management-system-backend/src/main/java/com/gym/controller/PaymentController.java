@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.PaymentRequest;
 import com.gym.dto.PaymentResponse;
 import com.gym.model.Member;
@@ -52,7 +53,7 @@ public class PaymentController {
      * @return PaymentResponse with transaction status
      */
     @PostMapping("/pay")
-    public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<ApiResponse<PaymentResponse>> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
         
         // Validate request
         if (paymentRequest == null || paymentRequest.getMemberId() == null || 
@@ -82,7 +83,7 @@ public class PaymentController {
         Payment processedPayment = paymentManager.processPayment(payment);
         
         // Return response
-        return ResponseEntity.ok(mapToResponse(processedPayment));
+        return ResponseEntity.ok(ApiResponse.success("Payment processed successfully", mapToResponse(processedPayment)));
     }
     
     /**
@@ -92,12 +93,12 @@ public class PaymentController {
      * @return PaymentResponse with current status
      */
     @GetMapping("/status/{id}")
-    public ResponseEntity<PaymentResponse> getPaymentStatus(@PathVariable("id") String paymentId) {
+    public ResponseEntity<ApiResponse<PaymentResponse>> getPaymentStatus(@PathVariable("id") String paymentId) {
         
         Payment payment = paymentRepository.findById(paymentId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
         
-        return ResponseEntity.ok(mapToResponse(payment));
+        return ResponseEntity.ok(ApiResponse.success("Payment status retrieved", mapToResponse(payment)));
     }
     
     /**

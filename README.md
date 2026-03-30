@@ -200,6 +200,23 @@ com.gym
 
 ## REST API Reference
 
+### API Documentation (Swagger UI)
+Interactive OpenAPI documentation is automatically generated. Once the application is running, navigate your browser to:
+**[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+
+*Use the "Authorize" button at the top to inject your JWT token and interact with protected endpoints.*
+
+### Standard API Response Wrapper
+Every endpoint uniformly returns an `ApiResponse<T>` JSON envelope to standardize error handling and success messages:
+```json
+{
+  "success": true,
+  "message": "Request processed successfully",
+  "data": { },
+  "timestamp": "2026-03-30T10:00:00.000"
+}
+```
+
 Base URL (default local): `http://localhost:8080`
 
 ### Authentication/User APIs
@@ -356,12 +373,13 @@ Test suite currently includes:
 - Workout plan CRUD-related flows (create/retrieve/assign exercises)
 - Progress update and retrieval
 - Attendance check-in/check-out and reporting endpoints
+- **Security hardening (Stateless JWT Authentication & Global Exception Handling)**
+- **API Response Wrappers & Swagger OpenAPI 3.0 Documentation**
+- **Full payment workflow, Package subscriptions, and receipt generation**
 
 ### Planned/Design-Level (from UML)
-- Full payment workflow and package subscriptions
 - Report generation module
 - Advanced recommendation strategy implementation
-- Security hardening (JWT, authentication/authorization policies)
 
 ## Contributing Workflow
 1. Create a feature branch from `main`.

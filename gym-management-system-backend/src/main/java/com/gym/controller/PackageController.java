@@ -1,5 +1,6 @@
 package com.gym.controller;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.PackageRequest;
 import com.gym.dto.PackageResponse;
 import com.gym.service.PackageService;
@@ -32,9 +33,9 @@ public class PackageController {
      * @return PackageResponse
      */
     @PostMapping("/create")
-    public ResponseEntity<PackageResponse> createPackage(@Valid @RequestBody PackageRequest packageRequest) {
+    public ResponseEntity<ApiResponse<PackageResponse>> createPackage(@Valid @RequestBody PackageRequest packageRequest) {
         PackageResponse response = packageService.createPackage(packageRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Package created successfully", response));
     }
     
     /**
@@ -43,9 +44,9 @@ public class PackageController {
      * @return List of active packages
      */
     @GetMapping("/active")
-    public ResponseEntity<List<PackageResponse>> getAllActivePackages() {
+    public ResponseEntity<ApiResponse<List<PackageResponse>>> getAllActivePackages() {
         List<PackageResponse> response = packageService.getAllActivePackages();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("Active packages retrieved", response));
     }
     
     /**
@@ -54,9 +55,9 @@ public class PackageController {
      * @return List of all packages
      */
     @GetMapping("/all")
-    public ResponseEntity<List<PackageResponse>> getAllPackages() {
+    public ResponseEntity<ApiResponse<List<PackageResponse>>> getAllPackages() {
         List<PackageResponse> response = packageService.getAllPackages();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("All packages retrieved", response));
     }
     
     /**
@@ -66,9 +67,9 @@ public class PackageController {
      * @return PackageResponse
      */
     @GetMapping("/{id}")
-    public ResponseEntity<PackageResponse> getPackageById(@PathVariable("id") String packageId) {
+    public ResponseEntity<ApiResponse<PackageResponse>> getPackageById(@PathVariable("id") String packageId) {
         PackageResponse response = packageService.getPackageById(packageId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("Package retrieved", response));
     }
     
     /**
@@ -79,11 +80,11 @@ public class PackageController {
      * @return PackageResponse
      */
     @PutMapping("/{id}")
-    public ResponseEntity<PackageResponse> updatePackage(
+    public ResponseEntity<ApiResponse<PackageResponse>> updatePackage(
         @PathVariable("id") String packageId,
         @Valid @RequestBody PackageRequest packageRequest) {
         PackageResponse response = packageService.updatePackage(packageId, packageRequest);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ApiResponse.success("Package updated successfully", response));
     }
     
     /**
@@ -93,8 +94,8 @@ public class PackageController {
      * @return Success message
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePackage(@PathVariable("id") String packageId) {
+    public ResponseEntity<ApiResponse<String>> deletePackage(@PathVariable("id") String packageId) {
         packageService.deletePackage(packageId);
-        return ResponseEntity.ok("Package deleted successfully");
+        return ResponseEntity.ok(ApiResponse.success("Package deleted successfully", null));
     }
 }

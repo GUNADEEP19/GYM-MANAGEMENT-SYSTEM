@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
+import com.gym.dto.ApiResponse;
 import com.gym.dto.AttendanceRequest;
 import com.gym.dto.AttendanceResponse;
 import com.gym.service.AttendanceService;
@@ -32,31 +33,31 @@ public class AttendanceController {
 
     @PostMapping("/checkin")
     @ResponseStatus(HttpStatus.CREATED)
-    public AttendanceResponse markCheckIn(@Valid @RequestBody AttendanceRequest request) {
-        return attendanceService.markCheckIn(request);
+    public ApiResponse<AttendanceResponse> markCheckIn(@Valid @RequestBody AttendanceRequest request) {
+        return ApiResponse.success("Checked in successfully", attendanceService.markCheckIn(request));
     }
 
     @PostMapping("/checkout/{attendanceId}")
-    public AttendanceResponse markCheckOut(@PathVariable String attendanceId) {
-        return attendanceService.markCheckOut(attendanceId);
+    public ApiResponse<AttendanceResponse> markCheckOut(@PathVariable String attendanceId) {
+        return ApiResponse.success("Checked out successfully", attendanceService.markCheckOut(attendanceId));
     }
 
     @GetMapping("/member/{memberId}")
-    public List<AttendanceResponse> getAttendanceByMember(@PathVariable String memberId) {
-        return attendanceService.getAttendanceByMember(memberId);
+    public ApiResponse<List<AttendanceResponse>> getAttendanceByMember(@PathVariable String memberId) {
+        return ApiResponse.success("Attendance records retrieved", attendanceService.getAttendanceByMember(memberId));
     }
 
     @GetMapping("/member/{memberId}/range")
-    public List<AttendanceResponse> getAttendanceByDateRange(@PathVariable String memberId,
+    public ApiResponse<List<AttendanceResponse>> getAttendanceByDateRange(@PathVariable String memberId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return attendanceService.getAttendanceByDateRange(memberId, startDate, endDate);
+        return ApiResponse.success("Attendance records retrieved", attendanceService.getAttendanceByDateRange(memberId, startDate, endDate));
     }
 
     @GetMapping("/member/{memberId}/count")
-    public Integer getAttendanceCount(@PathVariable String memberId,
+    public ApiResponse<Integer> getAttendanceCount(@PathVariable String memberId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return attendanceService.getAttendanceCount(memberId, startDate, endDate);
+        return ApiResponse.success("Attendance count retrieved", attendanceService.getAttendanceCount(memberId, startDate, endDate));
     }
 }
