@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "payments")
+@Table(name = "payments", indexes = {
+    @Index(name = "idx_payment_member", columnList = "member_id"),
+    @Index(name = "idx_payment_status", columnList = "status")
+})
 public class Payment implements Serializable {
     
     @Id

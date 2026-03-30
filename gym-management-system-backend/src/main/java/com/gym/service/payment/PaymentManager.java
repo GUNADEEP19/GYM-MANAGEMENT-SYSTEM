@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Payment Manager - Orchestrates payment operations
  * Handles payment processing, receipt generation, and failure handling
  */
+@Slf4j
 @Service
 public class PaymentManager {
     
@@ -40,6 +43,7 @@ public class PaymentManager {
         payment.setPaymentDate(LocalDateTime.now());
         
         // Save initial payment record
+        log.info("Initiating {} payment for Member {} - Amount: {}", payment.getPaymentMethod(), payment.getMember().getUserId(), payment.getAmount());
         payment = paymentRepository.save(payment);
         
         try {
@@ -51,9 +55,11 @@ public class PaymentManager {
             
             // Update payment status
             if (success) {
+                log.info("Payment SUCCESS for Member {}", payment.getMember().getUserId());
                 payment.setStatus(PaymentStatus.SUCCESS);
                 generateReceipt(payment);
             } else {
+                log.warn("Payment FAILED for Member {} utilizing {}", payment.getMember().getUserId(), payment.getPaymentMethod());
                 payment.setStatus(PaymentStatus.FAILED);
                 handleFailure(payment);
             }
@@ -90,11 +96,11 @@ public class PaymentManager {
             payment.setReceiptUrl(receiptUrl);
             
             // Log receipt generation
-            System.out.println("Receipt generated: " + receiptUrl);
-            System.out.println(receiptContent);
+            log.info("Receipt generated: {}", receiptUrl);
+            log.debug("\n{}", receiptContent);
             
         } catch (Exception e) {
-            System.err.println("Error generating receipt: " + e.getMessage());
+            log.error("Error generating receipt: {}", e.getMessage(), e);
         }
     }
     
@@ -108,13 +114,11 @@ public class PaymentManager {
         }
         
         // Log failure
-        String logMessage = String.format(
-            "Payment failed for Member: %s, Amount: %.2f, Reason: %s",
-            payment.getMember().getName(),
-            payment.getAmount(),
+        log.error("Payment failed for Member: {}, Amount: {}, Reason: {}", 
+            payment.getMember().getName(), 
+            payment.getAmount(), 
             payment.getFailureReason()
         );
-        System.err.println(logMessage);
         
         // In real scenario: 
         // - Send email to member
