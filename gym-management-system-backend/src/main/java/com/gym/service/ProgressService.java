@@ -43,6 +43,8 @@ public class ProgressService {
         progress.setWorkoutPlan(plan);
         progress.setWeekNumber(request.getWeekNumber());
         progress.setExercisesDone(request.getExercisesDone());
+        progress.setWeight(request.getWeight());
+        progress.setBmi(request.getBmi());
         progress.setProgressNotes(request.getProgressNotes());
         progress.setRecordedDate(LocalDateTime.now());
 
@@ -72,6 +74,8 @@ public class ProgressService {
                 .progressId(progress.getProgressId())
                 .weekNumber(progress.getWeekNumber())
                 .exercisesDone(progress.getExercisesDone())
+                .weight(progress.getWeight())
+                .bmi(progress.getBmi())
                 .progressNotes(progress.getProgressNotes())
                 .recordedDate(progress.getRecordedDate())
                 .createdAt(progress.getCreatedAt())
