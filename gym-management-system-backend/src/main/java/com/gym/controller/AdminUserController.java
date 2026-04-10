@@ -53,17 +53,19 @@ public class AdminUserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone already exists");
         }
 
-        AppUser user = new AppUser();
-        user.setName(request.name());
-        user.setEmail(request.email());
-        user.setPhone(request.phone());
-        user.setRole(role);
-        user.setPasswordHash(passwordEncoder.encode(request.password()));
-
+        Long memberId = null;
         if (role == UserRole.MEMBER) {
-            Long memberId = memberService.createForAuthUser(request.name(), request.email(), request.phone(), request.trainerUserId()).getId();
-            user.setMemberId(memberId);
+            memberId = memberService.createForAuthUser(request.name(), request.email(), request.phone(), request.trainerUserId()).getId();
         }
+
+        AppUser user = AppUser.builder()
+                .name(request.name())
+                .email(request.email())
+                .phone(request.phone())
+                .role(role)
+                .passwordHash(passwordEncoder.encode(request.password()))
+                .memberId(memberId)
+                .build();
 
         AppUser saved = userRepository.save(user);
         return ApiResponse.ok(new UserSummary(saved.getId(), saved.getName(), saved.getEmail(), saved.getPhone(), saved.getRole().name()));

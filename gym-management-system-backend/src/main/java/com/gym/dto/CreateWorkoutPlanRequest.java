@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@SuppressWarnings("unused")
 public record CreateWorkoutPlanRequest(
         @NotNull Long memberId,
         @NotBlank String planName,

@@ -34,12 +34,13 @@ public class MemberService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone already exists");
         });
 
-        Member member = new Member();
-        member.setName(request.name());
-        member.setEmail(request.email());
-        member.setPhone(request.phone());
-        member.setJoinDate(LocalDate.now());
-        member.setStatus(MemberStatus.ACTIVE);
+        Member member = Member.builder()
+                .name(request.name())
+                .email(request.email())
+                .phone(request.phone())
+                .joinDate(LocalDate.now())
+                .status(MemberStatus.ACTIVE)
+                .build();
         return memberRepository.save(member);
     }
 
@@ -59,13 +60,14 @@ public class MemberService {
             }
         }
 
-        Member member = new Member();
-        member.setName(name);
-        member.setEmail(email);
-        member.setPhone(phone);
-        member.setJoinDate(LocalDate.now());
-        member.setStatus(MemberStatus.ACTIVE);
-        member.setTrainerUserId(trainerUserId);
+        Member member = Member.builder()
+                .name(name)
+                .email(email)
+                .phone(phone)
+                .joinDate(LocalDate.now())
+                .status(MemberStatus.ACTIVE)
+                .trainerUserId(trainerUserId)
+                .build();
         return memberRepository.save(member);
     }
 

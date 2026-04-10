@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@SuppressWarnings("unused")
 public record CreateExerciseRequest(
         @NotBlank String exerciseName,
         @NotNull @Min(1) Integer sets,

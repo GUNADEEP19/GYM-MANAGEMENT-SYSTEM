@@ -1,6 +1,5 @@
 package com.gym.dto;
 
-@SuppressWarnings("unused")
 public record ExerciseResponse(
         Long exerciseId,
         String exerciseName,

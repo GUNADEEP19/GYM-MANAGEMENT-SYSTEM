@@ -2,7 +2,6 @@ package com.gym.dto;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("unused")
 public record ReceiptResponse(
         String receiptNumber,
         Long paymentId,

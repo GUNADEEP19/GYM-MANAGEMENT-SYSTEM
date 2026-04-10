@@ -1,6 +1,5 @@
 package com.gym.dto;
 
-@SuppressWarnings("unused")
 public record ProgressRecordResponse(
         Long progressId,
         Integer weekNumber,

@@ -42,12 +42,13 @@ public class AdminSeeder implements ApplicationRunner {
             return;
         }
 
-        AppUser admin = new AppUser();
-        admin.setName(name);
-        admin.setEmail(email);
-        admin.setPhone(phone);
-        admin.setRole(UserRole.ADMIN);
-        admin.setPasswordHash(passwordEncoder.encode(password));
+        AppUser admin = AppUser.builder()
+                .name(name)
+                .email(email)
+                .phone(phone)
+                .role(UserRole.ADMIN)
+                .passwordHash(passwordEncoder.encode(password))
+                .build();
         userRepository.save(admin);
     }
 }

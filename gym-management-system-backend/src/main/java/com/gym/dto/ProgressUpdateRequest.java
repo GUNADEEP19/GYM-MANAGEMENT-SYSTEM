@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-@SuppressWarnings("unused")
 public record ProgressUpdateRequest(
         @NotNull Long planId,
         @NotNull @Min(1) Integer weekNumber,

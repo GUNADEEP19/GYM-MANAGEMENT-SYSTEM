@@ -22,11 +22,11 @@ We heavily prioritized decoupling and class abstraction by strictly implementing
 *   We created 3 polymorphic classes implementing this exact signature: `WeightLossStrategy`, `MuscleGainStrategy`, and `GeneralFitnessStrategy`. 
 *   **OOAD Benefit:** Applies the **Open/Closed Principle**. If this Gym introduces a customized diet-centric routing algorithm tomorrow, our engineers only need to add one new Strategy payload implementation class to the system without mutating (or risking regressions within) the core `RecommendationService`.
 
-### B. The Factory Method Pattern (Creational)
-**Location:** `com.gym.service.payment.PaymentGateway`
-**Use Case Context:** Payment validation is abstracted behind a small gateway interface (`PaymentGateway`).
-*   The core `PaymentService` calls the gateway to validate amounts and method strings without hard-wiring any third-party provider.
-*   **OOAD Benefit:** Loose coupling: swapping a fake/demo gateway for a real integration is isolated to one module.
+### B. The Builder Pattern (Creational)
+**Location:** `com.gym.model.Member`, `com.gym.model.WorkoutPlan`, `com.gym.model.AppUser` (static inner `Builder` class in each)
+**Use Case Context:** All three domain entities have multiple mandatory fields and at least one optional field. Before this pattern, service code called `new Member()` and then scattered 5–7 setter calls across multiple lines — a partially-constructed object existed between the `new` and the final setter, which was a latent bug risk (e.g., accidentally saving a `Member` with no `status`).
+*   Each model now exposes a `static Builder builder()` factory method. The `Builder.build()` method enforces all required fields via `Objects.requireNonNull` before constructing the object, making illegal states unrepresentable.
+*   **OOAD Benefit:** Applies the **Single Responsibility Principle** — object construction logic is owned by the Builder, not scattered across every call site. Also demonstrates the **Open/Closed Principle**: adding a new optional field to `WorkoutPlan` (e.g., `targetMuscleGroup`) requires only adding one method to `Builder` with zero changes to existing callers.
 
 ### C. Decorator/Standardized Wrapper Pattern (Structural Concept)
 **Location:** `com.gym.dto.ApiResponse<T>`
