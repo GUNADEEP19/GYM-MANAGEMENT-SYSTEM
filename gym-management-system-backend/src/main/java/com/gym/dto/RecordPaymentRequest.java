@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 @SuppressWarnings("unused")
 public record RecordPaymentRequest(
-        @SuppressWarnings("unused") @NotNull Long memberId,
-        @SuppressWarnings("unused") @NotNull @Positive Double amount,
-        @SuppressWarnings("unused") @NotBlank String method) {
+        @NotNull Long memberId,
+        @NotNull @Positive Double amount,
+        @NotBlank String method) {
 }

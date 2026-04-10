@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 
 @SuppressWarnings("unused")
 public record CreatePackageRequest(
-        @SuppressWarnings("unused") @NotBlank String name,
-        @SuppressWarnings("unused") @NotNull @Min(1) Integer durationMonths,
-        @SuppressWarnings("unused") @NotNull @Positive Double price) {
+        @NotBlank String name,
+        @NotNull @Min(1) Integer durationMonths,
+        @NotNull @Positive Double price) {
 }

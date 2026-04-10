@@ -6,6 +6,6 @@ import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("unused")
 public record LoginRequest(
-        @SuppressWarnings("unused") @Email @NotBlank String email,
-        @SuppressWarnings("unused") @NotBlank @Size(min = 8, max = 72, message = "Password must be 8-72 characters") String password) {
+        @Email @NotBlank String email,
+        @NotBlank @Size(min = 8, max = 72, message = "Password must be 8-72 characters") String password) {
 }

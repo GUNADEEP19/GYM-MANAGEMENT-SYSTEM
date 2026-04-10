@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Positive;
 
 @SuppressWarnings("unused")
 public record ProgressUpdateRequest(
-        @SuppressWarnings("unused") @NotNull Long planId,
-        @SuppressWarnings("unused") @NotNull @Min(1) Integer weekNumber,
-        @SuppressWarnings("unused") @NotNull @Min(0) Integer exercisesDone,
-        @SuppressWarnings("unused") @NotNull @Positive Double weight,
-        @SuppressWarnings("unused") @NotNull @Positive Double bmi,
-        @SuppressWarnings("unused") String progressNotes) {
+        @NotNull Long planId,
+        @NotNull @Min(1) Integer weekNumber,
+        @NotNull @Min(0) Integer exercisesDone,
+        @NotNull @Positive Double weight,
+        @NotNull @Positive Double bmi,
+        String progressNotes) {
 }
