@@ -49,17 +49,18 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone already exists");
         }
 
-        AppUser user = new AppUser();
-        user.setName(request.name());
-        user.setEmail(request.email());
-        user.setPhone(request.phone());
-        user.setRole(role);
-        user.setPasswordHash(passwordEncoder.encode(request.password()));
-
-        // Create Member profile and link it.
+        // Create Member profile first so memberId is ready for the AppUser builder.
         Long memberId = memberService.createForAuthUser(request.name(), request.email(), request.phone(), request.trainerUserId())
                 .getId();
-        user.setMemberId(memberId);
+
+        AppUser user = AppUser.builder()
+                .name(request.name())
+                .email(request.email())
+                .phone(request.phone())
+                .role(role)
+                .passwordHash(passwordEncoder.encode(request.password()))
+                .memberId(memberId)
+                .build();
 
         userRepository.save(user);
         return ApiResponse.ok("Registered successfully", null);

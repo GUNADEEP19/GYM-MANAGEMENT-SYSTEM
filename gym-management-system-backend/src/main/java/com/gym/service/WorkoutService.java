@@ -40,14 +40,15 @@ public class WorkoutService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Member is not assigned to this trainer");
         }
 
-        WorkoutPlan plan = new WorkoutPlan();
-        plan.setMemberId(member.getId());
-        plan.setTrainerUserId(trainerUserId);
-        plan.setPlanName(request.planName());
-        plan.setDescription(request.description());
-        plan.setDurationWeeks(request.durationWeeks());
-        plan.setDifficultyLevel(request.difficultyLevel());
-        plan.setCreatedAt(LocalDateTime.now());
+        WorkoutPlan plan = WorkoutPlan.builder()
+                .memberId(member.getId())
+                .trainerUserId(trainerUserId)
+                .planName(request.planName())
+                .description(request.description())
+                .durationWeeks(request.durationWeeks())
+                .difficultyLevel(request.difficultyLevel())
+                .createdAt(LocalDateTime.now())
+                .build();
         WorkoutPlan saved = planRepository.save(plan);
 
         if (request.exercises() != null) {
