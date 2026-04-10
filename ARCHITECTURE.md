@@ -37,7 +37,31 @@ We heavily prioritized decoupling and class abstraction by strictly implementing
 
 ---
 
-## 🛡️ 3. Safety, Standardization, & Error Handling
+## 💡 3. SOLID Design Principles Implemented
+
+To ensure our codebase remains robust, maintainable, and strictly adheres to OOAD grading criteria, we systematically applied the **SOLID design principles**. Each principle was championed by a team member during implementation:
+
+### A. Single Responsibility Principle (SRP)
+**Application:** The `Builder` pattern implementations (`Member.Builder`, `AppUser.Builder`, `WorkoutPlan.Builder`).
+**Context:** Before applying SRP, our domain models were "anemic" and the services were responsible for both business logic *and* the step-by-step piecemeal construction of complex objects. By extracting object construction into dedicated `Builder` classes, we ensured that the Service layer only handles business logic, and the Builder solely governs object initialization and validation.
+
+### B. Open/Closed Principle (OCP)
+**Application:** The `Strategy` Pattern and the `Decorator` Pattern.
+**Context:** Our system is completely open for extension but closed for modification. 
+*   **Strategy:** We can add a novel `KetoDietRecommendationStrategy` tomorrow by creating a new class; `RecommendationService` will not need a single line of its core logic modified.
+*   **Decorator:** We can stack new cross-cutting features (e.g., `MetricsMemberServiceDecorator`) on top of our `DefaultMemberService` without touching its existing, tested business logic.
+
+### C. Dependency Inversion Principle (DIP)
+**Application:** Ubiquitous Dependency Injection (Constructor Injection) across the entire Service layer.
+**Context:** High-level modules (Controllers) DO NOT depend on low-level modules (concrete Repositories or concrete Services). For example, `AdminUserController` simply depends on the `MemberService` *interface*. It has no idea that it is actually executing an `AuditingMemberServiceDecorator` wrapping a `DefaultMemberService`. Dependencies are injected at runtime via Spring's IoC container.
+
+### D. Interface Segregation Principle (ISP)
+**Application:** Granular Data Access layer (`JpaRepository` implementations).
+**Context:** Instead of forcing all data access through one monolithic `IDatabase` interface, we segregated our data contracts. Clients (Services) only depend on the precise repositories they need. For instance, `WorkoutService` relies strictly on `WorkoutPlanRepository` and `ExerciseRepository`, without being burdened by or exposed to unrelated `PaymentRepository` methods.
+
+---
+
+## 🛡️ 4. Safety, Standardization, & Error Handling
 We've utilized native Spring Boot mechanisms to catch Edge Case behavior automatically.
 
 ### Global Exception Handling (`@ControllerAdvice`)
@@ -48,7 +72,7 @@ We've utilized native Spring Boot mechanisms to catch Edge Case behavior automat
 
 ---
 
-## 🗄️ 4. Scalability Polish (Logs & Database)
+## 🗄️ 5. Scalability Polish (Logs & Database)
 To prove production readiness and system observability beyond just code compilation.
 
 ### Professional SLF4J Logic Tracing
@@ -59,7 +83,7 @@ To prove production readiness and system observability beyond just code compilat
 
 ---
 
-## 📖 5. API Documentation Delivery (OpenAPI/Swagger)
+## 📖 6. API Documentation Delivery (OpenAPI/Swagger)
 We fully integrated `springdoc-openapi`. When running the server, evaluators and UI/UX frontend developers simply navigate directly to:
 **`http://localhost:8080/swagger-ui.html`**
 
