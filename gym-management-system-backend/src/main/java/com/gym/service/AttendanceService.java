@@ -3,90 +3,66 @@ package com.gym.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.gym.dto.AttendanceRequest;
-import com.gym.dto.AttendanceResponse;
+import com.gym.dto.CheckInRequest;
 import com.gym.model.Attendance;
+import com.gym.model.AttendanceStatus;
 import com.gym.model.Member;
 import com.gym.repository.AttendanceRepository;
-import com.gym.repository.MemberRepository;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final MembershipService membershipService;
 
-    public AttendanceService(AttendanceRepository attendanceRepository, MemberRepository memberRepository) {
+    public AttendanceService(AttendanceRepository attendanceRepository, MemberService memberService, MembershipService membershipService) {
         this.attendanceRepository = attendanceRepository;
-        this.memberRepository = memberRepository;
+        this.memberService = memberService;
+        this.membershipService = membershipService;
     }
 
-    public AttendanceResponse markCheckIn(AttendanceRequest request) {
-        Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> {
-                    log.error("Check-in failed: Member not found based on ID {}", request.getMemberId());
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found");
-                });
+    public Attendance checkIn(Long memberId, CheckInRequest request) {
+        Member member = memberService.getById(memberId);
+        LocalDate date = request != null && request.attendanceDate() != null ? request.attendanceDate() : LocalDate.now();
+
+        // Use-case: Mark Attendance <<include>> Check Membership Validity
+        membershipService.requireActiveForMemberOn(memberId, date);
 
         Attendance attendance = new Attendance();
         attendance.setMember(member);
-        attendance.setAttendanceDate(request.getAttendanceDate() != null ? request.getAttendanceDate() : LocalDate.now());
+        attendance.setAttendanceDate(date);
         attendance.setCheckInTime(LocalDateTime.now());
-        attendance.setStatus("CHECKED_IN");
-
-        Attendance saved = attendanceRepository.save(attendance);
-        log.info("Member {} successfully checked in.", member.getUserId());
-        return toAttendanceResponse(saved);
+        attendance.setStatus(AttendanceStatus.CHECKED_IN);
+        return attendanceRepository.save(attendance);
     }
 
-    public AttendanceResponse markCheckOut(String attendanceId) {
-        log.info("Processing check-out for attendance ID {}", attendanceId);
+    public Attendance checkOut(Long memberId, Long attendanceId) {
+        Objects.requireNonNull(attendanceId, "attendanceId");
         Attendance attendance = attendanceRepository.findById(attendanceId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Attendance record not found"));
-
-        if (!attendance.getStatus().equals("CHECKED_IN")) {
-            log.warn("Check-out failed for {} - Current status is {}", attendanceId, attendance.getStatus());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can only check out from checked-in status");
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Attendance not found"));
+        if (!attendance.getMember().getId().equals(memberId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot checkout another member");
         }
-
+        if (attendance.getStatus() != AttendanceStatus.CHECKED_IN) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Attendance already checked out");
+        }
         attendance.setCheckOutTime(LocalDateTime.now());
-        attendance.setStatus("CHECKED_OUT");
-
-        Attendance updated = attendanceRepository.save(attendance);
-        return toAttendanceResponse(updated);
+        attendance.setStatus(AttendanceStatus.CHECKED_OUT);
+        return attendanceRepository.save(attendance);
     }
 
-    public List<AttendanceResponse> getAttendanceByMember(String memberId) {
-        List<Attendance> records = attendanceRepository.findByMemberUserId(memberId);
-        return records.stream().map(this::toAttendanceResponse).collect(Collectors.toList());
+    public List<Attendance> listAll() {
+        return attendanceRepository.findAll();
     }
 
-    public List<AttendanceResponse> getAttendanceByDateRange(String memberId, LocalDate startDate, LocalDate endDate) {
-        List<Attendance> records = attendanceRepository.findByMemberUserIdAndAttendanceDateBetween(memberId, startDate,
-                endDate);
-        return records.stream().map(this::toAttendanceResponse).collect(Collectors.toList());
-    }
-
-    public Integer getAttendanceCount(String memberId, LocalDate startDate, LocalDate endDate) {
-        return attendanceRepository.countAttendanceInDateRange(memberId, startDate, endDate);
-    }
-
-    private AttendanceResponse toAttendanceResponse(Attendance attendance) {
-        return AttendanceResponse.builder()
-                .attendanceId(attendance.getAttendanceId())
-                .checkInTime(attendance.getCheckInTime())
-                .checkOutTime(attendance.getCheckOutTime())
-                .attendanceDate(attendance.getAttendanceDate())
-                .status(attendance.getStatus())
-                .createdAt(attendance.getCreatedAt())
-                .build();
+    public List<Attendance> listByMember(Long memberId) {
+        return attendanceRepository.findByMemberId(memberId);
     }
 }

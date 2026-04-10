@@ -1,7 +1,6 @@
 package com.gym.security;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -16,38 +15,30 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final SecretKey signingKey;
+    private final SecretKey key;
     private final long expirationMs;
 
-    public JwtService(
-            @Value("${app.jwt.secret:change-this-secret-key-change-this-secret-key-change-this}") String secret,
-            @Value("${app.jwt.expiration-ms:86400000}") long expirationMs) {
-        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    public JwtService(@Value("${app.jwt.secret}") String secret, @Value("${app.jwt.expiration-ms}") long expirationMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
     }
 
-    public String generateToken(String subject) {
-        Instant now = Instant.now();
+    public String generateToken(String subjectEmail, String role, Long userId) {
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + expirationMs);
         return Jwts.builder()
-                .subject(subject)
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusMillis(expirationMs)))
-                .signWith(signingKey)
+                .subject(subjectEmail)
+                .claim("role", role)
+                .claim("uid", userId)
+                .issuedAt(now)
+                .expiration(exp)
+                .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }
 
-    public String extractSubject(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-
-    public boolean isTokenValid(String token, String expectedSubject) {
-        Claims claims = extractAllClaims(token);
-        return expectedSubject.equals(claims.getSubject()) && claims.getExpiration().after(new Date());
-    }
-
-    private Claims extractAllClaims(String token) {
+    public Claims parseClaims(String token) {
         return Jwts.parser()
-                .verifyWith(signingKey)
+                .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

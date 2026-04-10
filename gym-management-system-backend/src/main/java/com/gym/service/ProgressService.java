@@ -2,85 +2,45 @@ package com.gym.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import com.gym.dto.ProgressRequest;
-import com.gym.dto.ProgressResponse;
-import com.gym.model.Member;
-import com.gym.model.Progress;
+import com.gym.dto.ProgressUpdateRequest;
+import com.gym.model.ProgressRecord;
 import com.gym.model.WorkoutPlan;
-import com.gym.repository.MemberRepository;
-import com.gym.repository.ProgressRepository;
-import com.gym.repository.WorkoutPlanRepository;
+import com.gym.repository.ProgressRecordRepository;
 
 @Service
 public class ProgressService {
 
-    private final ProgressRepository progressRepository;
-    private final MemberRepository memberRepository;
-    private final WorkoutPlanRepository workoutPlanRepository;
+    private final ProgressRecordRepository progressRepository;
+    private final WorkoutService workoutService;
 
-    public ProgressService(ProgressRepository progressRepository, MemberRepository memberRepository,
-            WorkoutPlanRepository workoutPlanRepository) {
+    public ProgressService(ProgressRecordRepository progressRepository, WorkoutService workoutService) {
         this.progressRepository = progressRepository;
-        this.memberRepository = memberRepository;
-        this.workoutPlanRepository = workoutPlanRepository;
+        this.workoutService = workoutService;
     }
 
-    public ProgressResponse updateProgress(ProgressRequest request) {
-        Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+    public ProgressRecord record(Long memberId, ProgressUpdateRequest request) {
+        WorkoutPlan plan = workoutService.requirePlanForMember(request.planId(), memberId);
 
-        WorkoutPlan plan = workoutPlanRepository.findById(request.getPlanId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Workout plan not found"));
-
-        Progress progress = new Progress();
-        progress.setMember(member);
-        progress.setWorkoutPlan(plan);
-        progress.setWeekNumber(request.getWeekNumber());
-        progress.setExercisesDone(request.getExercisesDone());
-        progress.setWeight(request.getWeight());
-        progress.setBmi(request.getBmi());
-        progress.setProgressNotes(request.getProgressNotes());
-        progress.setRecordedDate(LocalDateTime.now());
-
-        Progress saved = progressRepository.save(progress);
-        return toProgressResponse(saved);
+        ProgressRecord pr = new ProgressRecord();
+        pr.setMemberId(memberId);
+        pr.setPlan(plan);
+        pr.setWeekNumber(request.weekNumber());
+        pr.setExercisesDone(request.exercisesDone());
+        pr.setWeight(request.weight());
+        pr.setBmi(request.bmi());
+        pr.setProgressNotes(request.progressNotes());
+        pr.setCreatedAt(LocalDateTime.now());
+        return progressRepository.save(pr);
     }
 
-    public List<ProgressResponse> getProgressByMember(String memberId) {
-        List<Progress> progressRecords = progressRepository.findProgressByMemberOrderByDateDesc(memberId);
-        return progressRecords.stream().map(this::toProgressResponse).collect(Collectors.toList());
+    public List<ProgressRecord> listForMember(Long memberId) {
+        return progressRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
     }
 
-    public List<ProgressResponse> getProgressByMemberAndPlan(String memberId, String planId) {
-        List<Progress> progressRecords = progressRepository.findProgressByMemberAndPlanOrderByWeek(memberId, planId);
-        return progressRecords.stream().map(this::toProgressResponse).collect(Collectors.toList());
-    }
-
-    public List<ProgressResponse> getProgressInDateRange(String memberId, LocalDateTime startDate,
-            LocalDateTime endDate) {
-        List<Progress> progressRecords = progressRepository.findProgressByMemberInDateRange(memberId, startDate,
-                endDate);
-        return progressRecords.stream().map(this::toProgressResponse).collect(Collectors.toList());
-    }
-
-    private ProgressResponse toProgressResponse(Progress progress) {
-        return ProgressResponse.builder()
-                .progressId(progress.getProgressId())
-                .weekNumber(progress.getWeekNumber())
-                .exercisesDone(progress.getExercisesDone())
-                .weight(progress.getWeight())
-                .bmi(progress.getBmi())
-                .progressNotes(progress.getProgressNotes())
-                .recordedDate(progress.getRecordedDate())
-                .createdAt(progress.getCreatedAt())
-                .updatedAt(progress.getUpdatedAt())
-                .planName(progress.getWorkoutPlan().getPlanName())
-                .build();
+    public ProgressRecord latestForMember(Long memberId) {
+        return progressRepository.findTopByMemberIdOrderByCreatedAtDesc(memberId).orElse(null);
     }
 }

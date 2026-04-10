@@ -70,7 +70,7 @@ export default function PackagesPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get('/api/package/active');
+      const res = await api.get('/api/packages', { params: { activeOnly: true } });
       const list = unwrapApi(res.data) || [];
       setPackages(list);
     } catch (err) {
@@ -90,12 +90,11 @@ export default function PackagesPage() {
     if (!canPay) return;
     try {
       const payload = {
-        memberId: userId,
         packageId: selectedPkg.packageId,
         amount,
         paymentMethod,
       };
-      await api.post('/api/payment/pay', payload);
+      await api.post('/api/payments/process', payload);
       toast.success('Payment processed successfully');
       setSelectedPkg(null);
     } catch (err) {

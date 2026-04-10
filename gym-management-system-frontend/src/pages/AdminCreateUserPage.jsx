@@ -19,10 +19,9 @@ export default function AdminCreateUserPage() {
     const fetchTrainers = async () => {
       try {
         setLoadingTrainers(true);
-        const res = await api.get('/api/trainers');
-        if (res.data.success) {
-          setTrainers(res.data.data || []);
-        }
+        const res = await api.get('/api/admin/trainers');
+        const list = unwrapApi(res.data) || [];
+        setTrainers(list);
       } catch (err) {
         console.error('Error fetching trainers:', err);
         // Don't show error toast as it's not critical
@@ -52,7 +51,7 @@ export default function AdminCreateUserPage() {
         payload.trainerUserId = trainerUserId;
       }
 
-      const res = await api.post('/register', payload);
+      const res = await api.post('/api/admin/users', payload);
       unwrapApi(res.data);
       toast.success(`${userType} created successfully${trainerUserId ? ' with trainer assigned' : ''}`);
       

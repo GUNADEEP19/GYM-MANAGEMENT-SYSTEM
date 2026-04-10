@@ -19,7 +19,7 @@ export default function AttendancePage() {
   const [checkInDate, setCheckInDate] = useState('');
 
   const loadRecords = async () => {
-    const res = await api.get(`/attendance/member/${userId}`);
+    const res = await api.get('/api/attendance/me');
     const list = unwrapApi(res.data) || [];
     setRecords(list);
   };
@@ -44,9 +44,8 @@ export default function AttendancePage() {
   const onCheckIn = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/attendance/checkin', {
+      await api.post('/api/attendance/checkin', {
         attendanceDate: checkInDate ? checkInDate : null,
-        memberId: userId,
       });
       toast.success('Checked in successfully');
       setCheckInDate('');
@@ -58,7 +57,7 @@ export default function AttendancePage() {
 
   const onCheckOut = async (attendanceId) => {
     try {
-      await api.post(`/attendance/checkout/${attendanceId}`);
+      await api.post(`/api/attendance/checkout/${attendanceId}`);
       toast.success('Checked out successfully');
       await loadRecords();
     } catch (err) {

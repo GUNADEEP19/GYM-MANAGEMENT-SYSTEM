@@ -1,38 +1,18 @@
 package com.gym.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class PaymentResponse {
-    
-    private String paymentId;
-    
-    private String memberId;
-    
-    private String packageId;
-    
-    private Double amount;
-    
-    private String paymentMethod;
-    
-    private PaymentStatus status;
-    
-    private String transactionId;
-    
-    private String receiptUrl;
-    
-    private LocalDateTime paymentDate;
-    
-    private String failureReason;
-    
-    private LocalDateTime createdAt;
-    
-    private LocalDateTime updatedAt;
+@SuppressWarnings("unused")
+public record PaymentResponse(
+        @SuppressWarnings("unused") Long paymentId,
+        @SuppressWarnings("unused") Double amount,
+        @SuppressWarnings("unused") LocalDateTime paidAt,
+        @SuppressWarnings("unused") String method,
+        @SuppressWarnings("unused") String status,
+        @SuppressWarnings("unused") String receiptNumber,
+        @SuppressWarnings("unused") Long packageId,
+        @SuppressWarnings("unused") String packageName,
+        @SuppressWarnings("unused") String discountCode,
+        @SuppressWarnings("unused") Double baseAmount,
+        @SuppressWarnings("unused") Double discountAmount) {
 }

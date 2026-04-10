@@ -27,7 +27,7 @@ This project models and implements core gym operations such as:
 - Attendance check-in and check-out
 - Dynamic reporting and strategy-based recommendations.
 
-The implementation follows a layered architecture and aligns strictly with the UML analysis artifacts available in the repository.
+The implementation follows a layered architecture. The UML artifacts are included for OOAD evaluation; the shipped code uses a role-based `AppUser` model (single user entity + `UserRole`) rather than Java inheritance for users.
 
 ---
 
@@ -96,7 +96,7 @@ graph TD
     
     subgraph Core Business Engine
     Service -->|Uses Strategy| StrategyPattern[WorkoutRecommendationStrategy]
-    Service -->|Uses Factory| FactoryPattern[PaymentFactory]
+    Service -->|Validates via gateway| PaymentGateway[PaymentGateway]
     end
     
     Service --> Repo[JPA Repository Layer]
@@ -113,9 +113,9 @@ This application heavily utilizes classic Gang of Four (GoF) design patterns to 
 **Location:** `com.gym.service.recommendation`
 Based on a `Progress` entity's `BMI`, the `RecommendationService` polymorphically injects `WeightLossStrategy`, `MuscleGainStrategy`, or `GeneralFitnessStrategy` at runtime.
 
-### 2. The Factory Method Pattern (Creational)
-**Location:** `com.gym.service.payment.PaymentFactory`
-The `PaymentFactory` abstracts the initialization of decoupled, distinct transaction environments (`UpiPaymentService`, `CreditCardPaymentService`).
+### 2. Payment Gateway Abstraction (Port/Adapter style)
+**Location:** `com.gym.service.payment.PaymentGateway`
+Payments are processed via a small gateway interface (`PaymentGateway`) that validates a payment request. This keeps the core `PaymentService` decoupled from any real payment provider.
 
 ### 3. Decorator / Wrapper Concept (Structural)
 **Location:** `com.gym.dto.ApiResponse<T>`
@@ -124,20 +124,21 @@ Every RestController method uniformly routes its response through the `ApiRespon
 ---
 
 ## Technology Stack
-- Java 25 & Spring Boot 3.4.0
+- Java 21 & Spring Boot 3.4.0
 - Spring Web, Spring Security, Spring Data JPA
 - MySQL DB + `mysql-connector-j`
 - Swagger UI (OpenAPI 3)
-- Lombok, JUnit 5, Mockito
+- JUnit 5 (via Spring Boot Starter Test)
 
 ---
 
 ## Domain Model
-- `User` (abstract): `userId`, `name`, `email`, `phone` -> (Inherited by `Admin`, `Trainer`, `Member`)
-- `WorkoutPlan` (Member, Trainer) -> Many `Exercise`
-- `Progress` (Member)
-- `Attendance` (Member)
-- `Payment` & `Package` (Member)
+- `AppUser`: authentication identity with `role` (`ADMIN` / `TRAINER` / `MEMBER`)
+- `Member`: member profile/lifecycle data (linked from `AppUser.memberId`)
+- `WorkoutPlan`: created by TRAINER for a MEMBER; contains many `Exercise`
+- `ProgressRecord`: progress entries for a MEMBER and a WorkoutPlan
+- `Attendance`: check-in/check-out records for a MEMBER
+- `Payment` + `GymPackage` + `Membership`: subscription/payment flow
 
 ---
 
@@ -145,10 +146,10 @@ Every RestController method uniformly routes its response through the `ApiRespon
 
 Consider the critical **Subscription Flow**:
 
-1. **User `POST /api/users/login`**: Client swaps credentials for a JWT token.
+1. **User `POST /login`**: Client swaps credentials for a JWT token.
 2. **Client injects JWT in Authorization Header `Bearer {token}`**.
-3. **Admin `POST /api/packages/create`**: Provisions a new gym package.
-4. **Member `POST /api/payments/process`**: Submits a payload to trigger the `PaymentFactory`.
+3. **Admin `POST /api/packages`**: Provisions a new gym package.
+4. **Member `POST /api/payments/process`**: Submits a payload to trigger payment validation.
 5. **System Response `200 OK`**: Returns wrapped uniform JSON confirming `SUCCESS`.
 
 *(Take a look at `VIVA_DEMO_SCRIPT.md` in this repository for a comprehensive end-to-end presentation script.)*
@@ -160,11 +161,11 @@ Consider the critical **Subscription Flow**:
 Every API endpoint (except `/register` and `/login`) is secured by stateless JWT tokens.
 
 **1. Claiming your Token**
-Send a POST request to `/api/users/login`:
+Send a POST request to `/login`:
 ```json
 {
   "email": "user@gym.com",
-  "phone": "555-1234"
+  "password": "your-password"
 }
 ```
 *Backend response:* `"token": "eyJhbGciOiJIUzI1NiJ9..."`
@@ -180,37 +181,41 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9...
 
 ## REST API Reference
 
-### User APIs
-- `POST /register` - Register user (ADMIN only for admins; MEMBER/TRAINER open)
-- `POST /login` - Login user
-- `GET  /api/trainers` - List all trainers (for admin member creation)
+### Auth APIs
+- `POST /register` - Public registration (MEMBER only)
+- `POST /login` - Login user (JWT)
+
+### Admin APIs
+- `POST /api/admin/users` - Create MEMBER or TRAINER (ADMIN only)
+- `GET  /api/admin/trainers` - List trainers (ADMIN only)
 
 ### Trainer Assignment (Admin Only)
 - **Feature**: Admin can assign trainers to members during registration
 - **Usage**: When creating a MEMBER user, optionally provide `trainerUserId`
-- **Result**: Creates initial `WorkoutPlan` linking member to trainer
+- **Result**: Links the member profile (`Member.trainerUserId`) to a TRAINER user
 
 ### Workout & Progress APIs
-- `POST /workout/create` - Create workout plan
-- `GET  /workout/member/{memberId}` - Get member's workout plans
-- `GET  /workout/trainer/{trainerId}/members` - Get trainer's assigned members (NEW)
-- `POST /progress/update` - Update member progress
-- `GET  /progress/member/{memberId}` - Get member's progress
+- `POST /api/workouts/create` - Trainer creates workout plan
+- `GET  /api/workouts/me` - Member views own workout plans
+- `GET  /api/workouts/trainer/me` - Trainer views plans they created
+- `GET  /api/workouts/{planId}/exercises` - Member views exercises for own plan
+- `POST /api/progress/update` - Member updates progress
+- `GET  /api/progress/me` - Member views own progress
+- `GET  /api/progress/trainer/member/{memberId}` - Trainer views assigned member progress
 
 ### Attendance APIs
-- `POST /attendance/checkin` - Member check-in
-- `POST /attendance/checkout/{attendanceId}` - Member check-out
+- `POST /api/attendance/checkin` - Member check-in
+- `POST /api/attendance/checkout/{attendanceId}` - Member check-out
 
 ### Recommendations & Reports (Power Features)
-- `GET /recommendation/{memberId}` (Strategy Pattern Generation)
-- `GET /report/dashboard` (Admin Analytics Dashboard)
+- `GET /api/recommendation/me` (Strategy Pattern Generation)
+- `GET /api/report/dashboard` (Admin Analytics Dashboard)
 
 ---
 
 ## 🗄️ Database Polish & Logging
 
-- **JPA Context Indexes**: Heavily queried parameters (`user.email`, `attendance.date`, `payment.status`) are directly annotated with `@Index`. This forces optimized B-Tree lookups on the MySQL database, guaranteeing enterprise scaling.
-- **SLF4J Console Logging**: All core `.service` files utilize Lombok `@Slf4j` annotations. Operations emit diagnostic console audit trails (INFO/WARN/ERROR) instead of rudimentary `System.out.println` traces.
+This project uses Spring Data JPA repositories over a MySQL schema (auto-managed by Hibernate with `ddl-auto=update`).
 
 ---
 
@@ -279,7 +284,7 @@ curl -I http://localhost:5173
 ---
 
 ## 🔬 Testing
-There are **64 native JUnit/Mockito unit tests** verifying edge-case conditions ranging from `PaymentServices` routing to `AttendanceCheckIns`. Run them natively:
+Run backend tests with:
 ```bash
 ./mvnw clean test
 ```

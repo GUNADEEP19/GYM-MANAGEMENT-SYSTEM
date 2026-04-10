@@ -2,32 +2,33 @@ package com.gym.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "attendance", indexes = {
-    @Index(name = "idx_attendance_member", columnList = "member_id"),
-    @Index(name = "idx_attendance_date", columnList = "attendance_date")
-})
+@Table(name = "attendance")
 public class Attendance {
 
     @Id
-    @Column(name = "attendance_id", nullable = false, updatable = false)
-    private String attendanceId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @Column(nullable = false)
+    private LocalDate attendanceDate;
 
     @Column(nullable = false)
     private LocalDateTime checkInTime;
@@ -35,32 +36,51 @@ public class Attendance {
     @Column
     private LocalDateTime checkOutTime;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LocalDate attendanceDate;
+    private AttendanceStatus status;
 
-    @Column(nullable = false)
-    private String status; // CHECKED_IN, CHECKED_OUT, ABSENT
+    public Long getId() {
+        return id;
+    }
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    public Member getMember() {
+        return member;
+    }
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    public LocalDate getAttendanceDate() {
+        return attendanceDate;
+    }
 
-    @PrePersist
-    public void prePersist() {
-        if (this.attendanceId == null || this.attendanceId.isBlank()) {
-            this.attendanceId = UUID.randomUUID().toString();
-        }
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
-        if (this.updatedAt == null) {
-            this.updatedAt = LocalDateTime.now();
-        }
+    public void setAttendanceDate(LocalDate attendanceDate) {
+        this.attendanceDate = attendanceDate;
+    }
+
+    public LocalDateTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(LocalDateTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public LocalDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(LocalDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public AttendanceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AttendanceStatus status) {
+        this.status = status;
     }
 }

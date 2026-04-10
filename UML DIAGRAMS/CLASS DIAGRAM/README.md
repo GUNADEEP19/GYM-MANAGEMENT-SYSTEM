@@ -2,13 +2,26 @@
 
 This README describes the current class diagram for the Gym Management System.
 
+## Reality Check (UML vs Implementation)
+
+The `.drawio` diagram in this folder models `User` inheritance (`Member`, `Trainer`, `Admin`).
+
+The implemented system uses a **role-based user model** instead:
+
+- `AppUser` is the authentication/authorization identity (has `UserRole` = `ADMIN | TRAINER | MEMBER`).
+- `Member` is a separate domain entity for member profile + lifecycle (`MemberStatus`).
+- For MEMBER users, `AppUser.memberId` links the login identity to the `Member` record.
+- For TRAINER assignment, `Member.trainerUserId` points to the trainer’s `AppUser.id`.
+
+This is a valid OOAD choice (Role Object / “single user + role” approach), but it means the current class diagram README is **not aligned** with what’s running.
+
 ## Diagram Files
 
 1. Editable source: `GymManagementSystem_UML_Professional.drawio`
 2. Exported image: `GymManagementSystem_UML_Professional.jpg`
 3. This documentation: `README.md`
 
-## Core Classes
+## Core Classes (As Designed)
 
 ### `User` (Abstract)
 
@@ -191,3 +204,73 @@ Values:
 
 1. Multiplicities in implementation should follow the `.drawio` model exactly.
 2. This README is aligned with the current professional class diagram image/source in this folder.
+
+## Core Classes (As Implemented)
+
+If you want the UML to match the code for OOAD evaluation, the following “as-built” model is what you should document:
+
+### `AppUser`
+
+Purpose: authentication identity + authorization role.
+
+Key attributes:
+- `id: Long`
+- `name: String`
+- `email: String`
+- `phone: String`
+- `passwordHash: String`
+- `role: UserRole`
+- `memberId: Long?` (only set when role is MEMBER)
+
+### `UserRole` (enum)
+
+Values:
+- `ADMIN`, `TRAINER`, `MEMBER`
+
+### `Member`
+
+Purpose: member profile + lifecycle (not login).
+
+Key attributes:
+- `id: Long`
+- `joinDate: LocalDate`
+- `status: MemberStatus`
+- `trainerUserId: Long?` (links to trainer’s `AppUser.id`)
+
+### `MemberStatus` (enum)
+
+Values:
+- `ACTIVE`, `INACTIVE`, `SUSPENDED`
+
+### `Membership`
+
+Purpose: package subscription validity.
+
+Key attributes:
+- `member: Member`
+- `gymPackage: GymPackage`
+- `startDate/endDate: LocalDate`
+- `status: MembershipStatus`
+
+### `GymPackage`
+
+Purpose: subscription offerings.
+
+### `Payment`
+
+Purpose: recorded payment attempt/result.
+
+Key attributes:
+- `member: Member`
+- `amount: Double`
+- `method: PaymentMethod`
+- `status: PaymentStatus`
+- `paidAt: LocalDateTime`
+
+### `PaymentService`
+
+In the codebase, this is a Spring `@Service` (concrete class), not an interface.
+
+### `WorkoutPlan`, `Exercise`, `ProgressRecord`, `Attendance`
+
+These exist as persistent entities and correspond closely to the designed UML classes, but with `Long` ids and REST/service-driven operations rather than entity methods.

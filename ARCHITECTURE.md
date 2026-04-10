@@ -23,10 +23,10 @@ We heavily prioritized decoupling and class abstraction by strictly implementing
 *   **OOAD Benefit:** Applies the **Open/Closed Principle**. If this Gym introduces a customized diet-centric routing algorithm tomorrow, our engineers only need to add one new Strategy payload implementation class to the system without mutating (or risking regressions within) the core `RecommendationService`.
 
 ### B. The Factory Method Pattern (Creational)
-**Location:** `com.gym.service.payment.PaymentFactory`
-**Use Case Context:** Handling the `processPayment()` transaction requests flexibly based on dynamic choices made by the user interface at runtime. 
-*   The `PaymentFactory` abstracts the initialization of these completely decoupled distinct transaction environments (`UpiPaymentService`, `CreditCardPaymentService`).
-*   **OOAD Benefit:** Extreme loose coupling and dependency abstraction. The frontend/Controller passes an enum, and the Factory evaluates how best to provision the payment engine safely.
+**Location:** `com.gym.service.payment.PaymentGateway`
+**Use Case Context:** Payment validation is abstracted behind a small gateway interface (`PaymentGateway`).
+*   The core `PaymentService` calls the gateway to validate amounts and method strings without hard-wiring any third-party provider.
+*   **OOAD Benefit:** Loose coupling: swapping a fake/demo gateway for a real integration is isolated to one module.
 
 ### C. Decorator/Standardized Wrapper Pattern (Structural Concept)
 **Location:** `com.gym.dto.ApiResponse<T>`
@@ -49,10 +49,10 @@ We've utilized native Spring Boot mechanisms to catch Edge Case behavior automat
 To prove production readiness and system observability beyond just code compilation.
 
 ### Professional SLF4J Logic Tracing
-*   Instead of unreliable `System.out.print` trails, the service modules (`PaymentManager`, `UserService`, `AttendanceService`) use `@Slf4j`. Core operations are appropriately flagged via `log.info`, `log.warn`, and `log.error`, guaranteeing that system behaviors are trackable in scaled environments.
+*   For viva/demo purposes, key flows are kept simple and rely on Spring’s standard request/response behavior. (If you want production-grade observability, add structured logging + request correlation IDs.)
 
 ### JPA Database Indexed Annotations (`@Index`)
-*   Database tables have native indexing injected into Hibernate ORM modeling (`@Table(indexes = ...)`). High cardinality mapping parameters like `email` across Users, and `member_id` tracking across Payments and Attendances, resolve query speeds natively on the DB Engine ensuring O(log N) searches.
+*   The application uses Spring Data JPA + Hibernate; database performance tuning (indexes, constraints) can be added at the schema level as needed.
 
 ---
 

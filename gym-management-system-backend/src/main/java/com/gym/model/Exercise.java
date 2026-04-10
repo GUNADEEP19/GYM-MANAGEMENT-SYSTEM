@@ -1,36 +1,29 @@
 package com.gym.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "exercises")
 public class Exercise {
 
     @Id
-    @Column(name = "exercise_id", nullable = false, updatable = false)
-    private String exerciseId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "plan_id", nullable = false)
+    private WorkoutPlan plan;
 
     @Column(nullable = false)
     private String exerciseName;
-
-    @Column(nullable = false)
-    private String bodyPart;
-
-    @Column(nullable = false)
-    private String equipmentRequired;
 
     @Column(nullable = false)
     private Integer sets;
@@ -39,25 +32,60 @@ public class Exercise {
     private Integer reps;
 
     @Column(nullable = false)
-    private Integer durationMinutes;
+    private String bodyPart;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String instructions;
 
-    @Column(columnDefinition = "TEXT")
-    private String videoUrl;
+    public Long getId() {
+        return id;
+    }
 
-    @Column(nullable = false)
-    private Boolean isActive = true;
+    public WorkoutPlan getPlan() {
+        return plan;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id", nullable = false)
-    private WorkoutPlan workoutPlan;
+    public void setPlan(WorkoutPlan plan) {
+        this.plan = plan;
+    }
 
-    @PrePersist
-    public void prePersist() {
-        if (this.exerciseId == null || this.exerciseId.isBlank()) {
-            this.exerciseId = UUID.randomUUID().toString();
-        }
+    public String getExerciseName() {
+        return exerciseName;
+    }
+
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
+    }
+
+    public Integer getSets() {
+        return sets;
+    }
+
+    public void setSets(Integer sets) {
+        this.sets = sets;
+    }
+
+    public Integer getReps() {
+        return reps;
+    }
+
+    public void setReps(Integer reps) {
+        this.reps = reps;
+    }
+
+    public String getBodyPart() {
+        return bodyPart;
+    }
+
+    public void setBodyPart(String bodyPart) {
+        this.bodyPart = bodyPart;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 }

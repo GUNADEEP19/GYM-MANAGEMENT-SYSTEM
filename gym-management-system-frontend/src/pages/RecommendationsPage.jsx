@@ -15,7 +15,7 @@ export default function RecommendationsPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await api.get(`/api/recommendation/${userId}`);
+        const res = await api.get('/api/recommendation/me');
         setRec(unwrapApi(res.data));
       } catch (err) {
         const msg = err?.response?.data?.message || err?.message || 'Failed to load recommendation';
