@@ -28,9 +28,12 @@ We heavily prioritized decoupling and class abstraction by strictly implementing
 *   Each model now exposes a `static Builder builder()` factory method. The `Builder.build()` method enforces all required fields via `Objects.requireNonNull` before constructing the object, making illegal states unrepresentable.
 *   **OOAD Benefit:** Applies the **Single Responsibility Principle** — object construction logic is owned by the Builder, not scattered across every call site. Also demonstrates the **Open/Closed Principle**: adding a new optional field to `WorkoutPlan` (e.g., `targetMuscleGroup`) requires only adding one method to `Builder` with zero changes to existing callers.
 
-### C. Decorator/Standardized Wrapper Pattern (Structural Concept)
-**Location:** `com.gym.dto.ApiResponse<T>`
-**Use Case Context:** Ensuring predictable API payload returns globally across every single controller module. Every response leaving this API environment to external clients is dynamically "wrapped" in a standard identical `ApiResponse` object. 
+### C. The Decorator Pattern (Structural)
+**Location:** `com.gym.service.MemberService` (interface), `com.gym.service.DefaultMemberService` (Concrete Component), `com.gym.service.AuditingMemberServiceDecorator` (Concrete Decorator)
+**Use Case Context:** Member management operations (create, updateStatus, etc.) needed cross-cutting audit logging added without polluting the core business logic in `DefaultMemberService`.
+*   A `MemberService` interface defines the Component contract. `DefaultMemberService` implements the pure business logic. `AuditingMemberServiceDecorator` implements the same interface, holds a reference to a `MemberService` delegate, and transparently wraps every call with structured SLF4J audit logs before and after.
+*   `@Primary` on the Decorator ensures Spring routes all `MemberService` injection points through it automatically — the 7 existing consumers (controllers, services) required **zero code changes**.
+*   **OOAD Benefit:** Strictly upholds the **Open/Closed Principle** — auditing concern is added by extension (new class), not modification. New cross-cutting behaviours (metrics, rate-limiting, caching) can be stacked as additional decorators without touching `DefaultMemberService` at all.
 
 ---
 
