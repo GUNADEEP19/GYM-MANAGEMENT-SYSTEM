@@ -1,57 +1,76 @@
 package com.gym.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.gym.dto.ApiResponse;
+import com.gym.dto.ProgressRecordResponse;
+import com.gym.dto.ProgressUpdateRequest;
+import com.gym.model.ProgressRecord;
+import com.gym.security.CurrentUser;
+import com.gym.service.MemberService;
+import com.gym.service.ProgressService;
 
 import jakarta.validation.Valid;
 
-import com.gym.dto.ApiResponse;
-import com.gym.dto.ProgressRequest;
-import com.gym.dto.ProgressResponse;
-import com.gym.service.ProgressService;
-
 @RestController
-@RequestMapping("/progress")
+@RequestMapping("/api/progress")
+@Validated
 public class ProgressController {
 
     private final ProgressService progressService;
+    private final CurrentUser currentUser;
+    private final MemberService memberService;
 
-    public ProgressController(ProgressService progressService) {
+    public ProgressController(ProgressService progressService, CurrentUser currentUser, MemberService memberService) {
         this.progressService = progressService;
+        this.currentUser = currentUser;
+        this.memberService = memberService;
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<List<ProgressRecordResponse>> myRecords() {
+        Long memberId = currentUser.requireMemberId();
+        List<ProgressRecordResponse> resp = progressService.listForMember(memberId).stream().map(this::toResp).toList();
+        return ApiResponse.ok(resp);
     }
 
     @PostMapping("/update")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<ProgressResponse> updateProgress(@Valid @RequestBody ProgressRequest request) {
-        return ApiResponse.success("Progress updated successfully", progressService.updateProgress(request));
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<ProgressRecordResponse> update(@Valid @RequestBody ProgressUpdateRequest request) {
+        Long memberId = currentUser.requireMemberId();
+        ProgressRecord saved = progressService.record(memberId, request);
+        return ApiResponse.ok(toResp(saved));
     }
 
-    @GetMapping("/member/{memberId}")
-    public ApiResponse<List<ProgressResponse>> getProgressByMember(@PathVariable String memberId) {
-        return ApiResponse.success("Progress retrieved", progressService.getProgressByMember(memberId));
+    @GetMapping("/trainer/member/{memberId}")
+    @PreAuthorize("hasRole('TRAINER')")
+    public ApiResponse<List<ProgressRecordResponse>> memberProgressForTrainer(@PathVariable Long memberId) {
+        Long trainerUserId = currentUser.requireUser().getId();
+        memberService.requireAssignedToTrainer(memberId, trainerUserId);
+        List<ProgressRecordResponse> resp = progressService.listForMember(memberId).stream().map(this::toResp).toList();
+        return ApiResponse.ok(resp);
     }
 
-    @GetMapping("/member/{memberId}/plan/{planId}")
-    public ApiResponse<List<ProgressResponse>> getProgressByMemberAndPlan(@PathVariable String memberId,
-            @PathVariable String planId) {
-        return ApiResponse.success("Progress retrieved", progressService.getProgressByMemberAndPlan(memberId, planId));
+    @GetMapping("/trainer/member/{memberId}/latest")
+    @PreAuthorize("hasRole('TRAINER')")
+    public ApiResponse<ProgressRecordResponse> latestMemberProgressForTrainer(@PathVariable Long memberId) {
+        Long trainerUserId = currentUser.requireUser().getId();
+        memberService.requireAssignedToTrainer(memberId, trainerUserId);
+        ProgressRecord latest = progressService.latestForMember(memberId);
+        return ApiResponse.ok(latest == null ? null : toResp(latest));
     }
 
-    @GetMapping("/member/{memberId}/range")
-    public ApiResponse<List<ProgressResponse>> getProgressInDateRange(@PathVariable String memberId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        return ApiResponse.success("Progress retrieved", progressService.getProgressInDateRange(memberId, startDate, endDate));
+    private ProgressRecordResponse toResp(ProgressRecord r) {
+        return new ProgressRecordResponse(r.getId(), r.getWeekNumber(), r.getExercisesDone(), r.getWeight(), r.getBmi(), r.getProgressNotes(), r.getPlan().getId(), r.getPlan().getPlanName());
     }
 }

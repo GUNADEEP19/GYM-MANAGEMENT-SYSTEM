@@ -1,125 +1,111 @@
 package com.gym.controller;
 
-import java.util.Objects;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.dto.ApiResponse;
-import com.gym.dto.PaymentRequest;
 import com.gym.dto.PaymentResponse;
-import com.gym.model.Member;
-import com.gym.model.Package;
+import com.gym.dto.ProcessPaymentRequest;
+import com.gym.dto.ReceiptResponse;
 import com.gym.model.Payment;
-import com.gym.repository.MemberRepository;
-import com.gym.repository.PackageRepository;
-import com.gym.repository.PaymentRepository;
-import com.gym.service.payment.PaymentManager;
+import com.gym.model.UserRole;
+import com.gym.security.CurrentUser;
+import com.gym.service.PaymentService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api/payments")
+@Validated
 public class PaymentController {
-    
-    private final PaymentManager paymentManager;
-    private final PaymentRepository paymentRepository;
-    private final MemberRepository memberRepository;
-    private final PackageRepository packageRepository;
-    
-    @Autowired
-    public PaymentController(PaymentManager paymentManager,
-                           PaymentRepository paymentRepository,
-                           MemberRepository memberRepository,
-                           PackageRepository packageRepository) {
-        this.paymentManager = paymentManager;
-        this.paymentRepository = paymentRepository;
-        this.memberRepository = memberRepository;
-        this.packageRepository = packageRepository;
+
+    private final PaymentService paymentService;
+    private final CurrentUser currentUser;
+
+    public PaymentController(PaymentService paymentService, CurrentUser currentUser) {
+        this.paymentService = paymentService;
+        this.currentUser = currentUser;
     }
-    
-    /**
-     * Process payment
-     * POST /api/payment/pay
-     * @param paymentRequest Payment details
-     * @return PaymentResponse with transaction status
-     */
-    @PostMapping("/pay")
-    public ResponseEntity<ApiResponse<PaymentResponse>> processPayment(@Valid @RequestBody PaymentRequest paymentRequest) {
-        
-        // Validate request
-        if (paymentRequest == null || paymentRequest.getMemberId() == null || 
-            paymentRequest.getPackageId() == null || paymentRequest.getPaymentMethod() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required payment fields");
+
+    @PostMapping("/process")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<PaymentResponse> process(@Valid @RequestBody ProcessPaymentRequest request) {
+        Long memberId = currentUser.requireMemberId();
+        Payment payment = paymentService.process(memberId, request);
+        return ApiResponse.ok(toResponse(payment));
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<List<PaymentResponse>> myPayments() {
+        Long memberId = currentUser.requireMemberId();
+        List<PaymentResponse> resp = paymentService.listByMember(memberId).stream().map(this::toResponse).toList();
+        return ApiResponse.ok(resp);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<List<PaymentResponse>> list(@RequestParam(required = false) Long memberId) {
+        List<Payment> list = memberId == null ? paymentService.listAll() : paymentService.listByMember(memberId);
+        return ApiResponse.ok(list.stream().map(this::toResponse).toList());
+    }
+
+    @GetMapping("/{paymentId}/receipt")
+    @PreAuthorize("hasAnyRole('ADMIN','MEMBER')")
+    public ApiResponse<ReceiptResponse> receipt(@PathVariable Long paymentId) {
+        var user = currentUser.requireUser();
+        boolean isAdmin = user.getRole() == UserRole.ADMIN;
+        Long memberId = isAdmin ? null : currentUser.requireMemberId();
+
+        Payment payment = paymentService.getById(paymentId);
+
+        if (!isAdmin && !payment.getMember().getId().equals(memberId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot view another member's receipt");
         }
 
-        String memberId = Objects.requireNonNull(paymentRequest.getMemberId());
-        String packageId = Objects.requireNonNull(paymentRequest.getPackageId());
-        
-        // Fetch member
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
-        
-        // Fetch package
-        Package package_ = packageRepository.findById(packageId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Package not found"));
-        
-        // Create payment object
-        Payment payment = new Payment();
-        payment.setMember(member);
-        payment.setPackage_(package_);
-        payment.setAmount(paymentRequest.getAmount() != null ? paymentRequest.getAmount() : package_.getPrice());
-        payment.setPaymentMethod(paymentRequest.getPaymentMethod());
-        
-        // Process payment through manager
-        Payment processedPayment = paymentManager.processPayment(payment);
-        
-        // Return response
-        return ResponseEntity.ok(ApiResponse.success("Payment processed successfully", mapToResponse(processedPayment)));
+        var pkg = payment.getGymPackage();
+        ReceiptResponse resp = new ReceiptResponse(
+                paymentService.receiptNumberFor(payment),
+                payment.getId(),
+                payment.getMember().getId(),
+                payment.getMember().getName(),
+                pkg != null ? pkg.getId() : null,
+                pkg != null ? pkg.getName() : null,
+                payment.getBaseAmount(),
+                payment.getDiscountAmount(),
+                payment.getDiscountCode(),
+                payment.getAmount(),
+                payment.getMethod().name(),
+                payment.getStatus().name(),
+                payment.getPaidAt());
+
+        return ApiResponse.ok(resp);
     }
-    
-    /**
-     * Get payment status
-     * GET /api/payment/status/{id}
-     * @param paymentId Payment ID
-     * @return PaymentResponse with current status
-     */
-    @GetMapping("/status/{id}")
-    public ResponseEntity<ApiResponse<PaymentResponse>> getPaymentStatus(@PathVariable("id") String paymentId) {
-        
-        Payment payment = paymentRepository.findById(paymentId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not found"));
-        
-        return ResponseEntity.ok(ApiResponse.success("Payment status retrieved", mapToResponse(payment)));
-    }
-    
-    /**
-     * Map Payment entity to PaymentResponse DTO
-     * @param payment Payment entity
-     * @return PaymentResponse
-     */
-    private PaymentResponse mapToResponse(Payment payment) {
-        return PaymentResponse.builder()
-            .paymentId(payment.getPaymentId())
-            .memberId(payment.getMember().getUserId())
-            .packageId(payment.getPackage_().getPackageId())
-            .amount(payment.getAmount())
-            .paymentMethod(payment.getPaymentMethod())
-            .status(payment.getStatus())
-            .transactionId(payment.getTransactionId())
-            .receiptUrl(payment.getReceiptUrl())
-            .paymentDate(payment.getPaymentDate())
-            .failureReason(payment.getFailureReason())
-            .createdAt(payment.getCreatedAt())
-            .updatedAt(payment.getUpdatedAt())
-            .build();
+
+    private PaymentResponse toResponse(Payment p) {
+        var pkg = p.getGymPackage();
+        return new PaymentResponse(
+                p.getId(),
+                p.getAmount(),
+                p.getPaidAt(),
+                p.getMethod().name(),
+                p.getStatus().name(),
+                paymentService.receiptNumberFor(p),
+                pkg != null ? pkg.getId() : null,
+                pkg != null ? pkg.getName() : null,
+                p.getDiscountCode(),
+                p.getBaseAmount(),
+                p.getDiscountAmount());
     }
 }

@@ -22,7 +22,7 @@ export default function ProgressPage() {
   });
 
   const loadPlans = async () => {
-    const res = await api.get(`/workout/member/${userId}`);
+    const res = await api.get('/api/workouts/me');
     const list = unwrapApi(res.data) || [];
     setPlans(list);
     if (!form.planId && list.length > 0) {
@@ -31,7 +31,7 @@ export default function ProgressPage() {
   };
 
   const loadRecords = async () => {
-    const res = await api.get(`/progress/member/${userId}`);
+    const res = await api.get('/api/progress/me');
     const list = unwrapApi(res.data) || [];
     setRecords(list);
   };
@@ -63,8 +63,7 @@ export default function ProgressPage() {
         weight: form.weight === '' ? null : Number(form.weight),
         bmi: form.bmi === '' ? null : Number(form.bmi),
         progressNotes: form.progressNotes || '',
-        memberId: userId,
-        planId: form.planId,
+        planId: Number(form.planId),
       };
 
       // backend uses @Positive for weight/bmi, so send numbers.
@@ -72,7 +71,7 @@ export default function ProgressPage() {
         throw new Error('Weight and BMI are required');
       }
 
-      const res = await api.post('/progress/update', payload);
+      const res = await api.post('/api/progress/update', payload);
       unwrapApi(res.data);
       toast.success('Progress updated');
       await loadRecords();

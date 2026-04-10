@@ -1,63 +1,69 @@
 package com.gym.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
-
 import com.gym.dto.ApiResponse;
-import com.gym.dto.AttendanceRequest;
 import com.gym.dto.AttendanceResponse;
+import com.gym.dto.CheckInRequest;
+import com.gym.model.Attendance;
+import com.gym.security.CurrentUser;
 import com.gym.service.AttendanceService;
 
 @RestController
-@RequestMapping("/attendance")
+@RequestMapping("/api/attendance")
+@Validated
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
+    private final CurrentUser currentUser;
 
-    public AttendanceController(AttendanceService attendanceService) {
+    public AttendanceController(AttendanceService attendanceService, CurrentUser currentUser) {
         this.attendanceService = attendanceService;
+        this.currentUser = currentUser;
     }
 
     @PostMapping("/checkin")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<AttendanceResponse> markCheckIn(@Valid @RequestBody AttendanceRequest request) {
-        return ApiResponse.success("Checked in successfully", attendanceService.markCheckIn(request));
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<AttendanceResponse> checkIn(@RequestBody CheckInRequest request) {
+        Long memberId = currentUser.requireMemberId();
+        Attendance attendance = attendanceService.checkIn(memberId, request);
+        return ApiResponse.ok(toResponse(attendance));
     }
 
     @PostMapping("/checkout/{attendanceId}")
-    public ApiResponse<AttendanceResponse> markCheckOut(@PathVariable String attendanceId) {
-        return ApiResponse.success("Checked out successfully", attendanceService.markCheckOut(attendanceId));
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<AttendanceResponse> checkOut(@PathVariable Long attendanceId) {
+        Long memberId = currentUser.requireMemberId();
+        Attendance attendance = attendanceService.checkOut(memberId, attendanceId);
+        return ApiResponse.ok(toResponse(attendance));
     }
 
-    @GetMapping("/member/{memberId}")
-    public ApiResponse<List<AttendanceResponse>> getAttendanceByMember(@PathVariable String memberId) {
-        return ApiResponse.success("Attendance records retrieved", attendanceService.getAttendanceByMember(memberId));
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('MEMBER')")
+    public ApiResponse<List<AttendanceResponse>> myAttendance() {
+        Long memberId = currentUser.requireMemberId();
+        List<AttendanceResponse> resp = attendanceService.listByMember(memberId).stream().map(this::toResponse).toList();
+        return ApiResponse.ok(resp);
     }
 
-    @GetMapping("/member/{memberId}/range")
-    public ApiResponse<List<AttendanceResponse>> getAttendanceByDateRange(@PathVariable String memberId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ApiResponse.success("Attendance records retrieved", attendanceService.getAttendanceByDateRange(memberId, startDate, endDate));
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<List<AttendanceResponse>> list(@RequestParam(required = false) Long memberId) {
+        List<Attendance> list = memberId == null ? attendanceService.listAll() : attendanceService.listByMember(memberId);
+        return ApiResponse.ok(list.stream().map(this::toResponse).toList());
     }
 
-    @GetMapping("/member/{memberId}/count")
-    public ApiResponse<Integer> getAttendanceCount(@PathVariable String memberId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ApiResponse.success("Attendance count retrieved", attendanceService.getAttendanceCount(memberId, startDate, endDate));
+    private AttendanceResponse toResponse(Attendance a) {
+        return new AttendanceResponse(a.getId(), a.getAttendanceDate(), a.getStatus().name(), a.getCheckInTime(), a.getCheckOutTime());
     }
 }

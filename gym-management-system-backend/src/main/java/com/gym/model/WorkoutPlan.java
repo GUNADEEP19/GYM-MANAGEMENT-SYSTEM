@@ -1,78 +1,100 @@
 package com.gym.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "workout_plans")
 public class WorkoutPlan {
 
     @Id
-    @Column(name = "plan_id", nullable = false, updatable = false)
-    private String planId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Long memberId;
+
+    @Column(nullable = false)
+    private Long trainerUserId;
 
     @Column(nullable = false)
     private String planName;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String description;
-
-    @Column(nullable = false)
-    private String fitnessGoal;
-
-    @Column(nullable = false)
-    private String difficultyLevel;
-
-    @Column(nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(nullable = false)
-    private LocalDateTime endDate;
 
     @Column(nullable = false)
     private Integer durationWeeks;
 
     @Column(nullable = false)
-    private Boolean isActive = true;
+    private String difficultyLevel;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    public Long getId() {
+        return id;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trainer_id", nullable = false)
-    private Trainer trainer;
+    public Long getMemberId() {
+        return memberId;
+    }
 
-    @OneToMany(mappedBy = "workoutPlan", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Exercise> exercises = new ArrayList<>();
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
 
-    @PrePersist
-    public void prePersist() {
-        if (this.planId == null || this.planId.isBlank()) {
-            this.planId = UUID.randomUUID().toString();
-        }
-        if (this.createdDate == null) {
-            this.createdDate = LocalDateTime.now();
-        }
+    public Long getTrainerUserId() {
+        return trainerUserId;
+    }
+
+    public void setTrainerUserId(Long trainerUserId) {
+        this.trainerUserId = trainerUserId;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getDurationWeeks() {
+        return durationWeeks;
+    }
+
+    public void setDurationWeeks(Integer durationWeeks) {
+        this.durationWeeks = durationWeeks;
+    }
+
+    public String getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(String difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

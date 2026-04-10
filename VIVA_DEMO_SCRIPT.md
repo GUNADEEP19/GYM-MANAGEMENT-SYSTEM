@@ -4,115 +4,171 @@ This script is your golden ticket for your OOAD Viva presentation. Follow this *
 
 ---
 
-### Step 1: Register Core Actors
-*Prove inheritance (`Member`, `Trainer`, `Admin` extending `User`).*
+### Step 0: Login as Seeded Admin (created at startup)
+*Admin is seeded via `app.admin.*` in backend `application.properties`.*
 ```http
-POST /api/users/register
+POST /login
+{
+  "email": "admin@gym.com",
+  "password": "admin123"
+}
+```
+**[ACTION]** Copy the `token` and Authorize as **ADMIN** in Swagger.
+
+---
+
+### Step 1: Admin Creates a Trainer User
+*Public `/register` is MEMBER-only; TRAINER users are created by ADMIN.*
+```http
+POST /api/admin/users
+{
+  "name": "Tom Trainer",
+  "email": "trainer@gym.com",
+  "phone": "555-0202",
+  "password": "Trainer123!",
+  "userType": "TRAINER"
+}
+```
+**[ACTION]** Save the returned `id` as `trainerUserId`.
+
+---
+
+### Step 2: Public Register a Member (optionally assign trainer)
+*This creates an `AppUser` with role MEMBER + a linked `Member` profile.*
+```http
+POST /register
 {
   "name": "Jane Doe",
   "email": "jane@gym.com",
   "phone": "555-0101",
-  "userType": "MEMBER"
+  "password": "Passw0rd!",
+  "trainerUserId": 123
 }
 ```
-*(Repeat for a TRAINER and an ADMIN if needed)*
+*(Replace `123` with the `trainerUserId` from Step 1.)*
 
 ---
 
-### Step 2: Login & Obtain JWT Token
-*Prove stateless security and get the token required for all subsequent calls.*
+### Step 3: Admin Lists Members (get Jane’s `memberId`)
 ```http
-POST /api/users/login
+GET /api/members
+```
+**[ACTION]** From the response, note Jane’s `id` (this is `memberId`).
+
+---
+
+### Step 4: Login as Member & Obtain JWT Token
+```http
+POST /login
 {
   "email": "jane@gym.com",
-  "phone": "555-0101"
+  "password": "Passw0rd!"
 }
 ```
-**[ACTION]** Copy the `token` from the response and inject it into the Swagger UI "Authorize" modal.
+**[ACTION]** Copy the `token` and Authorize as **MEMBER** in Swagger.
 
 ---
 
-### Step 3: Admin Creates a Package
-*Prove administrative provisioning.*
+### Step 5: (Switch back) Admin Creates a Package
+*Authorize as ADMIN again for this call.*
 ```http
-POST /api/packages/create
+POST /api/packages
 {
-  "packageName": "Premium Bulk",
-  "price": 5000.0,
   "durationMonths": 6,
-  "description": "Unlimited access with personal training."
+  "name": "Premium Bulk",
+  "price": 5000.0
 }
 ```
 **[ACTION]** Save the returned `packageId`.
 
 ---
 
-### Step 4: Member Subscribes & Pays
-*Prove the `PaymentFactory` pattern and third-party delegation.*
+### Step 6: (Switch to Member) Member Subscribes & Pays
+*Authorize as MEMBER for this call.*
 ```http
 POST /api/payments/process
 {
-  "memberId": "jane-id",
   "packageId": "package-id",
   "amount": 5000.0,
-  "paymentMethod": "UPI"
+  "paymentMethod": "UPI",
+  "discountCode": null
 }
 ```
 *Note the console logs showing SLF4J tracking the payment initialization and receipt generation.*
 
 ---
 
-### Step 5: Trainer Creates Workout Plan
+### Step 7: (Switch to Trainer) Trainer Creates Workout Plan
 *Prove object composition (`WorkoutPlan` contains `Exercises`).*
+```http
+POST /login
+{
+  "email": "trainer@gym.com",
+  "password": "Trainer123!"
+}
+```
+**[ACTION]** Copy the `token` and Authorize as **TRAINER** in Swagger.
+
 ```http
 POST /api/workouts/create
 {
-  "trainerId": "trainer-id",
-  "memberId": "jane-id",
+  "memberId": 1,
   "planName": "Hypertrophy Phase 1",
-  "description": "Heavy lifting focus"
+  "description": "Heavy lifting focus",
+  "durationWeeks": 6,
+  "difficultyLevel": "INTERMEDIATE",
+  "exercises": [
+    { "exerciseName": "Squat", "sets": 4, "reps": 8, "bodyPart": "LEGS", "instructions": "Controlled tempo" }
+  ]
 }
 ```
+*(Replace `1` with the `memberId` from Step 3.)*
+**[ACTION]** Save the returned plan `id` as `planId`.
 
 ---
 
-### Step 6: Member Marks Attendance
+### Step 8: (Switch to Member) Member Marks Attendance
 *Prove real-time operational flows.*
+*Authorize as MEMBER for this call.*
 ```http
 POST /api/attendance/checkin
 {
-  "memberId": "jane-id"
+  "attendanceDate": null
 }
 ```
 
 ---
 
-### Step 7: Member Updates Progress
+### Step 9: Member Updates Progress
 *Feed data into the Strategy engine.*
+*Authorize as MEMBER for this call.*
 ```http
 POST /api/progress/update
 {
-  "memberId": "jane-id",
-  "planId": "plan-id",
+  "planId": 1,
+  "weekNumber": 1,
+  "exercisesDone": 4,
   "weight": 85.5,
   "bmi": 26.2,
-  "notes": "Feeling strong, gaining weight."
+  "progressNotes": "Feeling strong, gaining weight."
 }
 ```
+*(Replace `1` with the `planId` from Step 7.)*
 
 ---
 
-### 🔥 Step 8: POWER FEATURE A - Recommendations (Strategy Pattern)
-*Showcase polymoprhic Object-Oriented behavior dynamically deciding business logic based on BMI.*
+### 🔥 Step 10: POWER FEATURE A - Recommendations (Strategy Pattern)
+*Showcase polymorphic Object-Oriented behavior dynamically deciding business logic based on BMI.*
 ```http
-GET /api/recommendation/{jane-id}
+GET /api/recommendation/me
 ```
 *Because the BMI is 26.2, the engine will automatically select `WeightLossStrategy`. Mention this explicitly to the evaluator!*
 
 ---
 
-### 🔥 Step 9: POWER FEATURE B - Admin Analytics Dashboard
+### 🔥 Step 11: POWER FEATURE B - Admin Analytics Dashboard
 *Showcase the system's ability to aggregate statistics accurately.*
+*Authorize as ADMIN for this call.*
 ```http
 GET /api/report/dashboard
 ```

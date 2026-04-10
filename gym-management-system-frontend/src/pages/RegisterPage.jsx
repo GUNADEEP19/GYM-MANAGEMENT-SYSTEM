@@ -6,7 +6,7 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState('MEMBER');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,7 +19,7 @@ export default function RegisterPage() {
         name,
         email,
         phone,
-        userType,
+        password,
       });
       unwrapApi(res.data);
       toast.success('Registered successfully. Please login.');
@@ -68,12 +68,15 @@ export default function RegisterPage() {
           </label>
 
           <label className="label">
-            User Type
-            <select className="input" value={userType} onChange={(e) => setUserType(e.target.value)}>
-              <option value="MEMBER">MEMBER</option>
-              <option value="TRAINER">TRAINER</option>
-              <option value="ADMIN">ADMIN</option>
-            </select>
+            Password
+            <input
+              className="input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
           </label>
 
           {error ? <div className="alert alert-error">{error}</div> : null}

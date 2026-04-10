@@ -1,71 +1,132 @@
 package com.gym.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import com.gym.dto.PaymentStatus;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name = "payments", indexes = {
-    @Index(name = "idx_payment_member", columnList = "member_id"),
-    @Index(name = "idx_payment_status", columnList = "status")
-})
-public class Payment implements Serializable {
-    
+@Table(name = "payments")
+public class Payment {
+
     @Id
-    @Column(name = "payment_id")
-    private String paymentId;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "package_id", nullable = false)
-    private Package package_;
-    
-    @Column(name = "amount", nullable = false)
+
+    // The package being purchased (nullable for legacy rows created before this field existed).
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_id")
+    private GymPackage gymPackage;
+
+    @Column(nullable = false)
     private Double amount;
-    
-    @Column(name = "payment_method", nullable = false)
-    private String paymentMethod;
-    
+
+    @Column
+    private Double baseAmount;
+
+    @Column
+    private Double discountAmount;
+
+    @Column
+    private String discountCode;
+
+    @Column(nullable = false)
+    private LocalDateTime paidAt;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
+    private PaymentMethod method;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PaymentStatus status;
-    
-    @Column(name = "transaction_id")
-    private String transactionId;
-    
-    @Column(name = "receipt_url")
-    private String receiptUrl;
-    
-    @Column(name = "payment_date")
-    private LocalDateTime paymentDate;
-    
-    @Column(name = "failure_reason")
-    private String failureReason;
-    
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-    
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+
+    public Long getId() {
+        return id;
     }
-    
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public GymPackage getGymPackage() {
+        return gymPackage;
+    }
+
+    public void setGymPackage(GymPackage gymPackage) {
+        this.gymPackage = gymPackage;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Double getBaseAmount() {
+        return baseAmount;
+    }
+
+    public void setBaseAmount(Double baseAmount) {
+        this.baseAmount = baseAmount;
+    }
+
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public LocalDateTime getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(LocalDateTime paidAt) {
+        this.paidAt = paidAt;
+    }
+
+    public PaymentMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(PaymentMethod method) {
+        this.method = method;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
     }
 }

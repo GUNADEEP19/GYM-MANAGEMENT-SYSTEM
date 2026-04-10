@@ -1,61 +1,60 @@
 package com.gym.service.recommendation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.dto.RecommendationResponse;
 import com.gym.model.Member;
-import com.gym.model.Progress;
+import com.gym.model.ProgressRecord;
 import com.gym.repository.MemberRepository;
-import com.gym.repository.ProgressRepository;
+import com.gym.service.ProgressService;
 
 @Service
 public class RecommendationService {
 
-    private final List<WorkoutRecommendationStrategy> strategies;
+    private final ProgressService progressService;
     private final MemberRepository memberRepository;
-    private final ProgressRepository progressRepository;
+    private final WeightLossStrategy weightLoss;
+    private final MuscleGainStrategy muscleGain;
+    private final GeneralFitnessStrategy generalFitness;
 
-    @Autowired
-    public RecommendationService(List<WorkoutRecommendationStrategy> strategies, 
-                                 MemberRepository memberRepository, 
-                                 ProgressRepository progressRepository) {
-        this.strategies = strategies;
+    public RecommendationService(ProgressService progressService, MemberRepository memberRepository,
+            WeightLossStrategy weightLoss, MuscleGainStrategy muscleGain, GeneralFitnessStrategy generalFitness) {
+        this.progressService = progressService;
         this.memberRepository = memberRepository;
-        this.progressRepository = progressRepository;
+        this.weightLoss = weightLoss;
+        this.muscleGain = muscleGain;
+        this.generalFitness = generalFitness;
     }
 
-    public RecommendationResponse generateRecommendation(String memberId) {
+    public RecommendationResponse recommend(Long memberId) {
+        Objects.requireNonNull(memberId, "memberId");
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+        ProgressRecord latest = progressService.latestForMember(memberId);
+        if (latest == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No progress data found to generate recommendation");
+        }
 
-        List<Progress> progressRecords = progressRepository.findProgressByMemberOrderByDateDesc(memberId);
-        
-        Progress latestProgress = progressRecords.isEmpty() ? null : progressRecords.get(0);
-        
-        if (latestProgress == null || latestProgress.getBmi() == null) {
-            return new RecommendationResponse(
-                member.getUserId(),
+        double bmi = latest.getBmi();
+        WorkoutRecommendationStrategy strategy;
+        if (bmi >= 25.0) {
+            strategy = weightLoss;
+        } else if (bmi < 18.5) {
+            strategy = muscleGain;
+        } else {
+            strategy = generalFitness;
+        }
+
+        return new RecommendationResponse(
                 member.getName(),
-                0.0,
-                "NoStrategy",
-                "Start by updating your progress and calculating your BMI so we can recommend a tailored strategy.",
-                4,
-                new ArrayList<>()
-            );
-        }
-
-        for (WorkoutRecommendationStrategy strategy : strategies) {
-            if (strategy.isApplicable(latestProgress)) {
-                return strategy.recommend(member, latestProgress);
-            }
-        }
-        
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No applicable strategy found for BMI: " + latestProgress.getBmi());
+                bmi,
+                strategy.name(),
+                strategy.advisedGoal(),
+                strategy.recommendedDurationWeeks(),
+                strategy.recommendedExercises());
     }
 }

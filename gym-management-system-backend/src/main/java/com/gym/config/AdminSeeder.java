@@ -1,65 +1,53 @@
 package com.gym.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.gym.model.Admin;
-import com.gym.repository.UserRepository;
+import com.gym.model.AppUser;
+import com.gym.model.UserRole;
+import com.gym.repository.AppUserRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component
-public class AdminSeeder implements CommandLineRunner {
+public class AdminSeeder implements ApplicationRunner {
 
-    private final UserRepository userRepository;
+    private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final String adminName;
-    private final String adminEmail;
-    private final String adminPhone;
-    private final String adminPassword;
+    private final String name;
+    private final String email;
+    private final String phone;
+    private final String password;
 
     public AdminSeeder(
-            UserRepository userRepository,
+            AppUserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            @Value("${app.admin.name:Super Admin}") String adminName,
-            @Value("${app.admin.email:admin@gym.com}") String adminEmail,
-            @Value("${app.admin.phone:9999999999}") String adminPhone,
-            @Value("${app.admin.password:admin123}") String adminPassword) {
+            @Value("${app.admin.name}") String name,
+            @Value("${app.admin.email}") String email,
+            @Value("${app.admin.phone}") String phone,
+            @Value("${app.admin.password}") String password) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.adminName = adminName;
-        this.adminEmail = adminEmail;
-        this.adminPhone = adminPhone;
-        this.adminPassword = adminPassword;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
     }
 
     @Override
-    public void run(String... args) {
-        boolean exists = userRepository.findByEmail(adminEmail)
-                .map(u -> u instanceof Admin)
-                .orElse(false);
-        if (exists) {
+    public void run(ApplicationArguments args) {
+        if (userRepository.existsByEmail(email)) {
             return;
         }
 
-        // If email exists but isn't admin, don't overwrite it.
-        if (userRepository.findByEmail(adminEmail).isPresent()) {
-            log.warn("Admin seeding skipped: email already exists but is not ADMIN: {}", adminEmail);
-            return;
-        }
-
-        Admin admin = new Admin();
-        admin.setName(adminName);
-        admin.setEmail(adminEmail);
-        admin.setPhone(adminPhone);
-        admin.setPasswordHash(passwordEncoder.encode(adminPassword));
-
+        AppUser admin = new AppUser();
+        admin.setName(name);
+        admin.setEmail(email);
+        admin.setPhone(phone);
+        admin.setRole(UserRole.ADMIN);
+        admin.setPasswordHash(passwordEncoder.encode(password));
         userRepository.save(admin);
-        log.info("Seeded predefined ADMIN user: {}", adminEmail);
     }
 }
-

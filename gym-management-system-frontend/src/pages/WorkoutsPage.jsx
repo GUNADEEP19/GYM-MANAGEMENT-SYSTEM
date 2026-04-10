@@ -6,6 +6,10 @@ import { useAuth } from '../app/AuthContext';
 export default function WorkoutsPage() {
   const { userId } = useAuth();
 
+  const [assignedTrainer, setAssignedTrainer] = useState(null);
+  const [loadingTrainer, setLoadingTrainer] = useState(true);
+  const [trainerMessage, setTrainerMessage] = useState(null);
+
   const [plans, setPlans] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [loadingPlans, setLoadingPlans] = useState(true);
@@ -18,7 +22,7 @@ export default function WorkoutsPage() {
     setLoadingPlans(true);
     setError(null);
     try {
-      const res = await api.get(`/workout/member/${userId}`);
+      const res = await api.get('/api/workouts/me');
       const list = unwrapApi(res.data) || [];
       setPlans(list);
       if (!selectedPlanId && list.length > 0) setSelectedPlanId(list[0].planId);
@@ -33,7 +37,7 @@ export default function WorkoutsPage() {
     if (!planId) return;
     setLoadingExercises(true);
     try {
-      const res = await api.get(`/workout/${planId}/exercises`);
+      const res = await api.get(`/api/workouts/${planId}/exercises`);
       const list = unwrapApi(res.data) || [];
       setExercises(list);
     } catch (err) {
@@ -43,10 +47,37 @@ export default function WorkoutsPage() {
     }
   }, []);
 
+  const fetchAssignedTrainer = useCallback(async () => {
+    setLoadingTrainer(true);
+    setTrainerMessage(null);
+    try {
+      const res = await api.get('/api/members/me/trainer');
+      const trainer = unwrapApi(res.data);
+      setAssignedTrainer(trainer);
+    } catch (err) {
+      const status = err?.response?.status;
+      const msg = err?.response?.data?.message || err?.message;
+
+      setAssignedTrainer(null);
+      if (status === 404) {
+        setTrainerMessage(msg || 'Trainer not assigned yet.');
+      } else {
+        setTrainerMessage(msg || 'Failed to load assigned trainer');
+      }
+    } finally {
+      setLoadingTrainer(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (!userId) return;
     fetchPlans();
   }, [fetchPlans, userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+    fetchAssignedTrainer();
+  }, [fetchAssignedTrainer, userId]);
 
   useEffect(() => {
     fetchExercises(selectedPlanId);
@@ -62,6 +93,23 @@ export default function WorkoutsPage() {
       <div className="page-header">
         <h1 className="page-title">My Workout Plans</h1>
         <div className="muted">Select a plan to view exercises</div>
+      </div>
+
+      <div className="card">
+        <div className="card-title">Assigned Trainer</div>
+        {loadingTrainer ? <div className="muted mt-8">Loading trainer...</div> : null}
+
+        {!loadingTrainer && assignedTrainer ? (
+          <div className="mt-8">
+            <div>{assignedTrainer.name}</div>
+            <div className="muted mt-4">Email: {assignedTrainer.email}</div>
+            <div className="muted">Phone: {assignedTrainer.phone}</div>
+          </div>
+        ) : null}
+
+        {!loadingTrainer && !assignedTrainer ? (
+          <div className="muted mt-8">{trainerMessage || 'Trainer not assigned yet.'}</div>
+        ) : null}
       </div>
 
       {loadingPlans ? <div className="muted">Loading plans...</div> : null}

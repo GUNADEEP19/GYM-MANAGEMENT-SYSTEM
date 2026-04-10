@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../app/AuthContext';
-import { api } from '../app/apiClient';
+import { api, unwrapApi } from '../app/apiClient';
 
 export default function TrainerMembersPage() {
   const { auth } = useAuth();
@@ -14,13 +14,9 @@ export default function TrainerMembersPage() {
       try {
         setLoading(true);
         setError(null);
-        const response = await api.get(`/workout/trainer/${auth.userId}/members`);
-        
-        if (response.data.success) {
-          setMembers(response.data.data || []);
-        } else {
-          setError(response.data.message || 'Failed to load members');
-        }
+        const response = await api.get('/api/trainers/me/members');
+        const list = unwrapApi(response.data) || [];
+        setMembers(list);
       } catch (err) {
         console.error('Error fetching members:', err);
         setError(err.response?.data?.message || 'Error loading assigned members');
@@ -31,7 +27,7 @@ export default function TrainerMembersPage() {
     };
 
     fetchMembers();
-  }, [auth.userId]);
+  }, [auth?.token]);
 
   if (loading) {
     return (
