@@ -16,5 +16,7 @@
             "value": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home"
         }
     ],
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "plantuml.server": "https://www.plantuml.com/plantuml",
+    "plantuml.render": "PlantUMLServer"
 }
