@@ -4,7 +4,7 @@ import { api, unwrapApi } from '../app/apiClient';
 import { useAuth } from '../app/AuthContext';
 
 export default function WorkoutsPage() {
-  const { userId } = useAuth();
+  const { userId, role } = useAuth();
 
   const [assignedTrainer, setAssignedTrainer] = useState(null);
   const [loadingTrainer, setLoadingTrainer] = useState(true);
@@ -22,7 +22,8 @@ export default function WorkoutsPage() {
     setLoadingPlans(true);
     setError(null);
     try {
-      const res = await api.get('/api/workouts/me');
+      const endpoint = role === 'TRAINER' ? '/api/workouts/trainer/me' : '/api/workouts/me';
+      const res = await api.get(endpoint);
       const list = unwrapApi(res.data) || [];
       setPlans(list);
       if (!selectedPlanId && list.length > 0) setSelectedPlanId(list[0].planId);
@@ -31,7 +32,7 @@ export default function WorkoutsPage() {
     } finally {
       setLoadingPlans(false);
     }
-  }, [selectedPlanId, userId]);
+  }, [selectedPlanId, userId, role]);
 
   const fetchExercises = useCallback(async (planId) => {
     if (!planId) return;
@@ -48,6 +49,12 @@ export default function WorkoutsPage() {
   }, []);
 
   const fetchAssignedTrainer = useCallback(async () => {
+    if (role === 'TRAINER') {
+      setLoadingTrainer(false);
+      setAssignedTrainer(null);
+      setTrainerMessage('You are viewing the workouts you authored.');
+      return;
+    }
     setLoadingTrainer(true);
     setTrainerMessage(null);
     try {
@@ -67,7 +74,7 @@ export default function WorkoutsPage() {
     } finally {
       setLoadingTrainer(false);
     }
-  }, []);
+  }, [role]);
 
   useEffect(() => {
     if (!userId) return;
