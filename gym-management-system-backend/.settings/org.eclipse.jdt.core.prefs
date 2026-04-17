@@ -25,6 +25,6 @@ org.eclipse.jdt.core.compiler.problem.unusedParameter=warning
 org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=ignore
 org.eclipse.jdt.core.compiler.problem.unusedTypeArgumentsForMethodInvocation=warning
 org.eclipse.jdt.core.compiler.problem.unusedWarningToken=warning
-org.eclipse.jdt.core.compiler.processAnnotations=enabled
+org.eclipse.jdt.core.compiler.processAnnotations=disabled
 org.eclipse.jdt.core.compiler.release=enabled
 org.eclipse.jdt.core.compiler.source=21
