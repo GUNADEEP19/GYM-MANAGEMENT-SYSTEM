@@ -21,14 +21,14 @@ Use these credentials in your `/login` Postman/Swagger requests to get JWT token
 *   **Password:** `admin123` *(Note the different password here!)*
 
 ### 🏋️ Trainers
-*   **Trainer 1 Email:** `trainer1@gym.com`
-*   **Trainer 2 Email:** `trainer2@gym.com`
-*   **Trainer 3 Email:** `trainer3@gym.com`
+*   **Trainer 1 Email:** `trainer1@gym.com` | **Password:** `password123`
+*   **Trainer 2 Email:** `trainer2@gym.com` | **Password:** `password123`
+*   **Trainer 3 Email:** `trainer3@gym.com` | **Password:** `password123`
 
 ### 🏃‍♂️ Members
-*   **Member 1 Email:** `member1@gym.com` *(Assigned to Trainer 1, Weight Loss Plan)*
-*   **Member 2 Email:** `member2@gym.com` *(Assigned to Trainer 2, Hypertrophy Plan)*
-*   **Member 3 Email:** `member3@gym.com` *(Assigned to Trainer 3, Powerbuilding Plan)*
+*   **Member 1 Email:** `member1@gym.com` | **Password:** `password123` *(Assigned to Trainer 1, Weight Loss Plan)*
+*   **Member 2 Email:** `member2@gym.com` | **Password:** `password123` *(Assigned to Trainer 2, Hypertrophy Plan)*
+*   **Member 3 Email:** `member3@gym.com` | **Password:** `password123` *(Assigned to Trainer 3, Powerbuilding Plan)*
 
 <br>
 
