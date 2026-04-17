@@ -1,0 +1,16 @@
+@startuml PaymentStateDiagram
+skinparam state {
+  BackgroundColor LightCoral
+  BorderColor Red
+}
+
+[*] --> PENDING : initiate()
+
+PENDING --> SUCCESS : processPayment(valid)
+PENDING --> FAILED : processPayment(invalid/timeout)
+
+FAILED --> PENDING : retry()
+FAILED --> [*] : abort()
+
+SUCCESS --> [*] : generateReceipt()
+@enduml

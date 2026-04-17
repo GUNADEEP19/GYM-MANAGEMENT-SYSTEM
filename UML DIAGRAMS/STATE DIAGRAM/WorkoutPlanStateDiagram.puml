@@ -1,0 +1,17 @@
+@startuml WorkoutPlanStateDiagram
+skinparam state {
+  BackgroundColor LightYellow
+  BorderColor GoldenRod
+}
+
+[*] --> DRAFT : create()
+
+DRAFT --> ACTIVE : assignToMember()
+ACTIVE --> COMPLETED : durationWeeksPassed()
+
+ACTIVE --> ABANDONED : memberSuspended() / cancelPlan()
+DRAFT --> ABANDONED : planDiscarded()
+
+COMPLETED --> [*]
+ABANDONED --> [*]
+@enduml

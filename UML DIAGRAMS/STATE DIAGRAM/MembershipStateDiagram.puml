@@ -1,0 +1,15 @@
+@startuml MembershipStateDiagram
+skinparam state {
+  BackgroundColor LightGreen
+  BorderColor Green
+}
+
+[*] --> ACTIVE : createMembership() / startDate = today
+ACTIVE --> EXPIRED : passEndDate()
+EXPIRED --> ACTIVE : renew() / extendEndDate()
+
+ACTIVE --> CANCELLED : terminateEarly()
+CANCELLED --> [*]
+
+EXPIRED --> [*] : archive()
+@enduml

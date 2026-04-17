@@ -1,0 +1,16 @@
+@startuml MemberStateDiagram
+skinparam state {
+  BackgroundColor LightBlue
+  BorderColor Blue
+}
+
+[*] --> ACTIVE : create() / joinDate = now()
+
+ACTIVE --> SUSPENDED : violatePolicy()
+SUSPENDED --> ACTIVE : resolveIssue()
+
+ACTIVE --> INACTIVE : cancelAccount()
+INACTIVE --> ACTIVE : reactivateAccount()
+
+INACTIVE --> [*] : hardDelete()
+@enduml
