@@ -1,0 +1,34 @@
+@startuml PaymentActivityDiagram
+|Member|
+start
+:Initiates Payment;
+:Selects Package;
+|System|
+:Validate Membership Status;
+if (Already Active?) then (yes)
+  :Return "Already Active" Error;
+  |Member|
+  stop
+else (no)
+  |System|
+  :Create PENDING Payment Record;
+  |Payment Gateway|
+  :Process Transaction;
+  if (Success?) then (yes)
+    |System|
+    :Update Payment to SUCCESS;
+    :Calculate New Expiration Date;
+    :Create/Renew Membership;
+    :Generate Receipt;
+    |Member|
+    :View Receipt;
+  else (fail)
+    |System|
+    :Update Payment to FAILED;
+    :Log Failure Reason;
+    |Member|
+    :View Failure Message;
+  endif
+endif
+stop
+@enduml

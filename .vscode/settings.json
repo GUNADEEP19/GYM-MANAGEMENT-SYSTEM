@@ -2,18 +2,18 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.import.maven.enabled": true,
     "java.import.maven.wrapper.enabled": true,
-    "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home",
+    "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home",
     "java.configuration.runtimes": [
         {
-            "name": "JavaSE-25",
-            "path": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home",
+            "name": "JavaSE-21",
+            "path": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home",
             "default": true
         }
     ],
     "maven.terminal.customEnv": [
         {
             "environmentVariable": "JAVA_HOME",
-            "value": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home"
+            "value": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
         }
     ],
     "java.compile.nullAnalysis.mode": "automatic",

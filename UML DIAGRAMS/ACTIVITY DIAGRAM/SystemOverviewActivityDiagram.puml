@@ -1,0 +1,47 @@
+@startuml SystemOverviewActivityDiagram
+|User Interactions|
+start
+
+|System Processing|
+if (User Registered?) then (no)
+  :Register User Account;
+  :Save User Data;
+else (yes)
+endif
+
+|User Interactions|
+:User Login;
+
+|System Processing|
+if (User Role?) then (Admin)
+  :Manage Members;
+  :Assign Trainer;
+  :Generate Reports;
+  :Analyze & Recommend Plan;
+
+else if (Trainer)
+  :View Members;
+  :View Progress;
+  :Create Plan;
+  :Assign Exercises;
+
+else (Member)
+  :View Workout;
+  :Mark Attendance;
+  :Check Membership;
+  :Update Progress;
+  :View Report;
+
+  |Payment Gateway|
+  :Initiate Payment;
+  if (Payment Success?) then (yes)
+    :Generate Receipt;
+  else (no)
+    :Log Failure;
+  endif
+endif
+
+|User Interactions|
+:CONTINUOUS DAILY LOOP;
+stop
+@enduml

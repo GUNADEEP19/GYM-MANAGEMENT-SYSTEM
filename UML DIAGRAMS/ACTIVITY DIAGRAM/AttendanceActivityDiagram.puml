@@ -1,0 +1,32 @@
+@startuml AttendanceActivityDiagram
+|Member|
+start
+:Arrive at Gym;
+:Scan ID / Request Check-in;
+|System|
+:Fetch Member Record;
+if (Member Exists?) then (no)
+  :Deny Entry;
+  stop
+else (yes)
+  :Check Membership Status;
+  if (Status == ACTIVE?) then (no)
+    :Deny Entry (Expired);
+    |Member|
+    :Redirect to Payment;
+    stop
+  else (yes)
+    |System|
+    :Log Check-in Time;
+    :Save Attendance Record;
+    |Member|
+    :Enter Gym Facility;
+    :Workout;
+    :Request Check-out;
+    |System|
+    :Log Check-out Time;
+    :Update Attendance Record;
+  endif
+endif
+stop
+@enduml

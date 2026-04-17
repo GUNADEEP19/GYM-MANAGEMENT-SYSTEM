@@ -1,0 +1,27 @@
+@startuml WorkoutPlanActivityDiagram
+|Trainer|
+start
+:Select assigned Member;
+:Create Workout Plan;
+:Define Goal & Duration;
+|System|
+:Validate Trainer Assignment;
+if (Not Assigned?) then (yes)
+  :Deny Access;
+  |Trainer|
+  stop
+else (no)
+  |Trainer|
+  :Add Exercises (Sets/Reps);
+  |System|
+  :Save Workout Plan to DB;
+  :Link Exercises to Plan;
+  |Member|
+  :Receive Notification/View;
+  :Execute Plan;
+  :Update Metrics/Progress;
+  |System|
+  :Record Progress;
+endif
+stop
+@enduml
