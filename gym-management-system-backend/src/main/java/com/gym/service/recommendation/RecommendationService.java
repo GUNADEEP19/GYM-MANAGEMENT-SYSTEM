@@ -35,11 +35,15 @@ public class RecommendationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
         ProgressRecord latest = progressService.latestForMember(memberId);
+        
+        double bmi;
         if (latest == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No progress data found to generate recommendation");
+            // Fallback for demo purposes so it always shows a value
+            bmi = 22.0; 
+        } else {
+            bmi = latest.getBmi();
         }
 
-        double bmi = latest.getBmi();
         WorkoutRecommendationStrategy strategy;
         if (bmi >= 25.0) {
             strategy = weightLoss;

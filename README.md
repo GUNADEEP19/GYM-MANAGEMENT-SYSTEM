@@ -239,6 +239,19 @@ GRANT ALL PRIVILEGES ON gymdb.* TO 'gymuser'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
+### Troubleshooting: Port already in use
+If you encounter an error like `Web server failed to start. Port 8080 was already in use`, run the following commands to forcefully kill the conflicting processes:
+
+**Kill Backend Port (8080):**
+```bash
+lsof -ti:8080 | xargs kill -9
+```
+
+**Kill Frontend Port (5173):**
+```bash
+lsof -ti:5173 | xargs kill -9
+```
+
 ### 2. Start Backend (Terminal 1)
 ```bash
 cd gym-management-system-backend

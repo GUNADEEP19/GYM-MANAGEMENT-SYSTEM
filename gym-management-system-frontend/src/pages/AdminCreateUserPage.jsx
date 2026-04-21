@@ -54,7 +54,7 @@ export default function AdminCreateUserPage() {
       const res = await api.post('/api/admin/users', payload);
       unwrapApi(res.data);
       toast.success(`${userType} created successfully${trainerUserId ? ' with trainer assigned' : ''}`);
-      
+
       // Reset form
       setName('');
       setEmail('');
@@ -101,6 +101,7 @@ export default function AdminCreateUserPage() {
               setUserType(e.target.value);
               setTrainerUserId(''); // Reset trainer when role changes
             }}>
+              <option selected disabled value="">Select Role</option>
               <option value="MEMBER">MEMBER</option>
               <option value="TRAINER">TRAINER</option>
             </select>
@@ -109,13 +110,13 @@ export default function AdminCreateUserPage() {
           {userType === 'MEMBER' && (
             <label className="label">
               Assign Trainer (Optional)
-              <select 
-                className="input" 
-                value={trainerUserId} 
+              <select
+                className="input"
+                value={trainerUserId}
                 onChange={(e) => setTrainerUserId(e.target.value)}
                 disabled={loadingTrainers}
               >
-                <option value="">-- No Trainer --</option>
+                <option disabled value="">-- No Trainer --</option>
                 {trainers.map((trainer) => (
                   <option key={trainer.userId} value={trainer.userId}>
                     {trainer.name} ({trainer.email})

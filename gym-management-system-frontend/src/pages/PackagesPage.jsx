@@ -62,6 +62,7 @@ export default function PackagesPage() {
   const { userId } = useAuth();
 
   const [packages, setPackages] = useState([]);
+  const [myMembership, setMyMembership] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedPkg, setSelectedPkg] = useState(null);
@@ -80,8 +81,18 @@ export default function PackagesPage() {
     }
   };
 
+  const fetchMembership = async () => {
+    try {
+      const res = await api.get('/api/memberships/me');
+      setMyMembership(unwrapApi(res.data));
+    } catch (err) {
+      console.log('No membership found or error', err);
+    }
+  };
+
   useEffect(() => {
     fetchPackages();
+    fetchMembership();
   }, []);
 
   const canPay = useMemo(() => userId != null && selectedPkg != null, [userId, selectedPkg]);
@@ -97,6 +108,7 @@ export default function PackagesPage() {
       await api.post('/api/payments/process', payload);
       toast.success('Payment processed successfully');
       setSelectedPkg(null);
+      fetchMembership(); // Refresh membership status after purchase
     } catch (err) {
       toast.error(err?.response?.data?.message || err?.message || 'Payment failed');
     }
@@ -108,6 +120,29 @@ export default function PackagesPage() {
         <h1 className="page-title">Packages</h1>
         <div className="muted">Choose a subscription package</div>
       </div>
+
+      {myMembership && myMembership.status !== 'NONE' && (
+        <div className="card" style={{ marginBottom: '24px', backgroundColor: 'var(--slate-50)', border: '1px solid var(--slate-200)' }}>
+          <div className="card-title">My Current Membership</div>
+          <div style={{ marginTop: '12px', fontSize: '1.1rem' }}>
+            <strong>{myMembership.packageName}</strong> 
+            <span style={{ 
+              marginLeft: '12px', 
+              padding: '4px 10px', 
+              borderRadius: '12px', 
+              fontSize: '0.8rem', 
+              fontWeight: '500',
+              backgroundColor: myMembership.valid ? 'var(--primary-color)' : '#ef4444', 
+              color: 'white' 
+            }}>
+              {myMembership.status}
+            </span>
+          </div>
+          <div className="muted mt-8">
+            Valid from <strong>{myMembership.startDate}</strong> to <strong>{myMembership.endDate}</strong>
+          </div>
+        </div>
+      )}
 
       {loading ? <div className="muted">Loading packages...</div> : null}
       {error ? <div className="alert alert-error">{error}</div> : null}
