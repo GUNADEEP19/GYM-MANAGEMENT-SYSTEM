@@ -32,7 +32,8 @@ public class PaymentService {
     private final MembershipRepository membershipRepository;
     private final PaymentGateway paymentGateway;
 
-    public PaymentService(PaymentRepository paymentRepository, MemberService memberService, GymPackageService packageService,
+    public PaymentService(PaymentRepository paymentRepository, MemberService memberService,
+            GymPackageService packageService,
             MembershipRepository membershipRepository, PaymentGateway paymentGateway) {
         this.paymentRepository = paymentRepository;
         this.memberService = memberService;
@@ -58,7 +59,7 @@ public class PaymentService {
         payment.setAmount(requiredAmount);
         payment.setPaidAt(LocalDateTime.now());
         payment.setStatus(PaymentStatus.PENDING);
-
+        // Loose coupling
         try {
             payment.setMethod(PaymentMethod.fromValue(request.paymentMethod()));
         } catch (IllegalArgumentException ex) {
@@ -101,14 +102,16 @@ public class PaymentService {
     }
 
     private static String normalizeDiscountCode(String code) {
-        if (code == null) return null;
+        if (code == null)
+            return null;
         String trimmed = code.trim();
         return trimmed.isEmpty() ? null : trimmed.toUpperCase();
     }
 
     private static double computeDiscountAmount(double baseAmount, String discountCode) {
         String code = normalizeDiscountCode(discountCode);
-        if (code == null) return 0.0;
+        if (code == null)
+            return 0.0;
 
         // Demo discounts (keep intentionally simple):
         // - STUDENT10 => 10% off
